@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,11 +11,14 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import HomeScreen from '../screens/HomeScreen';
+import FoodScreen from '../screens/FoodScreen';
+import OrderScreen from '../screens/OrderScreen';
+import MessageScreen from '../screens/MessageScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import { View, Text } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -54,29 +57,63 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  const colorScheme = 'light';
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: Colors[colorScheme].background,
+        }
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tổng quan',
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          title: 'Trang chủ',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
+        name="Food"
+        component={FoodScreen}
+        options={({ navigation }: RootTabScreenProps<'Food'>) => ({
+          title: 'Sản phẩm',
+          tabBarIcon: ({ color }) => <TabBarIcon name="th-large" color={color} />,
+          headerTitle: () => (<Text></Text>),
+          headerLeft: () => (
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>ồ ăn</Text>
+            </View>
+          )
+        })}
+      />
+      <BottomTab.Screen
+        name="Order"
+        component={OrderScreen}
+        options={({ navigation }: RootTabScreenProps<'Order'>) => ({
           title: 'Đơn hàng',
           tabBarIcon: ({ color }) => <TabBarIcon name="list-alt" color={color} />,
-        }}
+        })}
+      />
+      <BottomTab.Screen
+        name="Message"
+        component={MessageScreen}
+        options={({ navigation }: RootTabScreenProps<'Message'>) => ({
+          title: 'Tin nhắn',
+          tabBarIcon: ({ color }) => <TabBarIcon name="comment" color={color} />,
+        })}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation }: RootTabScreenProps<'Profile'>) => ({
+          title: 'Tài khoản',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        })}
       />
     </BottomTab.Navigator>
   );
@@ -89,5 +126,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={25} style={{ marginBottom: -3 }} {...props} />;
 }
