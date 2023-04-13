@@ -75,6 +75,18 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Trang chủ',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          headerTitle: () => (<Text></Text>),
+          headerLeft: () => (
+            <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons name='location' color={Colors[colorScheme].contentHeader} size={24}/>
+              <Text style={{ fontSize: 14, color: Colors[colorScheme].contentHeader }}>Địa chỉ</Text>
+            </View>
+          ),
+          headerRight: () => (
+            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
+            </View>
+          )
         })}
       />
       <BottomTab.Screen
@@ -85,8 +97,14 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="th-large" color={color} />,
           headerTitle: () => (<Text></Text>),
           headerLeft: () => (
-            <View style={{ marginLeft: 10 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>ồ ăn</Text>
+            <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons name='location' color={Colors[colorScheme].contentHeader} size={24}/>
+              <Text style={{ fontSize: 14, color: Colors[colorScheme].contentHeader }}>Địa chỉ</Text>
+            </View>
+          ),
+          headerRight: () => (
+            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
             </View>
           )
         })}
@@ -97,6 +115,15 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Order'>) => ({
           title: 'Đơn hàng',
           tabBarIcon: ({ color }) => <TabBarIcon name="list-alt" color={color} />,
+          headerTitleStyle: {
+            color: Colors[colorScheme].contentHeader,
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
+            </View>
+          )
         })}
       />
       <BottomTab.Screen
@@ -105,6 +132,15 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Message'>) => ({
           title: 'Tin nhắn',
           tabBarIcon: ({ color }) => <TabBarIcon name="comment" color={color} />,
+          headerTitleStyle: {
+            color: Colors[colorScheme].contentHeader,
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
+            </View>
+          )
         })}
       />
       <BottomTab.Screen
@@ -113,6 +149,15 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Profile'>) => ({
           title: 'Tài khoản',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          headerTitleStyle: {
+            color: Colors[colorScheme].contentHeader,
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
+            </View>
+          )
         })}
       />
     </BottomTab.Navigator>
