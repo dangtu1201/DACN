@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, TouchableOpacity } from 'react-native';
 
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
@@ -18,15 +18,17 @@ import FoodScreen from '../screens/FoodScreen';
 import OrderScreen from '../screens/OrderScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import FoodItemScreen from '../screens/FoodItemScreen';
 import { View, Text } from '../components/Themed';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
+
 import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation() {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -45,6 +47,33 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="FoodItem" component={FoodItemScreen} 
+        options={({navigation} : RootStackScreenProps<"FoodItem">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Sản phẩm',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="chevron-back" size={30} color={Colors.light.contentHeader} style={{marginRight: 20}}/>
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+                <View style={{ marginRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                  <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+                </View>
+            </TouchableOpacity>
+          )
+        })}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );

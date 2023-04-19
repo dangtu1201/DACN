@@ -7,10 +7,11 @@ export default {
     background: '#FBFFFB',
     backgroundIiem: '#fff',
     tint: tintColorLight,
+    textHighlight: "#00605F",
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
     contentHeader: "#00605F",
-    blurBorder: "#a6b0b0",
-    blurText: "#a6b0b0",
+    blurBorder: "rgba(0,0,0,0.5)",
+    blurText: "rgba(0,0,0,0.5)",
   },
 };

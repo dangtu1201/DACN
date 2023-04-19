@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  FoodItem: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -27,12 +28,22 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 export type RootTabParamList = {
   Home: undefined;
   Food: undefined;
-  Order: undefined;
+  Order: NavigatorScreenParams<OrderTabParamList> | undefined;
   Message: undefined;
   Profile: undefined;
 };
 
+export type OrderTabParamList = {
+  OrderProcessing: undefined;
+  OrderHistory: undefined;
+};
+
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type OrderTabScreenProps<Screen extends keyof OrderTabParamList> = CompositeScreenProps<
+  BottomTabScreenProps<OrderTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;

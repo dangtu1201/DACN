@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
+import { FontAwesome } from "@expo/vector-icons";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function MessageScreen({ navigation }: RootTabScreenProps<"Message">) {
     return (
