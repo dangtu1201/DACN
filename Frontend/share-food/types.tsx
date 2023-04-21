@@ -18,6 +18,10 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   FoodItem: undefined;
+  Store: undefined;
+  OrderCart: undefined;
+  OrderItemProcessing: undefined;
+  OrderItemHistory: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -13,5 +13,8 @@ export default {
     contentHeader: "#00605F",
     blurBorder: "rgba(0,0,0,0.5)",
     blurText: "rgba(0,0,0,0.5)",
+    storeBackground: "#E2FEDD",
+    buttonSuccess: "#9EEDA1",
+    buttonCancel: "#F4B9B9",
   },
 };

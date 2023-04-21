@@ -14,7 +14,9 @@ export default function OrderProcessingScreen({ navigation }: OrderTabScreenProp
                 style={styles.orderList}
             >
                 {[1,2,3,4,5,6,7,8,9].map((item, index) =>(
-                    <TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}>
+                    <TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
+                        onPress={() => navigation.navigate("OrderItemProcessing")}
+                    >
                         <View style={styles.orderItem}>
                             <Text style={{color: Colors.light.blurText}}>Đơn: 123456</Text>
                             <View style={{display: "flex", flexDirection: "row", marginBottom: 5, backgroundColor: Colors.light.backgroundIiem}}>

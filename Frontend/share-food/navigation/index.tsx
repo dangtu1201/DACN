@@ -19,6 +19,11 @@ import OrderScreen from '../screens/OrderScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FoodItemScreen from '../screens/FoodItemScreen';
+import StoreScreen from '../screens/StoreScreen';
+import OrderCartScreen from '../screens/OrderCartScreen';
+import OrderItemProcessingScreen from '../screens/Order/OrderItemProcessing';
+import OrderItemHistoryScreen from '../screens/Order/OrderItemHistory';
+import HeaderLeft from '../components/HeaderLeft';
 import { View, Text } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
 
@@ -61,17 +66,86 @@ function RootNavigator() {
             fontSize: 20,
           },
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back" size={30} color={Colors.light.contentHeader} style={{marginRight: 20}}/>
-            </TouchableOpacity>
+            <HeaderLeft/>
           ),
           headerRight: () => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
                 <View style={{ marginRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                   <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
                 </View>
             </TouchableOpacity>
           )
+        })}
+        />
+        <Stack.Screen name="Store" component={StoreScreen}
+        options={({navigation} : RootStackScreenProps<"Store">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Cửa hàng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+                <View style={{ marginRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                  <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+                </View>
+            </TouchableOpacity>
+          )
+        })}
+        />
+        <Stack.Screen name="OrderCart" component={OrderCartScreen}
+        options={({navigation} : RootStackScreenProps<"OrderCart">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Giỏ hàng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+        })}
+        />
+        <Stack.Screen name="OrderItemProcessing" component={OrderItemProcessingScreen}
+        options={({navigation} : RootStackScreenProps<"OrderItemProcessing">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Đơn hàng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+        })}
+        />
+        <Stack.Screen name="OrderItemHistory" component={OrderItemHistoryScreen}
+        options={({navigation} : RootStackScreenProps<"OrderItemHistory">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Đơn hàng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
         })}
         />
       </Stack.Group>
@@ -92,10 +166,10 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors.light.tint,
         headerShown: true,
         headerStyle: {
-          backgroundColor: Colors[colorScheme].background,
+          backgroundColor: Colors.light.background,
         }
       }}>
       <BottomTab.Screen
@@ -107,14 +181,16 @@ function BottomTabNavigator() {
           headerTitle: () => (<Text></Text>),
           headerLeft: () => (
             <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name='location' color={Colors[colorScheme].contentHeader} size={24}/>
-              <Text style={{ fontSize: 14, color: Colors[colorScheme].contentHeader }}>Địa chỉ</Text>
+              <Ionicons name='location' color={Colors.light.contentHeader} size={24}/>
+              <Text style={{ fontSize: 14, color: Colors.light.contentHeader }}>Địa chỉ</Text>
             </View>
           ),
           headerRight: () => (
-            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
-            </View>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+              </View>
+            </TouchableOpacity>
           )
         })}
       />
@@ -127,14 +203,16 @@ function BottomTabNavigator() {
           headerTitle: () => (<Text></Text>),
           headerLeft: () => (
             <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name='location' color={Colors[colorScheme].contentHeader} size={24}/>
-              <Text style={{ fontSize: 14, color: Colors[colorScheme].contentHeader }}>Địa chỉ</Text>
+              <Ionicons name='location' color={Colors.light.contentHeader} size={24}/>
+              <Text style={{ fontSize: 14, color: Colors.light.contentHeader }}>Địa chỉ</Text>
             </View>
           ),
           headerRight: () => (
-            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
-            </View>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+              </View>
+            </TouchableOpacity>
           )
         })}
       />
@@ -145,13 +223,15 @@ function BottomTabNavigator() {
           title: 'Đơn hàng',
           tabBarIcon: ({ color }) => <TabBarIcon name="list-alt" color={color} />,
           headerTitleStyle: {
-            color: Colors[colorScheme].contentHeader,
+            color: Colors.light.contentHeader,
             fontSize: 20,
           },
           headerRight: () => (
-            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
-            </View>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+              </View>
+            </TouchableOpacity>
           )
         })}
       />
@@ -162,13 +242,15 @@ function BottomTabNavigator() {
           title: 'Tin nhắn',
           tabBarIcon: ({ color }) => <TabBarIcon name="comment" color={color} />,
           headerTitleStyle: {
-            color: Colors[colorScheme].contentHeader,
+            color: Colors.light.contentHeader,
             fontSize: 20,
           },
           headerRight: () => (
-            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
-            </View>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+              </View>
+            </TouchableOpacity>
           )
         })}
       />
@@ -179,13 +261,15 @@ function BottomTabNavigator() {
           title: 'Tài khoản',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerTitleStyle: {
-            color: Colors[colorScheme].contentHeader,
+            color: Colors.light.contentHeader,
             fontSize: 20,
           },
           headerRight: () => (
-            <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome name='shopping-cart' color={Colors[colorScheme].contentHeader} size={28}/>
-            </View>
+            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
+              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
+              </View>
+          </TouchableOpacity>
           )
         })}
       />
