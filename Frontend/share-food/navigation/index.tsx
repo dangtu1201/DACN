@@ -28,14 +28,12 @@ import ShoppingCart from '../components/ShoppingCart';
 import DishScreen from '../screens/DishScreen';
 import PopularStoreScreen from '../screens/PopularStoreScreen';
 import { View, Text } from '../components/Themed';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps, LoginStackParamList } from '../types';
 
-import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation() {
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
       theme={DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
@@ -46,6 +44,7 @@ export default function Navigation() {
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
