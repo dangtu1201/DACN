@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -24,6 +24,9 @@ import OrderCartScreen from '../screens/OrderCartScreen';
 import OrderItemProcessingScreen from '../screens/Order/OrderItemProcessing';
 import OrderItemHistoryScreen from '../screens/Order/OrderItemHistory';
 import HeaderLeft from '../components/HeaderLeft';
+import ShoppingCart from '../components/ShoppingCart';
+import DishScreen from '../screens/DishScreen';
+import PopularStoreScreen from '../screens/PopularStoreScreen';
 import { View, Text } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
 
@@ -69,16 +72,12 @@ function RootNavigator() {
             <HeaderLeft/>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-                <View style={{ marginRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                  <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-                </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
         />
         <Stack.Screen name="Store" component={StoreScreen}
-        options={({navigation} : RootStackScreenProps<"Store">) => ({
+        options={({navigation} : RootStackScreenProps<"Store">) => ({ 
           headerShown: true,
           headerStyle: {
             backgroundColor: Colors.light.background,
@@ -92,11 +91,7 @@ function RootNavigator() {
             <HeaderLeft/>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-                <View style={{ marginRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                  <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-                </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
         />
@@ -130,6 +125,11 @@ function RootNavigator() {
           headerLeft: () => (
             <HeaderLeft/>
           ),
+          headerRight: () => (
+            <TouchableOpacity style={{marginRight: 10}} >
+              <MaterialIcons name='message' color={Colors.light.contentHeader} size={28}/>
+            </TouchableOpacity>
+          ),
         })}
         />
         <Stack.Screen name="OrderItemHistory" component={OrderItemHistoryScreen}
@@ -146,6 +146,50 @@ function RootNavigator() {
           headerLeft: () => (
             <HeaderLeft/>
           ),
+          headerRight: () => (
+            <TouchableOpacity style={{marginRight: 10}} >
+              <MaterialIcons name='message' color={Colors.light.contentHeader} size={28}/>
+            </TouchableOpacity>
+          ),
+        })}
+        />
+        <Stack.Screen name="Dish" component={DishScreen}
+        initialParams={{name: "recommended"}}
+        options={({navigation} : RootStackScreenProps<"Dish">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Món ăn',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+          headerRight: () => (
+            <ShoppingCart/>
+          )
+        })}
+        />
+        <Stack.Screen name="PopularStore" component={PopularStoreScreen}
+        options={({navigation} : RootStackScreenProps<"PopularStore">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Cửa hàng được ưa chuộng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+          headerRight: () => (
+            <ShoppingCart/>
+          )
         })}
         />
       </Stack.Group>
@@ -186,11 +230,7 @@ function BottomTabNavigator() {
             </View>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-              </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
       />
@@ -208,11 +248,7 @@ function BottomTabNavigator() {
             </View>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-              </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
       />
@@ -227,11 +263,7 @@ function BottomTabNavigator() {
             fontSize: 20,
           },
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-              </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
       />
@@ -246,11 +278,7 @@ function BottomTabNavigator() {
             fontSize: 20,
           },
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-              </View>
-            </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
       />
@@ -265,11 +293,7 @@ function BottomTabNavigator() {
             fontSize: 20,
           },
           headerRight: () => (
-            <TouchableOpacity onPress={()=>{navigation.navigate("OrderCart")}}>
-              <View style={{ marginRight: 20, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome name='shopping-cart' color={Colors.light.contentHeader} size={28}/>
-              </View>
-          </TouchableOpacity>
+            <ShoppingCart/>
           )
         })}
       />

@@ -2,41 +2,20 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
+import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 
-export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
-
-    const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("near");
-
+export default function DishScreen({ navigation, route }: RootStackScreenProps<"Dish">) {
+    const { name } = route.params;
+    useEffect(() => {
+        name=="recommended"?navigation.setOptions({ title: "Đề xuất cho bạn" }) : navigation.setOptions({ title: "Món ăn được ưa chuộng" });
+    }, []);
+    
 
     return (
         <View style={styles.container}>
-            <View style={styles.search}>
-                <Ionicons name="search" size={24} color="black" style={{alignItems:"center", marginRight: 5}}/>
-                <TextInput style={styles.searchInput}/>
-            </View>
-            <View style={styles.filterFood}>
-                <Pressable onPress={() => setFilter("near")}>
-                    <View style={filter == "near" ? styles.filterFoodItemSelected : styles.filterFoodItemNotSelected}>
-                        <Text style={filter == "near" ? styles.filterFoodItemTextSelected : styles.filterFoodItemTextNotSelected}>Gần bạn</Text>
-                    </View>
-                </Pressable>
-                <Pressable onPress={() => setFilter("popular")}>
-                    <View style={filter == "popular" ? styles.filterFoodItemSelected : styles.filterFoodItemNotSelected}>
-                        <Text style={filter == "popular" ? styles.filterFoodItemTextSelected : styles.filterFoodItemTextNotSelected}>Phổ biến</Text>
-                    </View>
-                </Pressable>
-                <Pressable onPress={() => setFilter("price")}>
-                    <View style={filter == "price" ? styles.filterFoodItemSelected : styles.filterFoodItemNotSelected}>
-                        <Text style={filter == "price" ? styles.filterFoodItemTextSelected : styles.filterFoodItemTextNotSelected}>Giá thấp</Text>
-                    </View>
-                </Pressable>
-            </View>    
-           
             <ScrollView 
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
