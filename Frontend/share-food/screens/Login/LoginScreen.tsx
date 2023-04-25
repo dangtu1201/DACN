@@ -9,7 +9,7 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
     return (
         <View style={styles.container}>
             <View style={{marginTop: 160}}>
-                <Image style={{width: 200, height: 200}} source={require("../assets/images/icon.png")}/>
+                <Image style={{width: 200, height: 200}} source={require("../../assets/images/icon.png")}/>
             </View>
         </View>
     );
