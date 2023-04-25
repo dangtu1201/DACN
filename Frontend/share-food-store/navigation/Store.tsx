@@ -18,7 +18,7 @@ import FoodScreen from '../screens/FoodScreen';
 import MessageScreen from '../screens/MessageScreen';
 import OrderScreen from '../screens/OrderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import Notification from '../components/notification';
+import Notification from '../components/Notification';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function StoreNavigation() {
