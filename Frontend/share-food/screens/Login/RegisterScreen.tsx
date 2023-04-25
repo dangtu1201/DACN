@@ -1,14 +1,23 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import Colors from "../../constants/Colors";
 
 export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Register">) {
     return (
         <View style={styles.container}>
-        <Text style={styles.title}>Login Screen</Text>
+            <Text style={{marginTop: 50, fontSize: 16}}>Nhập số điện thoại của bạn:</Text>
+            <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
+                placeholder="Nhập số điện thoại"
+                keyboardType="numeric"
+            />
+            <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}} 
+                onPress={() => navigation.navigate("RegisterS2", {phone: "0123456789"})}
+            >
+                <Text style={{fontSize: 16, color: "white"}}>Tiếp tục</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -16,12 +25,7 @@ export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Re
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
+        padding: 40,
     },
 });
 
