@@ -74,7 +74,10 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                     <FontAwesome name={isShowConfirmPassword ? "eye" : "eye-slash"} size={24} color="black" />
                 </TouchableOpacity>
             </View>
-           
+            <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}}
+            >
+                <Text style={{fontSize: 16, color: "white"}}>Đăng ký</Text>
+            </TouchableOpacity>
         </View>
     );
 }
