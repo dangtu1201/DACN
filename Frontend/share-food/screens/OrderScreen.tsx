@@ -4,8 +4,8 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { OrderTabParamList } from "../types";
-import OrderProcessingScreen from "./Order/OrderProcessing";
-import OrderHistoryScreen from "./Order/OrderHistory";
+import OrderProcessingScreen from "./Order/OrderProcessingScreen";
+import OrderHistoryScreen from "./Order/OrderHistoryScreen";
 import Colors from "../constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 
