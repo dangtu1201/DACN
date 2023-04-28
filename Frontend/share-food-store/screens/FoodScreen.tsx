@@ -5,7 +5,7 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from '@react-native-picker/picker';
+import Pagination from "../components/Pagination";
 import Colors from "../constants/Colors";
 
 interface IFillter {
@@ -23,6 +23,9 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
     const [isOpenfillter, setIsOpenfillter] = useState(false);
     const [isOpenInStock, setIsOpenInStock] = useState(false);
     const [isModalOutPress, setIsModalOutPress] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPage = 10;
+
     const fillterOptions = {
         "updateTime": "Ngày cập nhật",
         "createTime": "Ngày tạo",
@@ -34,6 +37,8 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
         "inStock": "Đang bán",
         "outStock": "Chưa bán"
     }
+
+    const status = [1,0,1,0,1,0,1,0,1]
 
     return (
         <View style={styles.container}>
@@ -58,36 +63,11 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 </Pressable>
                 <Pressable style={{display: "flex", flexDirection: "row", justifyContent: "space-between",alignItems: "center",
                             width: 160, backgroundColor: "#fff", elevation: 2, padding: 5}}
-                            onPress={() => setIsOpenInStock(!isOpenInStock)}
+                            onPress={() => {setIsOpenInStock(!isOpenInStock); setIsModalOutPress(true)}}
                 >
                     <Text style={{fontSize: 16, marginRight: 5}}>{stockOptions[inStock]}</Text>
                     <Ionicons name="chevron-down" size={24} color="black"/>
                 </Pressable>
-                {/* <View style={{borderBottomWidth: 2}}>
-                    <Picker
-                        selectedValue={filter.field}
-                        style={{ height: 50, width: 150}}
-                        onValueChange={(itemValue, itemIndex) => setFilter({...filter, field: itemValue})}
-                        mode="dropdown"
-                    >
-                        <Picker.Item label="Ngày cập nhật" value="updateTime" />
-                        <Picker.Item label="Ngày tạo" value="createTtime" />
-                        <Picker.Item label="Giá" value="price" />
-                    </Picker>
-                </View> */}
-                {/* <View style={{borderBottomWidth: 2}}>
-                    <Picker
-                        selectedValue={inStock}
-                        style={{ height: 50, width: 150}}
-                        onValueChange={(itemValue, itemIndex) => setInStock(itemValue)}
-                        mode="dropdown"
-                        selectionColor={Colors.light.textHighlight}
-                    >
-                        <Picker.Item label="Tất cả" value="all" />
-                        <Picker.Item label="Đang bán" value="inStock" />
-                        <Picker.Item label="Chưa bán" value="outStock" />
-                    </Picker>
-                </View> */}
             </View>    
             {isOpenfillter && <View style={{position: "absolute", top: 138, left: 20, zIndex: 1, width: 160,
                  backgroundColor: "#fff", elevation: 2}}
@@ -141,12 +121,8 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                                 <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                 <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                     <Text style={{fontWeight: "bold", display: "flex", width: 200}}>Bánh mì thịt nướng</Text>
-                                    <Text>Mở cửa: 8:00 - 20:00</Text>
-                                    <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
-                                        <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                        <Text>4.5  |  </Text>
-                                        <Text>1.5 km</Text>
-                                    </View>
+                                    <Text>Số lượng: 10</Text>
+                                    <Text>Trạng thái: <Text style={{color: status[item] ? Colors.light.textHighlight : "#C30000"}}>{status[item] ? "Đang bán" : "Chưa bán"}</Text></Text>
                                     <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>50.000đ</Text>
                                         <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>30.000đ</Text>
@@ -156,6 +132,11 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                         </TouchableOpacity>)
                     )}
             </ScrollView>
+            <Pagination
+                currentPage={currentPage}
+                totalPages = {totalPage}
+                onPress = {setCurrentPage}
+            />
         </View>
     );
 }
