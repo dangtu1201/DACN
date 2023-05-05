@@ -46,7 +46,9 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 onPress={() => {setIsOpenfillter(false); setIsOpenInStock(false); setIsModalOutPress(false)}}
             ></Pressable>
             
-            <TouchableOpacity style={{alignSelf: "flex-end", marginBottom: 10}}>
+            <TouchableOpacity style={{alignSelf: "flex-end", marginBottom: 10}}
+                onPress={() => navigation.navigate("AddFood")}
+            >
                 <Text style={{fontSize: 16, color: Colors.light.textHighlight, fontWeight: "bold"}}>Thêm sản phẩm</Text>
             </TouchableOpacity>
             <View style={styles.search}>

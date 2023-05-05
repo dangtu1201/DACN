@@ -19,6 +19,9 @@ import MessageScreen from '../screens/MessageScreen';
 import OrderScreen from '../screens/OrderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import Notification from '../components/Notification';
+import AddFoodScreen from '../screens/AddFoodScreen';
+import OrderItemScreen from '../screens/OrderItemScreen';
+import HeaderLeft from '../components/HeaderLeft';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function StoreNavigation() {
@@ -41,6 +44,38 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="AddFood" component={AddFoodScreen} 
+          options={{ 
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Thêm sản phẩm',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+           }}
+        />
+        <Stack.Screen name="OrderItem" component={OrderItemScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Đơn hàng 123456',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
