@@ -7,7 +7,7 @@ import LoginNavigation from './navigation/Login';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   if (!isLoadingComplete) {
     return null;
