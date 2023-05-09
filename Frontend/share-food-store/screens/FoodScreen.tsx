@@ -7,6 +7,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Pagination from "../components/Pagination";
 import Colors from "../constants/Colors";
+import UpdateAndDeleteFood from "../components/UpdateAndDeleteFood";
 
 interface IFillter {
     field: "updateTime" | "createTime" | "price",
@@ -24,6 +25,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
     const [isOpenInStock, setIsOpenInStock] = useState(false);
     const [isModalOutPress, setIsModalOutPress] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [updateAndDeleteFood, setUpdateAndDeleteFood] = useState(false);
     const totalPage = 10;
 
     const fillterOptions = {
@@ -117,7 +119,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
             >
                     {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                            
+                            onPress={()=>{setUpdateAndDeleteFood(true)}}
                         >
                             <View style={styles.foodItem}>
                                 <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
@@ -139,6 +141,11 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 totalPages = {totalPage}
                 onPress = {setCurrentPage}
             />
+            <UpdateAndDeleteFood
+                visible={updateAndDeleteFood}
+                setVisible={setUpdateAndDeleteFood}
+            />
+                    
         </View>
     );
 }

@@ -6,14 +6,31 @@ import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
-
-
-
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddFood">) {
     
 
     const [isEnabled, setIsEnabled] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    const pickImageAsync = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          quality: 1,
+          aspect: [3, 3],
+        });
+    
+        if (!result.canceled) {
+            setSelectedImage(result.assets[0].uri);
+        } 
+    };
+
+    const uriToBase64 = async (uri: string) => {
+        let base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
+        return base64;
+    };
 
     return (
         <View style={styles.container}>
@@ -21,11 +38,26 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={{marginTop: 20}}>
+                <View>
                     <Text style={{fontSize: 16}}>Hình ảnh sản phẩm</Text>
-                    <View style={{width: "100%", height: 200, borderWidth: 1, borderRadius: 10, marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center"}}>
-                        <Ionicons name="camera" size={24} color="black" />
-                    </View>
+                    <Pressable 
+                        style={{width: 200, height: 200, borderWidth: 1, borderRadius: 10, marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center"}}
+                        onPress={() => pickImageAsync()}
+                    >
+                        {selectedImage ? (
+                            <View>
+                                <Image source={{uri: selectedImage}} style={{width: 200, height: 200, borderRadius: 10}} />
+                                <Pressable
+                                style={{position: "absolute", top: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", width: 30, height: 30, borderRadius: 15, display: "flex", justifyContent: "center", alignItems: "center"}}
+                                onPress={() => setSelectedImage(null)}
+                                >
+                                    <Ionicons name="close" size={20} color="#fff" />
+                                </Pressable>
+                            </View>
+                        ) : (
+                            <Ionicons name="add-circle-outline" size={50} color={Colors.light.tabIconDefault} />
+                        )}
+                    </Pressable>
                 </View>
                 <View style={{marginTop: 10, display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <Text style={{fontSize: 16}}>Trạng thái</Text>
