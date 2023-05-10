@@ -5,10 +5,11 @@ import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
-export default function LoginS2Screen({ navigation }: LoginStackScreenProps<"LoginS2">) {
+export default function LoginS2Screen({ navigation, route }: LoginStackScreenProps<"LoginS2">) {
 
     const [password, setPassword] = useState("");
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const phoneNumber = route.params.phoneNumber;
 
     const onChangePassword = (text: string) => {
         // password 6 number

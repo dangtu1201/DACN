@@ -60,7 +60,7 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                     <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Chi tiết đơn hàng</Text>
                     <View style={{display: "flex", flexDirection: "row", justifyContent:"space-between", alignItems: "center", marginBottom: 10}}>
                         <Text style={{fontWeight: "bold", fontSize: 16}}>Tiệm bánh hạnh phúc</Text>
-                        <Pressable onPress={() => navigation.navigate("Store")}>
+                        <Pressable onPress={() => navigation.navigate("Store", {storeId: "1"})}>
                             <Text style={{color: Colors.light.textHighlight, paddingHorizontal: 10, borderColor: Colors.light.textHighlight, backgroundColor: Colors.light.storeBackground
                                 , borderRadius: 10, borderWidth: 1
                             }}>Thêm sản phẩm</Text>
@@ -70,7 +70,7 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                 <View style={styles.foodList}>
                         {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                             (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                onPress={() => navigation.navigate("FoodItem")}
+                                onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
                             >
                                 <View style={styles.foodItem}>
                                     <View style={{width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>

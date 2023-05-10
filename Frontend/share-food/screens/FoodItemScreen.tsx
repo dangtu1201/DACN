@@ -7,7 +7,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 
-export default function FoodScreen({ navigation }: RootStackScreenProps<"FoodItem">) {
+export default function FoodScreen({ navigation, route }: RootStackScreenProps<"FoodItem">) {
     const {width} = Dimensions.get("window") ;
     const [count, setCount] = useState(1);
     return (
@@ -69,7 +69,7 @@ export default function FoodScreen({ navigation }: RootStackScreenProps<"FoodIte
                         <Text>Mở cửa: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM</Text>
                     </View>
-                    <Pressable onPress={()=>{navigation.navigate("Store")}}>
+                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: "1"})}}>
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
                     </Pressable>
                 </View>

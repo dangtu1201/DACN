@@ -6,7 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
 interface RegisterInfo {
-    phone: string;
+    phoneNumber: string;
     name: string;
     email: string;
     password: string;
@@ -14,8 +14,8 @@ interface RegisterInfo {
 
 export default function RegisterS3Screen({ navigation, route }: LoginStackScreenProps<"RegisterS3">) {
 
-    const { phone } = route.params;
-    const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({phone: phone, name: "", email: "", password: ""});
+    const { phoneNumber } = route.params;
+    const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({phoneNumber: phoneNumber, name: "", email: "", password: ""});
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);

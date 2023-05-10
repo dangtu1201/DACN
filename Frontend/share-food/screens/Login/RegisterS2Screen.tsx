@@ -8,7 +8,7 @@ import Colors from "../../constants/Colors";
 export default function RegisterS2Screen({ navigation, route }: LoginStackScreenProps<"RegisterS2">) {
 
     const [otp, setOtp] = useState("");
-    const { phone } = route.params;
+    const { phoneNumber } = route.params;
 
     const handleOtpChange = (text: string) => {
         // otp is 6 digits
@@ -20,7 +20,7 @@ export default function RegisterS2Screen({ navigation, route }: LoginStackScreen
     return (
         <View style={styles.container}>
             <Text style={{marginTop: 50, fontSize: 16}}>Nhập otp mà chúng tôi đã gửi cho bạn:</Text>
-            <Text style={{fontSize: 16}}>{phone}</Text>
+            <Text style={{fontSize: 16}}>{phoneNumber}</Text>
             <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
                 placeholder="Nhập otp"
                 keyboardType="numeric"
@@ -31,7 +31,7 @@ export default function RegisterS2Screen({ navigation, route }: LoginStackScreen
                 <Text style={{fontSize: 16, color: Colors.light.textHighlight}}>Gửi lại otp</Text>
             </Pressable>
             <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}}
-                onPress={() => navigation.navigate("RegisterS3", {phone: phone})}
+                onPress={() => navigation.navigate("RegisterS3", {phoneNumber: phoneNumber})}
             >
                 <Text style={{fontSize: 16, color: "white"}}>Tiếp tục</Text>
             </TouchableOpacity>

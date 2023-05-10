@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
@@ -6,15 +6,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
 export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Register">) {
+
+    const [phoneNumber, setPhoneNumber] = useState("");
+
     return (
         <View style={styles.container}>
             <Text style={{marginTop: 50, fontSize: 16}}>Nhập số điện thoại của bạn:</Text>
             <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
                 placeholder="Nhập số điện thoại"
                 keyboardType="numeric"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
             />
             <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}} 
-                onPress={() => navigation.navigate("RegisterS2", {phone: "0123456789"})}
+                onPress={() => navigation.navigate("RegisterS2", {phoneNumber: phoneNumber})}
             >
                 <Text style={{fontSize: 16, color: "white"}}>Tiếp tục</Text>
             </TouchableOpacity>

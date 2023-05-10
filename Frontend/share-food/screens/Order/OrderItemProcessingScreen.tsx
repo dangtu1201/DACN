@@ -66,7 +66,7 @@ export default function OrderItemProcessingScreen({ navigation }: RootStackScree
                 <View style={styles.foodList}>
                         {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                             (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                onPress={() => navigation.navigate("FoodItem")}
+                                onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
                             >
                                 <View style={styles.foodItem}>
                                     <View style={{width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>

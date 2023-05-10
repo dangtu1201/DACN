@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                     >
                             {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("FoodItem")}
+                                    onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
                                 >
                                     <View style={styles.foodItem}>
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                     >
                             {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("FoodItem")}
+                                    onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
                                 >
                                     <View style={styles.foodItem}>
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
@@ -113,7 +113,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                     >
                             {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("Store")}
+                                    onPress={() => navigation.navigate("Store", {storeId: "1"})}
                                 >
                                     <View style={styles.foodItem}>
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>

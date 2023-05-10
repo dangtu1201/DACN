@@ -16,10 +16,10 @@ declare global {
 
 export type LoginStackParamList = {
   Login: undefined;
-  LoginS2: undefined;
+  LoginS2: {phoneNumber: string};
   Register: undefined;
-  RegisterS2: {phone: string};
-  RegisterS3: {phone: string};
+  RegisterS2: {phoneNumber: string};
+  RegisterS3: {phoneNumber: string};
   Welcome: undefined;
 };
 
