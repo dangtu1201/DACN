@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Pressable, ScrollView, Modal } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ export default function OrderItemProcessingScreen({ navigation }: RootStackScree
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
     const [count, setCount] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
 
 
     return (
@@ -93,11 +94,50 @@ export default function OrderItemProcessingScreen({ navigation }: RootStackScree
                     <Text style={{fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight}}>300.000đ</Text>
                 </View>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
-                , width: "90%", borderRadius: 10
-                }}>
+                , width: "90%", borderRadius: 10}}
+                    onPress={() => setModalVisible(true)}
+                >
                     <Text style={{fontSize: 16}}>Hủy đơn</Text>
                 </TouchableOpacity>
             </View>
+            
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <Pressable style={{display: "flex", justifyContent: "center", alignItems: "center", flex: 1, backgroundColor: "rgba(0,0,0,0.5)"}}
+                    onPress={() => setModalVisible(!modalVisible)}
+                >
+                    <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 200}}
+                        onPress={() => null}
+                        activeOpacity={1}
+                    >
+                    <View style={{display: "flex", justifyContent: "center", alignItems: "center", width: "90%", height: 200, borderRadius: 10}}>
+                        
+                        <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 20, paddingHorizontal: 20}}>Bạn có chắc chắn muốn hủy đơn hàng này?</Text>
+                        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%"}}>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonCancel, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
+                                <Text style={{fontSize: 16}}>Hủy</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => {
+                                    setModalVisible(!modalVisible);
+                                    navigation.navigate("Root");
+                                }}
+                            >
+                                <Text style={{fontSize: 16}}>Xác nhận</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    </TouchableOpacity>
+                </Pressable>
+            </Modal>
         </View>
     );
 }

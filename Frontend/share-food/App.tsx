@@ -16,14 +16,12 @@ export default function App() {
       return (
         <SafeAreaProvider>
           <Navigation/>
-          <StatusBar />
         </SafeAreaProvider>
       ); 
     } else {
       return (
         <SafeAreaProvider>
           <LoginNavigation/>
-          <StatusBar />
         </SafeAreaProvider>
       );
     }

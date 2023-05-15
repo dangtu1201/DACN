@@ -76,8 +76,8 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
             </ScrollView>
             <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                , width: "90%", borderRadius: 10
-                }}>
+                , width: "90%", borderRadius: 10}}
+                >
                     <Text style={{fontSize: 16}}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
             </View>
