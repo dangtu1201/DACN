@@ -26,10 +26,32 @@ import ShoppingCart from '../components/ShoppingCart';
 import DishScreen from '../screens/DishScreen';
 import PopularStoreScreen from '../screens/PopularStoreScreen';
 import { View, Text } from '../components/Themed';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps, LoginStackParamList } from '../types';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
+import { useEffect, useState } from 'react';
+import { useAsync } from '../hooks/useAsync';
+import { getLocationAddress } from '../api/getLocationAddress';
+import { useSelector, useDispatch } from 'react-redux'
+import { setUserAddr, setAddress, setLocation } from '../redux/userAddr';
+import { RootState } from '../redux/store';
+import { UserAddrModel } from '../redux/userAddr';
 
 
 export default function Navigation() {
+
+  const dispatch = useDispatch()
+  const userAddress = useSelector((state: RootState) => state.userAddr)
+
+  const getLocationAddressAsync = useAsync(getLocationAddress)
+
+  useEffect(() => {
+    getLocationAddressAsync.execute(userAddress.lat, userAddress.lng).then((response) => {
+      dispatch(setAddress(response))
+      console.log(userAddress)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [userAddress.lat, userAddress.lng]);
+
   return (
     <NavigationContainer
       theme={DefaultTheme}>

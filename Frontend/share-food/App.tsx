@@ -4,6 +4,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
 import LoginNavigation from './navigation/Login';
+import { store } from './redux/store';
+import { Provider } from 'react-redux'
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -14,9 +16,11 @@ export default function App() {
   } else {
     if (isLoggedIn) {
       return (
-        <SafeAreaProvider>
-          <Navigation/>
-        </SafeAreaProvider>
+        <Provider store={store}>
+          <SafeAreaProvider>
+            <Navigation/>
+          </SafeAreaProvider>
+        </Provider>
       ); 
     } else {
       return (

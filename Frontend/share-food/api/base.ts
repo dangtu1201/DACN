@@ -7,3 +7,6 @@ axiosRetry(client, {
         return Math.pow(2, retryCount) * 300;
     }
 });
+
+
+export default client;
