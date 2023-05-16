@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, ScrollView, Pressable } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import MapView, { Marker } from 'react-native-maps';
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -12,16 +13,24 @@ interface RegisterInfo {
     cardId: string;
     storeName: string;
     storeAddress: string;
+    storeLocation: {
+        latitude: number;
+        longitude: number;
+    };
     password: string;
 }
 
 export default function RegisterS3Screen({ navigation, route }: LoginStackScreenProps<"RegisterS3">) {
 
     const { phoneNumber } = route.params;
-    const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({phoneNumber: phoneNumber, name: "", email: "", cardId: "", storeName: "", storeAddress: "", password: ""});
+    const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({phoneNumber: phoneNumber, name: "", email: "", cardId: "", storeName: "", storeAddress: "", storeLocation: {
+        latitude: 10.772029,
+        longitude: 106.657817,
+    }, password: ""});
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+    const [isShowMap, setIsShowMap] = useState(false);
 
     const onChangePassword = (text: string) => {
         // password is 6 digits
@@ -72,10 +81,13 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                 value={registerInfo.storeAddress}
                 onChangeText={(text) => setRegisterInfo({...registerInfo, storeAddress: text})}
             />
-            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 20}}>
-                <Text style={{fontSize: 16}}>Chọn địa chỉ trên bản đồ</Text>
+            <Text style={{fontSize: 16, marginTop: 20}}>Chọn vị trí cửa hàng trên bản đồ</Text>
+            <Pressable style={{flexDirection: "row", justifyContent: "space-between", marginTop: 20}}
+                onPress={() => setIsShowMap(true)}
+            >
+                <Text style={{fontSize: 16}}>{registerInfo.storeLocation.latitude}, {registerInfo.storeLocation.longitude}</Text>
                 <Ionicons name='location' color={Colors.light.contentHeader} size={24}/>
-            </View>
+            </Pressable>
             <Text style={{fontSize: 16, marginTop: 20}}>Mật khẩu</Text>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10, borderBottomWidth: 1, width: "100%"}}>
                 <TextInput style={{ fontSize: 16}}
@@ -107,6 +119,38 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                 <Text style={{fontSize: 16, color: "white"}}>Đăng ký</Text>
             </TouchableOpacity>
             </ScrollView>
+            {isShowMap && <MapView
+                style={{position: "absolute", top: 0, left: 0, right: 0, bottom: 0}}
+                initialRegion={{
+                    latitude: 10.772029,
+                    longitude: 106.657817,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                onPress={(e) => {
+                    setRegisterInfo({...registerInfo, storeLocation: {
+                        latitude: Number(e.nativeEvent.coordinate.latitude.toFixed(6)),
+                        longitude: Number(e.nativeEvent.coordinate.longitude.toFixed(6)),
+                    }});
+                }}
+            >
+                <Marker
+                    coordinate={{
+                        latitude: registerInfo.storeLocation.latitude,
+                        longitude: registerInfo.storeLocation.longitude,
+                    }}
+                />
+            </MapView>
+            }
+            {isShowMap && <Pressable 
+                style={{position: "absolute", bottom: 20, right: 20, left: 20, backgroundColor: Colors.light.buttonSuccess,
+                    height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center"}} 
+                onPress={() => setIsShowMap(false)}
+            >
+                <Text style={{fontSize: 16}}>Xác nhận</Text>
+            </Pressable>}
         </View>
     );
 }
