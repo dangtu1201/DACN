@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import StoreNavigation from './navigation/Store';
 import LoginNavigation from './navigation/Login';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -16,14 +17,14 @@ export default function App() {
       return (
         <SafeAreaProvider>
           <StoreNavigation/>
-          <StatusBar />
+          <Toast />
         </SafeAreaProvider>
       ); 
     } else {
       return (
         <SafeAreaProvider>
           <LoginNavigation/>
-          <StatusBar />
+          <Toast />
         </SafeAreaProvider>
       );
     }

@@ -27,7 +27,6 @@ export default function StoreScreen({ navigation }: RootStackScreenProps<"Store"
                             <Text style={{marginLeft: 5}}>|</Text>
                             <Text style={{marginLeft: 5}}>0.5 Km</Text>
                         </View>
-                        <Text>Mở cửa: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
                     </View>
                 </View>
@@ -67,7 +66,7 @@ export default function StoreScreen({ navigation }: RootStackScreenProps<"Store"
                                     <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                     <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Text style={{fontWeight: "bold", display: "flex"}}>Bánh mì thịt nướng</Text>
-                                        <Text>Mở cửa: 8:00 - 20:00</Text>
+                                        <Text>Hôm nay: 8:00 - 20:00</Text>
                                         <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                             <Text>4.5  |  </Text>

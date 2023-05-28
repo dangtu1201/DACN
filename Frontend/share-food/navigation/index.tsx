@@ -219,7 +219,7 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = 'light';
+  const userAddress = useSelector((state: RootState) => state.userAddr)
 
   return (
     <BottomTab.Navigator
@@ -241,7 +241,7 @@ function BottomTabNavigator() {
           headerLeft: () => (
             <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name='location' color={Colors.light.contentHeader} size={24}/>
-              <Text style={{ fontSize: 14, color: Colors.light.contentHeader }}>Địa chỉ</Text>
+              <Text style={{ fontSize: 14, color: Colors.light.contentHeader, width: "75%" }} numberOfLines={1}>{userAddress.address}</Text>
             </View>
           ),
           headerRight: () => (
@@ -259,7 +259,7 @@ function BottomTabNavigator() {
           headerLeft: () => (
             <View style={{ marginLeft:10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name='location' color={Colors.light.contentHeader} size={24}/>
-              <Text style={{ fontSize: 14, color: Colors.light.contentHeader }}>Địa chỉ</Text>
+              <Text style={{ fontSize: 14, color: Colors.light.contentHeader, width: "75%" }} numberOfLines={1}>{userAddress.address}</Text>
             </View>
           ),
           headerRight: () => (

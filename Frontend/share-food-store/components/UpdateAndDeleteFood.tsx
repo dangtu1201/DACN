@@ -105,6 +105,19 @@ export default function UpdateAndDeleteFood({visible, setVisible}:{visible: bool
                         />
                     </View>
                     <View style={{marginTop: 20}}>
+                        <Text style={{fontSize: 16}}>Thời gian bán</Text>
+                        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+                            <TextInput style={{width: "45%", fontSize: 16, borderBottomWidth: 1}}
+                                placeholder="Từ"
+                                keyboardType="numeric"
+                            />
+                            <TextInput style={{width: "45%", fontSize: 16, borderBottomWidth: 1}}
+                                placeholder="Đến"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                    </View>
+                    <View style={{marginTop: 20}}>
                         <Text style={{fontSize: 16}}>Mô tả sản phẩm</Text>
                         <TextInput
                             style={{width: "100%", fontSize: 16, borderWidth: 1, borderRadius: 10, marginTop: 10, padding: 10, textAlignVertical: "top"}}

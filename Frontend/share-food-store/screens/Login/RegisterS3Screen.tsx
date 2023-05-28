@@ -5,6 +5,7 @@ import { LoginStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import MapView, { Marker } from 'react-native-maps';
+import Toast from 'react-native-toast-message';
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -44,6 +45,109 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
         if (text.length <= 6) {
             setConfirmPassword(text);
         }
+    }
+
+    // validate email
+    const validateEmail = (email: string) => {
+        // validate email
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    // validate register info
+    const validateRegisterInfo = (registerInfo: RegisterInfo) => {
+        // name is not empty
+        if (registerInfo.name.length === 0) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Họ và tên không hợp lệ",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // email is not empty
+        if (registerInfo.email.length === 0 || !validateEmail(registerInfo.email)) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Email không hợp lệ",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // cardId is not empty
+        if (registerInfo.cardId.length === 0) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Số CMND không hợp lệ",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // storeName is not empty
+        if (registerInfo.storeName.length === 0) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Tên cửa hàng không hợp lệ",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // storeAddress is not empty
+        if (registerInfo.storeAddress.length === 0) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Địa chỉ cửa hàng không hợp lệ",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // password is 6 digits
+        if (registerInfo.password.length < 6) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Mật khẩu phải có 6 ký tự",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        // password and confirm password are the same
+        if (registerInfo.password !== confirmPassword) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Mật khẩu không khớp",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        return true;
     }
 
     return (

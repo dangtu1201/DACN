@@ -4,6 +4,7 @@ import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import Toast from 'react-native-toast-message';
 
 export default function LoginS2Screen({ navigation, route }: LoginStackScreenProps<"LoginS2">) {
 
@@ -16,6 +17,24 @@ export default function LoginS2Screen({ navigation, route }: LoginStackScreenPro
         if (text.length <= 6) {
             setPassword(text);
         }
+    }
+
+    // validate password
+    const validatePassword = (password: string) => {
+        // password 6 number
+        if (password.length < 6) {
+            Toast.show({
+                type: "error",
+                position: "top",
+                text1: "Mật khẩu phải có 6 ký tự",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            return false;
+        }
+        return true;
     }
 
     const handleLogin = () => {

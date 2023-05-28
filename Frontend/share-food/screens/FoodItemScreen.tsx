@@ -27,7 +27,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                 <Text style={{marginLeft: 5}}>4.5 (100)</Text>
                             </View>
-                            <Text>Mở cửa: 8:00 - 22:00</Text>
+                            <Text>Hôm nay: 8:00 - 22:00</Text>
                         </View>
                         <View style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                             <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginBottom: 4}}>50.000đ</Text>
@@ -66,7 +66,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             <Text style={{marginLeft: 5}}>|</Text>
                             <Text style={{marginLeft: 5}}>0.5 Km</Text>
                         </View>
-                        <Text>Mở cửa: 8:00 - 22:00</Text>
+                        <Text>Hôm nay: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM</Text>
                     </View>
                     <Pressable onPress={()=>{navigation.navigate("Store", {storeId: "1"})}}>

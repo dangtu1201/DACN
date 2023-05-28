@@ -29,7 +29,7 @@ export default function DishScreen({ navigation, route }: RootStackScreenProps<"
                                 <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                 <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                     <Text style={{fontWeight: "bold", display: "flex", width: 200}}>Bánh mì thịt nướng</Text>
-                                    <Text>Mở cửa: 8:00 - 20:00</Text>
+                                    <Text>Hôm nay: 8:00 - 20:00</Text>
                                     <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                         <Text>4.5  |  </Text>

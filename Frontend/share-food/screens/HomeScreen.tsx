@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
                                             <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Bánh mì thịt nướng</Text>
-                                            <Text>Mở cửa: 8:00 - 20:00</Text>
+                                            <Text>Hôm nay: 8:00 - 20:00</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                                 <Text>4.5  |  </Text>
@@ -79,7 +79,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
                                             <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Bánh mì thịt nướng</Text>
-                                            <Text>Mở cửa: 8:00 - 20:00</Text>
+                                            <Text>Hôm nay: 8:00 - 20:00</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                                 <Text>4.5  |  </Text>
@@ -119,7 +119,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10, justifyContent: "space-between"}}>
                                             <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Tiệm bánh hạnh phúc</Text>
-                                            <Text>Mở cửa: 8:00 - 20:00</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                                 <Text>4.5  |  </Text>

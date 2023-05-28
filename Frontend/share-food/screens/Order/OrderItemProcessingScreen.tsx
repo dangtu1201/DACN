@@ -32,7 +32,6 @@ export default function OrderItemProcessingScreen({ navigation }: RootStackScree
                             <Text style={{marginLeft: 5}}>|</Text>
                             <Text style={{marginLeft: 5}}>0.5 Km</Text>
                         </View>
-                        <Text>Mở cửa: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
                         <Text style={{}}>Số điện thoại: 0123456789</Text>
                     </View>

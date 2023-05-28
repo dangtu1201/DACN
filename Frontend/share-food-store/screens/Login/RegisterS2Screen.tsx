@@ -4,6 +4,7 @@ import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import Toast from 'react-native-toast-message';
 
 export default function RegisterS2Screen({ navigation, route }: LoginStackScreenProps<"RegisterS2">) {
 
@@ -14,6 +15,22 @@ export default function RegisterS2Screen({ navigation, route }: LoginStackScreen
         // otp is 6 digits
         if (text.length <= 6) {
             setOtp(text);
+        }
+    }
+
+    // validate otp
+    const validateOtp = (otp: string) => {
+        // otp is 6 digits
+        if (otp.length < 6) {
+            return false;
+        }
+        return true;
+    }
+
+    // handle click continue button
+    const onClickContinue = () => {
+        if (validateOtp(otp)) {
+            navigation.navigate("RegisterS3", {phoneNumber: phoneNumber});
         }
     }
 
@@ -31,7 +48,7 @@ export default function RegisterS2Screen({ navigation, route }: LoginStackScreen
                 <Text style={{fontSize: 16, color: Colors.light.textHighlight}}>Gửi lại otp</Text>
             </Pressable>
             <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}}
-                onPress={() => navigation.navigate("RegisterS3", {phoneNumber: phoneNumber})}
+                onPress={onClickContinue}
             >
                 <Text style={{fontSize: 16, color: "white"}}>Tiếp tục</Text>
             </TouchableOpacity>

@@ -6,6 +6,7 @@ import Navigation from './navigation';
 import LoginNavigation from './navigation/Login';
 import { store } from './redux/store';
 import { Provider } from 'react-redux'
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -18,6 +19,7 @@ export default function App() {
       return (
         <Provider store={store}>
           <SafeAreaProvider>
+            <Toast />
             <Navigation/>
           </SafeAreaProvider>
         </Provider>
@@ -26,6 +28,7 @@ export default function App() {
       return (
         <SafeAreaProvider>
           <LoginNavigation/>
+          <Toast />
         </SafeAreaProvider>
       );
     }
