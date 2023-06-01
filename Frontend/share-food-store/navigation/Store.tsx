@@ -21,6 +21,10 @@ import ProfileScreen from '../screens/ProfileScreen';
 import Notification from '../components/Notification';
 import AddFoodScreen from '../screens/AddFoodScreen';
 import OrderItemScreen from '../screens/OrderItemScreen';
+import EditProfileScreen from '../screens/Profile/EditProfileScreen';
+import ChangePasswordScreen from '../screens/Profile/ChangePasswordScreen';
+import OrderHistoryScreen from '../screens/OrderHistoryScreen';
+import OrderHistoryItemScreen from '../screens/OrderHistoryItemScreen';
 import HeaderLeft from '../components/HeaderLeft';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -61,6 +65,70 @@ function RootNavigator() {
            }}
         />
         <Stack.Screen name="OrderItem" component={OrderItemScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Đơn hàng 123456',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
+        <Stack.Screen name="EditProfile" component={EditProfileScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Chỉnh sửa tài khoản',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Đổi mật khẩu',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
+        <Stack.Screen name="OrderHistory" component={OrderHistoryScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Lịch sử đơn hàng',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
+        <Stack.Screen name="OrderHistoryItem" component={OrderHistoryItemScreen}
           options={{
             headerShown: true,
             headerStyle: {

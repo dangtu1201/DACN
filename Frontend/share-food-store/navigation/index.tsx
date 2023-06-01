@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import LoginNavigation from "./Login";
-import UserNavigation from "./User";
+import StoreNavigation from "./Store";
 import { getUserId } from "../services/testLogin";
 import Toast from "react-native-toast-message";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -26,7 +26,7 @@ export default function RootNavigation() {
     if (userId) {
         return (
             <SafeAreaProvider>
-                <UserNavigation/>
+                <StoreNavigation/>
                 <Toast/>
             </SafeAreaProvider>
         );

@@ -150,6 +150,21 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
         return true;
     }
 
+    const onClickRegister = () => {
+        if (validateRegisterInfo(registerInfo)) {
+            Toast.show({
+                type: "success",
+                position: "top",
+                text1: "Đăng ký thành công",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            navigation.navigate("Login");
+        }
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView 
@@ -219,6 +234,7 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}}
+                onPress={onClickRegister}
             >
                 <Text style={{fontSize: 16, color: "white"}}>Đăng ký</Text>
             </TouchableOpacity>

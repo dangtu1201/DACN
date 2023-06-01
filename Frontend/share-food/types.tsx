@@ -32,6 +32,8 @@ export type RootStackParamList = {
   OrderItemHistory: undefined;
   Dish: {name: string};
   PopularStore: undefined;
+  EditProfile: undefined;
+  ChangePassword: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

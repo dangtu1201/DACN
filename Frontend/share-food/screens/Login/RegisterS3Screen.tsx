@@ -102,7 +102,16 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
     // handle click register button
     const onClickRegister = () => {
         if (validateRegisterInfo(registerInfo)) {
-            console.log("register success")
+            Toast.show({
+                type: "success",
+                position: "top",
+                text1: "Đăng ký thành công",
+                visibilityTime: 2000,
+                autoHide: true,
+                topOffset: 100,
+                bottomOffset: 40,
+            });
+            navigation.navigate("Login");
         }
     }
 

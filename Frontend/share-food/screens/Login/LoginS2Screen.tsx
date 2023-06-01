@@ -5,11 +5,15 @@ import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
+import { useSelector, useDispatch } from 'react-redux'
+import { loginApp } from "../../redux/login";
 
-export default function LoginS2Screen({ navigation }: LoginStackScreenProps<"LoginS2">) {
+export default function LoginS2Screen({ navigation, route }: LoginStackScreenProps<"LoginS2">) {
 
+    const {phoneNumber} = route.params;
     const [password, setPassword] = useState("");
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const dispatch = useDispatch();
 
     const onChangePassword = (text: string) => {
         // password 6 number
@@ -38,14 +42,16 @@ export default function LoginS2Screen({ navigation }: LoginStackScreenProps<"Log
     }
 
     const handleLogin = () => {
-        console.log("handleLogin");
+        if (validatePassword(password)) {
+            dispatch(loginApp(phoneNumber));
+        }
     }
 
     return (
         <View style={styles.container}>
             <Image style={{width: 200, height: 200, marginTop: 40, alignSelf: "center"}} source={require("../../assets/images/icon.png")}/>
             <Text style={{marginTop: 10, fontSize: 16, fontWeight: "bold"}}>Xin chào, Nguyễn Văn A</Text>
-            <Text style={{marginTop: 10, fontSize: 16, fontWeight: "bold"}}>0123456789</Text>
+            <Text style={{marginTop: 10, fontSize: 16, fontWeight: "bold"}}>{phoneNumber}</Text>
             <Text style={{marginTop: 30, fontSize: 16}}>Nhập mật khẩu:</Text>
             <View style={{flexDirection: "row",justifyContent: "space-between", width: "100%", borderBottomWidth: 1, marginTop: 10}}>
                 <TextInput style={{fontSize: 16}}

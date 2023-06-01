@@ -1,10 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 
-import userAddrReducer from "./userAddr";
 import login from "./login";
 
 const rootReducer = combineReducers({
-    userAddr: userAddrReducer,
     login: login,
 });
 

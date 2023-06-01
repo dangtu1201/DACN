@@ -29,6 +29,10 @@ export type RootStackParamList = {
   NotFound: undefined;
   AddFood: undefined;
   OrderItem: undefined;
+  EditProfile: undefined;
+  ChangePassword: undefined;
+  OrderHistory: undefined;
+  OrderHistoryItem: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

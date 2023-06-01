@@ -26,9 +26,12 @@ export default function OrderHistoryScreen({ navigation }: OrderTabScreenProps<"
                                     <Text>Địa chỉ: 123 xô viết nghệ tĩnh, phường 25, Bình Thạnh, thành phố Hồ Chí minh </Text>
                                 </View>
                             </View>
-                            <View style={{display: "flex", flexDirection: "row", marginBottom: 8, backgroundColor: Colors.light.backgroundIiem}}>
-                                <Ionicons name="logo-usd" size={20} color={Colors.light.textHighlight}/>
-                                <Text style={{color: Colors.light.textHighlight, fontWeight: "bold", fontSize: 14}}> 60.000đ</Text>
+                            <View style={{display: "flex", flexDirection: "row", marginBottom: 8, backgroundColor: Colors.light.backgroundIiem, justifyContent: "space-between"}}>
+                                <View style={{flexDirection: "row"}}>
+                                    <Ionicons name="logo-usd" size={20} color={Colors.light.textHighlight}/>
+                                    <Text style={{color: Colors.light.textHighlight, fontWeight: "bold", fontSize: 14}}> 60.000đ</Text>
+                                </View>
+                                <Text style={{fontWeight: "bold", color: Colors.light.textHighlight}}>Hoàn thành</Text>
                             </View>
                             <Pressable style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
                                 <View style={{paddingHorizontal: 15, paddingVertical: 5, borderWidth: 1, borderColor: Colors.light.tint, borderRadius: 5, backgroundColor: Colors.light.backgroundIiem}}>

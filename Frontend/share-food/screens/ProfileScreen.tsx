@@ -1,10 +1,14 @@
 import React from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, Pressable } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import Colors from "../constants/Colors";
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutApp } from "../redux/login";
 
 export default function ProfileScreen({ navigation }: RootTabScreenProps<"Profile">) {
+
+    const dispatch = useDispatch();
     return (
         <View style={styles.container}>
             <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
@@ -16,21 +20,27 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<"Profil
                     <Text style={{color: "#8F8F8F"}}>0123456789</Text>
                 </View>
             </View>
-            <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
+            <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
                 width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-            }}>
+            }}
+                onPress={() => navigation.navigate("EditProfile")}
+            >
                 <Text>Chỉnh sửa tài khoản</Text>
-            </View>
+            </TouchableOpacity>
             <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
                 width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
             }}>
                 <Text>Thông tin ứng dụng</Text>
             </View>
-            <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
+            <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
                 width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-            }}>
+            }}
+                onPress={() => {
+                    dispatch(logoutApp());
+                }}
+            >
                 <Text style={{color: "#C30000"}}>Đăng xuất</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

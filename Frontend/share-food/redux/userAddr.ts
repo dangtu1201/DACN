@@ -9,7 +9,7 @@ export interface UserAddrModel {
 const initialState: UserAddrModel = {
     lat: 10.772029,
     lng: 106.657817,
-    address: "",
+    address: "268 Lý Thường Kiệt, Phường 14, Quận 10, Thành phố Hồ Chí Minh, Vietnam",
 };
 
 const userAddr = createSlice({

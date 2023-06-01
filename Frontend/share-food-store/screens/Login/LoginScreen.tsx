@@ -10,6 +10,14 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
 
     const [phoneNumber, setPhoneNumber] = useState("");
 
+    // on change phone number
+    const onChangePhoneNumber = (text: string) => {
+        // phone number is 10 digits
+        if (text.length <= 10) {
+            setPhoneNumber(text);
+        }
+    }
+
     // validate phone number
     const validatePhoneNumber = (phoneNumber: string) => {
         // phone number 10 number
@@ -43,7 +51,7 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
                 placeholder="Nhập số điện thoại"
                 keyboardType="numeric"
                 value={phoneNumber}
-                onChangeText={setPhoneNumber}
+                onChangeText={onChangePhoneNumber}
             />
             <TouchableOpacity style={{backgroundColor: Colors.light.textHighlight, width: "100%", height: 50, borderRadius: 10, justifyContent: "center", alignItems: "center", marginTop: 40}} 
                 onPress={onClickContinue}>

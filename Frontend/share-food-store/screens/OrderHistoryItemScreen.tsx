@@ -1,17 +1,13 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
-import { Text, View } from "../../components/Themed";
-import { RootTabScreenProps, RootStackScreenProps } from "../../types";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import Colors from "../../constants/Colors";
+import React, { useState } from "react";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from "react-native";
+import { Text, View } from "../components/Themed";
+import { RootStackScreenProps  } from "../types";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Colors from "../constants/Colors";
 
-export default function OrderItemHistoryScreen({ navigation }: RootStackScreenProps<"OrderItemHistory">) {
+export default function OrderHistoryItemScreen({ navigation }: RootStackScreenProps<"OrderHistoryItem">) {
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
-    const [count, setCount] = useState(1);
-
 
     return (
         <View style={styles.container}>
@@ -19,23 +15,19 @@ export default function OrderItemHistoryScreen({ navigation }: RootStackScreenPr
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center", backgroundColor: Colors.light.storeBackground, 
+                <View style={{display: "flex", justifyContent:"center",
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
                 >
-                    <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../../assets/images/icon.png")}></Image>
-                    <View style={{display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "80%"}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>Tiệm bánh hạnh phúc</Text>
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground}}>
-                            <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>4.5 (100)</Text>
-                            <Text style={{marginLeft: 5}}>|</Text>
-                            <Text style={{marginLeft: 5}}>0.5 Km</Text>
-                        </View>
-                        <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
-                        <Text style={{}}>Số điện thoại: 0123456789</Text>
-                    </View>
+                    <Text style={{marginLeft: 20}}>Tên khách hàng: Nguyễn Văn A</Text>
+                    <Text style={{marginLeft: 20, marginTop: 10}}>Số điện thoại: 0903123923</Text>
                 </View>
-                <View style={{display: "flex", paddingHorizontal: 20}}>
+                <View
+                style={{
+                    borderBottomColor: Colors.light.blurBorder,
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                }}
+                />
+                <View style={{display: "flex", paddingHorizontal: 20, paddingTop: 10}}>
                     <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Hình thức thanh toán</Text>
                     <Pressable>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10}}>
@@ -75,11 +67,10 @@ export default function OrderItemHistoryScreen({ navigation }: RootStackScreenPr
                 <View style={styles.foodList}>
                         {[1,2,3,4,5,6,7,8,9].map((item, index) => 
                             (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
                             >
                                 <View style={styles.foodItem}>
                                     <View style={{width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
-                                        <Image style={styles.foodImage} source={require("../../assets/images/icon.png")}/>
+                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                     </View>
                                     <View style={{paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between"}}>
                                         <Text style={{fontWeight: "bold", display: "flex"}}>Bánh mì thịt nướng</Text>
@@ -96,16 +87,11 @@ export default function OrderItemHistoryScreen({ navigation }: RootStackScreenPr
                         )}
                     </View>
             </ScrollView>
-            <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
+            <View style={{height: 50, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
                     <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
                     <Text style={{fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight}}>300.000đ</Text>
                 </View>
-                <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                , width: "90%", borderRadius: 10
-                }}>
-                    <Text style={{fontSize: 16}}>Đánh giá</Text>
-                </TouchableOpacity>
             </View>
         </View>
     );
@@ -136,4 +122,5 @@ const styles = StyleSheet.create({
     }
 
 });
+
 
