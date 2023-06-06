@@ -27,6 +27,7 @@ import DishScreen from '../screens/DishScreen';
 import PopularStoreScreen from '../screens/PopularStoreScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import ChangePasswordScreen from '../screens/Profile/ChangePasswordScreen';
+import ReviewScreen from '../screens/ReviewScreen';
 import { View, Text } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
 import { useEffect, useState } from 'react';
@@ -233,6 +234,22 @@ function UserNavigator() {
             backgroundColor: Colors.light.background,
           },
           title: 'Đổi mật khẩu',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+        })}
+        />
+        <Stack.Screen name="Review" component={ReviewScreen}
+        options={({navigation} : RootStackScreenProps<"Review">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Đánh giá đơn hàng',
           headerTitleStyle: {
             color: Colors.light.contentHeader,
             fontSize: 20,
