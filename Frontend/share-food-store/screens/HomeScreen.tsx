@@ -24,7 +24,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                 </TouchableOpacity>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
                     width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-                }}>
+                }}
+                    onPress={() => navigation.navigate("Revenue")}
+                >
                     <FontAwesome name="bar-chart" size={24}/>
                     <Text style={{marginLeft: 10}}>Báo cáo doanh thu</Text>
                 </TouchableOpacity>

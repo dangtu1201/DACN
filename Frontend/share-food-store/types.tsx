@@ -33,6 +33,7 @@ export type RootStackParamList = {
   ChangePassword: undefined;
   OrderHistory: undefined;
   OrderHistoryItem: undefined;
+  Revenue: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

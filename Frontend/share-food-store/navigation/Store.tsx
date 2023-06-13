@@ -25,6 +25,7 @@ import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import ChangePasswordScreen from '../screens/Profile/ChangePasswordScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 import OrderHistoryItemScreen from '../screens/OrderHistoryItemScreen';
+import RevenueScreen from '../screens/RevenueScreen';
 import HeaderLeft from '../components/HeaderLeft';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -135,6 +136,22 @@ function RootNavigator() {
               backgroundColor: Colors.light.background,
             },
             title: 'Đơn hàng 123456',
+            headerTitleStyle: {
+              color: Colors.light.contentHeader,
+              fontSize: 20,
+            },
+            headerLeft: () => (
+              <HeaderLeft/>
+            ),
+          }}
+        />
+        <Stack.Screen name="Revenue" component={RevenueScreen}
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors.light.background,
+            },
+            title: 'Doanh thu',
             headerTitleStyle: {
               color: Colors.light.contentHeader,
               fontSize: 20,
