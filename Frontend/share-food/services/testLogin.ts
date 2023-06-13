@@ -2,17 +2,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
 
-export const storeUserId = async (value: string) => {
+export const storeUser = async (value: {userId: string, userToken: string}) => {
     try {
         const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('userId', jsonValue)
+        console.log(value);
+        await AsyncStorage.setItem('user', jsonValue)
     } catch (e) {
         // saving error
         Toast.show({
             type: 'error',
             position: 'bottom',
             text1: 'Error',
-            text2: 'Error when store userId',
+            text2: 'Error when store user',
             visibilityTime: 1000,
             autoHide: true,
             topOffset: 30,
@@ -21,9 +22,9 @@ export const storeUserId = async (value: string) => {
     }
 }
 
-export const getUserId = async () => {
+export const getUser = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem('userId')
+        const jsonValue = await AsyncStorage.getItem('user')
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         Toast.show({
@@ -39,15 +40,15 @@ export const getUserId = async () => {
     }
 }
 
-export const clearUserId = async () => {
+export const clearUser = async () => {
     try {
-        await AsyncStorage.removeItem('userId')
+        await AsyncStorage.clear()
     } catch (e) {
         Toast.show({
             type: 'error',
             position: 'bottom',
             text1: 'Error',
-            text2: 'Error when clear userId',
+            text2: 'Error when clear user',
             visibilityTime: 1000,
             autoHide: true,
             topOffset: 30,
@@ -55,3 +56,5 @@ export const clearUserId = async () => {
         });
     }
 }
+
+

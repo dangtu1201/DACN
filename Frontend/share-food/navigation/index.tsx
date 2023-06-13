@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import LoginNavigation from "./Login";
 import UserNavigation from "./User";
-import { getUserId } from "../services/testLogin";
+import { getUser } from "../services/testLogin";
 import Toast from "react-native-toast-message";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from 'react-redux'
@@ -16,9 +16,9 @@ export default function RootNavigation() {
     const dispatch = useDispatch();
     useEffect(() => {
         const checkLogin = async () => {
-            const isLogin = await getUserId();
-            setUserId(isLogin);
-            isLogin ? dispatch(setStatusLogin('login')) : dispatch(setStatusLogin('logout'));
+            const user = await getUser();
+            setUserId(user?.userId);
+            user ? dispatch(setStatusLogin('login')) : dispatch(setStatusLogin('logout'));
         }
         checkLogin();
     }, [changeLogin]);

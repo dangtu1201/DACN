@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, Modal } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps  } from "../types";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -8,6 +8,8 @@ import Colors from "../constants/Colors";
 export default function OrderItemScreen({ navigation }: RootStackScreenProps<"OrderItem">) {
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
+    const [cancelModalVisible, setCancelModalVisible] = useState(false);
+    const [successModalVisible, setSuccessModalVisible] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -85,16 +87,95 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%"}}>
                     <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
                     , width: "45%", borderRadius: 10
-                    }}>
+                    }}
+                        onPress={() => setCancelModalVisible(true)}
+                    >
                         <Text style={{fontSize: 16}}>Hủy đơn</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
                     , width: "45%", borderRadius: 10
-                    }}>
+                    }}
+                        onPress={() => setSuccessModalVisible(true)}
+                    >
                         <Text style={{fontSize: 16}}>Hoàn thành</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={cancelModalVisible}
+                onRequestClose={() => {
+                    setCancelModalVisible(!cancelModalVisible);
+                }}
+            >
+                <Pressable style={{display: "flex", justifyContent: "center", alignItems: "center", flex: 1, backgroundColor: "rgba(0,0,0,0.5)"}}
+                    onPress={() => setCancelModalVisible(!cancelModalVisible)}
+                >
+                    <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 200}}
+                        onPress={() => null}
+                        activeOpacity={1}
+                    >
+                    <View style={{display: "flex", justifyContent: "center", alignItems: "center", width: "90%", height: 200, borderRadius: 10}}>
+                        
+                        <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 20, paddingHorizontal: 20}}>Bạn có chắc chắn muốn hủy đơn hàng này?</Text>
+                        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%"}}>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonCancel, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => setCancelModalVisible(!cancelModalVisible)}
+                            >
+                                <Text style={{fontSize: 16}}>Hủy</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => {
+                                    setCancelModalVisible(!cancelModalVisible);
+                                    navigation.navigate("Root");
+                                }}
+                            >
+                                <Text style={{fontSize: 16}}>Xác nhận</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    </TouchableOpacity>
+                </Pressable>
+            </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={successModalVisible}
+                onRequestClose={() => {
+                    setSuccessModalVisible(!successModalVisible);
+                }}
+            >
+                <Pressable style={{display: "flex", justifyContent: "center", alignItems: "center", flex: 1, backgroundColor: "rgba(0,0,0,0.5)"}}
+                    onPress={() => setSuccessModalVisible(!successModalVisible)}
+                >
+                    <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 200}}
+                        onPress={() => null}
+                        activeOpacity={1}
+                    >
+                    <View style={{display: "flex", justifyContent: "center", alignItems: "center", width: "90%", height: 200, borderRadius: 10}}>
+                        
+                        <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 20, paddingHorizontal: 20}}>Bạn có chắc chắn muốn hoàn thành đơn hàng này?</Text>
+                        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%"}}>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonCancel, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => setSuccessModalVisible(!successModalVisible)}
+                            >
+                                <Text style={{fontSize: 16}}>Hủy</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess, width: "45%", height: 50, borderRadius: 10}}
+                                onPress={() => {
+                                    setSuccessModalVisible(!successModalVisible);
+                                    navigation.navigate("Root");
+                                }}
+                            >
+                                <Text style={{fontSize: 16}}>Xác nhận</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    </TouchableOpacity>
+                </Pressable>
+            </Modal>
         </View>
     );
 }

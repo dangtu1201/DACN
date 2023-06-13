@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { storeUserId, clearUserId } from "../services/testLogin";
+import { storeUser, clearUser } from "../services/testLogin";
 import { store } from "./store";
 
 export interface LoginModel {
     statusLogin: 'login' | 'logout';
+}
+
+export interface IUser {
+    userId: string;
+    userToken: string;
 }
 
 const initialState: LoginModel = {
@@ -14,12 +19,16 @@ const login = createSlice({
     name: "login",
     initialState,
     reducers: {
-        loginApp: (state, action: PayloadAction<string>) => {
-            storeUserId(action.payload);
+        loginApp: (state, action: PayloadAction<{phoneNumber: string, password: string}>) => {
+            const user = {
+                userId: action.payload.phoneNumber,
+                userToken: action.payload.password,
+            }
+            storeUser(user);
             state.statusLogin = 'login';
         },
         logoutApp: (state) => {
-            clearUserId();
+            clearUser();
             state.statusLogin = 'logout';
         },
         setStatusLogin: (state, action: PayloadAction<'login' | 'logout'>) => {
