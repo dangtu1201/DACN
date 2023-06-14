@@ -4,7 +4,7 @@ import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 
 interface RegisterInfo {
@@ -255,6 +255,7 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                         longitude: Number(e.nativeEvent.coordinate.longitude.toFixed(6)),
                     }});
                 }}
+                provider={PROVIDER_GOOGLE}
             >
                 <Marker
                     coordinate={{

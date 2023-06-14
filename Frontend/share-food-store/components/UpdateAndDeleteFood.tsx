@@ -126,12 +126,18 @@ export default function UpdateAndDeleteFood({visible, setVisible}:{visible: bool
                             numberOfLines={4}
                         />
                     </View>
-                    <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", marginTop: 20}}>
-                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                        , width: "100%", borderRadius: 10}}
+                    <View style={{height: 60, display: "flex", flexDirection: "row" ,justifyContent: "space-between", alignItems: "center", marginTop: 20}}>
+                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
+                        , width: "45%", borderRadius: 10}}
                         onPress={() => {setVisible(false)}}
                         >
-                            <Text style={{fontSize: 16}}>Thêm sản phẩm</Text>
+                            <Text style={{fontSize: 16}}>Xóa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
+                        , width: "45%", borderRadius: 10}}
+                        onPress={() => {setVisible(false)}}
+                        >
+                            <Text style={{fontSize: 16}}>Cập nhật</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
