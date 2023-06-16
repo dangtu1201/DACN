@@ -11,30 +11,22 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<"Profil
     const dispatch = useDispatch();
     return (
         <View style={styles.container}>
-            <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
-                width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 20, paddingHorizontal: 10
-            }}>
+            <View style={[styles.item,{paddingVertical: 20, paddingHorizontal: 10}]}>
                 <Image style={{width: 40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
                 <View style={{display: "flex", flexDirection: "column", marginLeft: 10, backgroundColor: Colors.light.backgroundIiem}}>
                     <Text style={{fontWeight: "bold", fontSize: 16}}>Nguyễn Văn A</Text>
                     <Text style={{color: "#8F8F8F"}}>0123456789</Text>
                 </View>
             </View>
-            <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
-                width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-            }}
+            <TouchableOpacity style={styles.item}
                 onPress={() => navigation.navigate("EditProfile")}
             >
                 <Text>Chỉnh sửa tài khoản</Text>
             </TouchableOpacity>
-            <View style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
-                width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-            }}>
+            <View style={styles.item}>
                 <Text>Thông tin ứng dụng</Text>
             </View>
-            <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
-                width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
-            }}
+            <TouchableOpacity style={styles.item}
                 onPress={() => {
                     dispatch(logoutApp());
                 }}
@@ -54,5 +46,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    item: {
+        display: "flex", 
+        flexDirection: "row", 
+        alignItems: "center", 
+        backgroundColor: Colors.light.backgroundIiem,
+        width: "99%", 
+        borderRadius: 10, 
+        elevation: 2, 
+        marginBottom: 10, 
+        paddingVertical: 10, 
+        paddingHorizontal: 16
+    }
 });
 

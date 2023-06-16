@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b5685026-9110-478b-8a24-c615e8ea1e25"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -41,6 +42,9 @@
         "projectId": "b5685026-9110-478b-8a24-c615e8ea1e25"
       }
     },
-    "owner": "dangtu2001"
+    "owner": "dangtu2001",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
