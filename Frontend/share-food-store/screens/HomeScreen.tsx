@@ -12,7 +12,25 @@ import Colors from "../constants/Colors";
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     return (
         <View style={styles.container}>
-           
+            <Text style={{fontSize: 16}}>Chào mừng <Text style={{fontWeight: "bold"}}>Nguyễn Văn A</Text> đến với trang quản lý cửa hàng</Text>
+            <View style={{marginTop: 20}}>
+                <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
+                    width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
+                }}
+                    onPress={() => navigation.navigate("OrderHistory")}
+                >
+                    <FontAwesome name="list-alt" size={24}/>
+                    <Text style={{marginLeft: 10}}>Lịch sử đơn hàng</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
+                    width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16
+                }}
+                    onPress={() => navigation.navigate("Revenue")}
+                >
+                    <FontAwesome name="bar-chart" size={24}/>
+                    <Text style={{marginLeft: 10}}>Báo cáo doanh thu</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -22,24 +40,4 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20
     },
-    foodList: {
-        marginTop: 10,
-        display: "flex",
-    },
-    foodItem: {
-        display: "flex",
-        flexDirection: "row",
-        backgroundColor: Colors.light.backgroundIiem,
-        borderRadius: 10,
-        elevation: 2,
-        margin: 1,
-        marginRight: 10,
-    },
-    foodImage: {
-        width: 110,
-        height: "100%",
-        minHeight: 110,
-        borderRadius: 10,
-    }
-    
 });

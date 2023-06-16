@@ -105,6 +105,19 @@ export default function UpdateAndDeleteFood({visible, setVisible}:{visible: bool
                         />
                     </View>
                     <View style={{marginTop: 20}}>
+                        <Text style={{fontSize: 16}}>Thời gian bán</Text>
+                        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+                            <TextInput style={{width: "45%", fontSize: 16, borderBottomWidth: 1}}
+                                placeholder="Từ"
+                                keyboardType="numeric"
+                            />
+                            <TextInput style={{width: "45%", fontSize: 16, borderBottomWidth: 1}}
+                                placeholder="Đến"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                    </View>
+                    <View style={{marginTop: 20}}>
                         <Text style={{fontSize: 16}}>Mô tả sản phẩm</Text>
                         <TextInput
                             style={{width: "100%", fontSize: 16, borderWidth: 1, borderRadius: 10, marginTop: 10, padding: 10, textAlignVertical: "top"}}
@@ -113,12 +126,18 @@ export default function UpdateAndDeleteFood({visible, setVisible}:{visible: bool
                             numberOfLines={4}
                         />
                     </View>
-                    <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", marginTop: 20}}>
-                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                        , width: "100%", borderRadius: 10}}
+                    <View style={{height: 60, display: "flex", flexDirection: "row" ,justifyContent: "space-between", alignItems: "center", marginTop: 20}}>
+                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
+                        , width: "45%", borderRadius: 10}}
                         onPress={() => {setVisible(false)}}
                         >
-                            <Text style={{fontSize: 16}}>Thêm sản phẩm</Text>
+                            <Text style={{fontSize: 16}}>Xóa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
+                        , width: "45%", borderRadius: 10}}
+                        onPress={() => {setVisible(false)}}
+                        >
+                            <Text style={{fontSize: 16}}>Cập nhật</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

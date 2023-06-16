@@ -16,10 +16,10 @@ declare global {
 
 export type LoginStackParamList = {
   Login: undefined;
-  LoginS2: undefined;
+  LoginS2: {phoneNumber: string};
   Register: undefined;
-  RegisterS2: {phone: string};
-  RegisterS3: {phone: string};
+  RegisterS2: {phoneNumber: string};
+  RegisterS3: {phoneNumber: string};
   Welcome: undefined;
 };
 
@@ -29,6 +29,11 @@ export type RootStackParamList = {
   NotFound: undefined;
   AddFood: undefined;
   OrderItem: undefined;
+  EditProfile: undefined;
+  ChangePassword: undefined;
+  OrderHistory: undefined;
+  OrderHistoryItem: undefined;
+  Revenue: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

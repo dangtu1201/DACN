@@ -10,12 +10,14 @@ import LoginS2Screen from '../screens/Login/LoginS2Screen';
 import RegisterS2Screen from '../screens/Login/RegisterS2Screen';
 import RegisterS3Screen from '../screens/Login/RegisterS3Screen';
 
+
 export default function LoginNavigation() {
   return (
     <NavigationContainer
       theme={DefaultTheme}>
       <LoginNavigator />
     </NavigationContainer>
+
   );
 }
 

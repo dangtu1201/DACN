@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Modal } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -11,110 +11,166 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
     const [count, setCount] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [sp, setSp] = useState(false);
 
 
     return (
         <View style={styles.container}>
-            <ScrollView
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-            >
-                <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center", backgroundColor: Colors.light.storeBackground, 
-                    marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
-                >
-                    <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}></Image>
-                    <View style={{display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "80%"}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>Tiệm bánh hạnh phúc</Text>
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground}}>
-                            <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>4.5 (100)</Text>
-                            <Text style={{marginLeft: 5}}>|</Text>
-                            <Text style={{marginLeft: 5}}>0.5 Km</Text>
-                        </View>
-                        <Text>Mở cửa: 8:00 - 22:00</Text>
-                        <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
-                    </View>
-                </View>
-                <View style={{display: "flex", paddingHorizontal: 20}}>
-                    <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Hình thức thanh toán</Text>
-                    <Pressable onPress={() => setPaymentMethod("cash")}>
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10}}>
-                            {paymentMethod=="cash"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
-                            <Text style={{marginLeft: 10}}>Thanh toán tại cửa hàng</Text>
-                        </View>
-                    </Pressable>
-                    <Pressable onPress={() => setPaymentMethod("momo")}>
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10}}>
-                            {paymentMethod=="momo"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
-                            <Text style={{marginLeft: 10}}>Thanh toán momo</Text>
-                        </View>
-                    </Pressable>
-                </View>
-                <View
-                style={{
-                    borderBottomColor: Colors.light.blurBorder,
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                }}
-                />
-                <View style={{display: "flex", paddingHorizontal: 20, marginTop: 20}}>
-                    <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Chi tiết đơn hàng</Text>
-                    <View style={{display: "flex", flexDirection: "row", justifyContent:"space-between", alignItems: "center", marginBottom: 10}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16}}>Tiệm bánh hạnh phúc</Text>
-                        <Pressable onPress={() => navigation.navigate("Store")}>
-                            <Text style={{color: Colors.light.textHighlight, paddingHorizontal: 10, borderColor: Colors.light.textHighlight, backgroundColor: Colors.light.storeBackground
-                                , borderRadius: 10, borderWidth: 1
-                            }}>Thêm sản phẩm</Text>
+            {
+                !sp ?
+                    <View style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+                        <FontAwesome name="shopping-cart" size={50} color={Colors.light.textHighlight} />
+                        <Text style={{ fontSize: 16, marginVertical: 16 }}>Chưa có sản phẩm trong giỏ hàng</Text>
+                        <Pressable onPress={() => setSp(true)} style={{ padding: 8, borderRadius: 5, width: "60%", alignItems: "center", borderWidth: 1, borderColor: Colors.light.tint }}>
+                            <Text style={{ color: Colors.light.textHighlight, fontSize: 16 }}>Thêm sản phẩm</Text>
                         </Pressable>
                     </View>
-                </View>
-                <View style={styles.foodList}>
-                        {[1,2,3,4,5,6,7,8,9].map((item, index) => 
-                            (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                onPress={() => navigation.navigate("FoodItem")}
+                    :
+                    <>
+                        <ScrollView
+                            showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                        >
+                            <View style={{
+                                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.storeBackground,
+                                marginVertical: 20, paddingVertical: 10, marginBottom: 20
+                            }}
                             >
-                                <View style={styles.foodItem}>
-                                    <View style={{width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
-                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                <Image style={{ width: 40, height: 40, borderRadius: 100 }} source={require("../assets/images/icon.png")}></Image>
+                                <View style={{ display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "80%" }}>
+                                    <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 4 }}>Tiệm bánh hạnh phúc</Text>
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground }}>
+                                        <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
+                                        <Text style={{ marginLeft: 5 }}>4.5 (100)</Text>
+                                        <Text style={{ marginLeft: 5 }}>|</Text>
+                                        <Text style={{ marginLeft: 5 }}>0.5 Km</Text>
                                     </View>
-                                    <View style={{paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between"}}>
-                                        <Text style={{fontWeight: "bold", display: "flex"}}>Bánh mì thịt nướng</Text>
-                                        <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                                            <TouchableOpacity style={{display:"flex", justifyContent: "center", alignItems: "center" ,width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight}}
-                                                onPress={() => { count <= 1 ? setCount(1) :setCount(count - 1)}}
-                                            >
-                                                <Ionicons name="remove" size={24} color={Colors.light.textHighlight} />
-                                            </TouchableOpacity>
-                                            <Text style={{textAlign: "center", textAlignVertical: "center",width: 28, height: 28, fontSize: 16, marginHorizontal: 10}}>{count}</Text>
-                                            <TouchableOpacity style={{display:"flex", justifyContent: "center", alignItems: "center" ,width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight}}
-                                                onPress={() => {setCount(count + 1)}}
-                                            >
-                                                <Ionicons name="add" size={24} color={Colors.light.textHighlight} />
-                                            </TouchableOpacity>
+                                    <Text>Hôm nay: 8:00 - 22:00</Text>
+                                    <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
+                                </View>
+                            </View>
+                            <View style={{ display: "flex", paddingHorizontal: 20 }}>
+                                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>Hình thức thanh toán</Text>
+                                <Pressable onPress={() => setPaymentMethod("cash")}>
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                                        {paymentMethod == "cash" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
+                                        <Text style={{ marginLeft: 10 }}>Thanh toán tại cửa hàng</Text>
+                                    </View>
+                                </Pressable>
+                                <Pressable onPress={() => setPaymentMethod("momo")}>
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                                        {paymentMethod == "momo" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
+                                        <Text style={{ marginLeft: 10 }}>Thanh toán momo</Text>
+                                    </View>
+                                </Pressable>
+                            </View>
+                            <View
+                                style={{
+                                    borderBottomColor: Colors.light.blurBorder,
+                                    borderBottomWidth: StyleSheet.hairlineWidth,
+                                }}
+                            />
+                            <View style={{ display: "flex", paddingHorizontal: 20, marginTop: 20 }}>
+                                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>Chi tiết đơn hàng</Text>
+                                <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                                    <Text style={{ fontWeight: "bold", fontSize: 16 }}>Tiệm bánh hạnh phúc</Text>
+                                    <Pressable onPress={() => navigation.navigate("Store", { storeId: "1" })}>
+                                        <Text style={{
+                                            color: Colors.light.textHighlight, paddingHorizontal: 10, borderColor: Colors.light.textHighlight, backgroundColor: Colors.light.storeBackground
+                                            , borderRadius: 10, borderWidth: 1
+                                        }}>Thêm sản phẩm</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                            <View style={styles.foodList}>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) =>
+                                (<TouchableOpacity key={index} style={{ display: "flex", alignItems: "center", marginTop: 1 }}
+                                    onPress={() => navigation.navigate("FoodItem", { foodId: "1" })}
+                                >
+                                    <View style={styles.foodItem}>
+                                        <View style={{ width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10 }}>
+                                            <Image style={styles.foodImage} source={require("../assets/images/icon.png")} />
+                                        </View>
+                                        <View style={{ paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between" }}>
+                                            <Text style={{ fontWeight: "bold", display: "flex" }}>Bánh mì thịt nướng</Text>
+                                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                                <TouchableOpacity style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight }}
+                                                    onPress={() => { count <= 1 ? setCount(1) : setCount(count - 1) }}
+                                                >
+                                                    <Ionicons name="remove" size={24} color={Colors.light.textHighlight} />
+                                                </TouchableOpacity>
+                                                <Text style={{ textAlign: "center", textAlignVertical: "center", width: 28, height: 28, fontSize: 16, marginHorizontal: 10 }}>{count}</Text>
+                                                <TouchableOpacity style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight }}
+                                                    onPress={() => { setCount(count + 1) }}
+                                                >
+                                                    <Ionicons name="add" size={24} color={Colors.light.textHighlight} />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View style={{ display: "flex", width: "20%", alignItems: "flex-end", justifyContent: "space-between", borderRadius: 10, backgroundColor: Colors.light.backgroundIiem }}>
+                                            <Pressable style={{ padding: 10 }} onPress={() => { }}>
+                                                <Ionicons name="close" size={24} />
+                                            </Pressable>
+                                            <Text style={{ color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10 }}>50.000đ</Text>
+                                            <Text style={{ color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10 }}>30.000đ</Text>
                                         </View>
                                     </View>
-                                    <View style={{display: "flex", width: "20%", alignItems: "flex-end", justifyContent: "space-between", borderRadius: 10, backgroundColor: Colors.light.backgroundIiem}}>
-                                        <Pressable style={{padding: 10}} onPress={() => {}}>
-                                            <Ionicons name="close" size={24}/>
-                                        </Pressable>
-                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10}}>50.000đ</Text>
-                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10}}>30.000đ</Text>
+                                </TouchableOpacity>)
+                                )}
+                            </View>
+                        </ScrollView>
+                        <View style={{ height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder }}>
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10 }}>
+                                <Text style={{ fontSize: 16, fontWeight: "bold" }}>Tổng tiền</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight }}>300.000đ</Text>
+                            </View>
+                            <TouchableOpacity style={{
+                                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
+                                , width: "90%", borderRadius: 10
+                            }}
+                                onPress={() => setModalVisible(true)}>
+                                <Text style={{ fontSize: 16 }}>Đặt hàng</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            {/* order completion confirmation */}
+                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+                                <View style={{ width: "90%", backgroundColor: Colors.light.background, borderRadius: 10, padding: 20 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>Xác nhận đặt hàng</Text>
+                                    <Text style={{ fontSize: 16, textAlign: "center", marginBottom: 10 }}>Bạn có chắc chắn muốn đặt hàng?</Text>
+                                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                        <TouchableOpacity style={{
+                                            display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
+                                            , width: "45%", borderRadius: 10
+                                        }}
+                                            onPress={() => { setModalVisible(!modalVisible) }}
+                                        >
+                                            <Text style={{ fontSize: 16 }}>Hủy</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{
+                                            display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
+                                            , width: "45%", borderRadius: 10
+                                        }}
+                                            onPress={() => { setModalVisible(!modalVisible) }}
+                                        >
+                                            <Text style={{ fontSize: 16 }}>Đặt hàng</Text>
+                                        </TouchableOpacity>
+
                                     </View>
                                 </View>
-                            </TouchableOpacity>)
-                        )}
-                    </View>
-            </ScrollView>
-            <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
-                <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
-                    <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
-                    <Text style={{fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight}}>300.000đ</Text>
-                </View>
-                <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                , width: "90%", borderRadius: 10
-                }}>
-                    <Text style={{fontSize: 16}}>Đặt hàng</Text>
-                </TouchableOpacity>
-            </View>
+                            </View>
+                        </Modal>
+                    </>
+            }
         </View>
     );
 }

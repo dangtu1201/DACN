@@ -7,7 +7,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 
-export default function FoodScreen({ navigation }: RootStackScreenProps<"FoodItem">) {
+export default function FoodScreen({ navigation, route }: RootStackScreenProps<"FoodItem">) {
     const {width} = Dimensions.get("window") ;
     const [count, setCount] = useState(1);
     return (
@@ -27,7 +27,7 @@ export default function FoodScreen({ navigation }: RootStackScreenProps<"FoodIte
                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                 <Text style={{marginLeft: 5}}>4.5 (100)</Text>
                             </View>
-                            <Text>Mở cửa: 8:00 - 22:00</Text>
+                            <Text>Hôm nay: 8:00 - 22:00</Text>
                         </View>
                         <View style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                             <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginBottom: 4}}>50.000đ</Text>
@@ -66,18 +66,18 @@ export default function FoodScreen({ navigation }: RootStackScreenProps<"FoodIte
                             <Text style={{marginLeft: 5}}>|</Text>
                             <Text style={{marginLeft: 5}}>0.5 Km</Text>
                         </View>
-                        <Text>Mở cửa: 8:00 - 22:00</Text>
+                        <Text>Hôm nay: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM</Text>
                     </View>
-                    <Pressable onPress={()=>{navigation.navigate("Store")}}>
+                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: "1"})}}>
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
                     </Pressable>
                 </View>
             </ScrollView>
             <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
-                , width: "90%", borderRadius: 10
-                }}>
+                , width: "90%", borderRadius: 10}}
+                >
                     <Text style={{fontSize: 16}}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
             </View>
