@@ -13,19 +13,18 @@ const reqString = {
 }
 
 const userSchema = mongoose.Schema({
-  username: reqString,
   email: reqString,
+  phone: reqString,
   password: {
     type: String,
     requied: true,
   },
-  roles: 
-  {
-    User: {
-      type: Number,
-      default: 2001
-    },
-    Admin: Number
+  roles: {
+    type: [{
+        type: String,
+        enum: ['user', 'shop']
+    }],
+    default: ['user']
   },
   createAt: {
     type: Date,

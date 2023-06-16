@@ -9,7 +9,8 @@ const commentSchema= new mongoose.Schema({
       ref: Product
     },
     user: {
-      type: User
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Product
     },
     body: {
       type: String,
@@ -25,6 +26,10 @@ const commentSchema= new mongoose.Schema({
     updateAt: {
         type: Date,
     },
+    image:{
+      type: String,
+      default: 'v1658478688/user/default_am11ol.webp'
+    }
 });
 
 commentSchema.pre("findOneAndUpdate", function(next) {

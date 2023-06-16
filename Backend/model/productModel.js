@@ -16,10 +16,13 @@ const productSchema =  mongoose.Schema({
   quantity: {
     type: Number
   },
+  price_old: {
+    type: Number
+  },
   price: {
     type: Number
   },
-  discount_id: {
+  discountID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Discount'
   },
@@ -30,9 +33,9 @@ const productSchema =  mongoose.Schema({
   updateAt: {
     type: Date,
   },
-  shopOwner: {
+  shop: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ShopOwner'
+    ref: 'Shop'
   },
   image: {
     type: String,

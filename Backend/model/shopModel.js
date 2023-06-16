@@ -12,21 +12,7 @@ const reqString = {
   requied: true
 }
 
-const shopOwnerSchema = mongoose.Schema({
-  username: reqString,
-  email: reqString,
-  password: {
-    type: String,
-    requied: true,
-  },
-  roles: 
-  {
-    User: {
-      type: Number,
-      default: 2001
-    },
-    Admin: Number
-  },
+const shopSchema = mongoose.Schema({
   createAt: {
     type: Date,
     default: moment().tz("Asia/Ho_Chi_Minh").utc(true).toDate(),
@@ -34,12 +20,21 @@ const shopOwnerSchema = mongoose.Schema({
   updateAt: {
     type: Date,
   },
-  firstname: {
+  shopOwner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  shopName: {
     type: String,
   },
-  surname: {
+  address: {
     type: String,
   },
+  coordinates: [
+    {
+      type: String,
+    }
+  ],
   paymentMethod: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -58,13 +53,14 @@ const shopOwnerSchema = mongoose.Schema({
       ref: 'Product',
     }
   ],
-  image:{
+  status:{
     type: String,
-    default: 'v1658478688/user/default_am11ol.webp'
+    enum: ['approved', 'unapproved', 'active'],
+    default: ['unapproved']
   }
 });
 
-shopOwnerSchema.pre("findOneAndUpdate", function(next) {
+shopSchema.pre("findOneAndUpdate", function(next) {
   const data = this.getUpdate()
 
   data.updateAt = moment().tz("Asia/Ho_Chi_Minh").utc(true).toDate()
@@ -74,7 +70,7 @@ shopOwnerSchema.pre("findOneAndUpdate", function(next) {
 })
 
 
-export const ShopOwner = mongoose.model("ShopOwner", shopOwnerSchema);
+export const Shop = mongoose.model("Shop", shopSchema);
 // autoIncrement.initialize(mongoose.connection);
 // userSchema.plugin(autoIncrement.plugin, { model: 'User', field: 'userID' });
 

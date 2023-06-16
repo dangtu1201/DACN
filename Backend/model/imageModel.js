@@ -11,3 +11,5 @@ const imageSchema= new mongoose.Schema({
 
 //shareSchema.plugin(mongoosePaginate);
 export const Image = mongoose.model("Image", imageSchema)
+
+

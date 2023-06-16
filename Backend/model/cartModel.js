@@ -4,6 +4,13 @@ import mongoose from 'mongoose';
 //import mongoosePaginate from 'mongoose-paginate-v2' ;
 
 const cartSchema= new mongoose.Schema({
+    _id: {
+      type: String,
+    }, 
+    userID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User
+    },
     product: [{
       product:{
         type: mongoose.Schema.Types.ObjectId,

@@ -3,19 +3,21 @@ import {User} from './userModel.js'
 import mongoose from 'mongoose';
 //import mongoosePaginate from 'mongoose-paginate-v2' ;
 
-const PAYMENT = ['MOMO', 'ZALOPAY']
+const PAYMENT = ['MOMO', 'ZALOPAY', 'CASH']
 
 const paymentSchema= new mongoose.Schema({
-    product:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Product
-    },
+    products: [{
+        product:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Product
+        },
+        quantity:{
+          type: Number
+        }
+    }],
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: User
-    },
-    quantity: {
-        type: Number
     },
     subtotal: {
         type: Number
@@ -32,6 +34,10 @@ const paymentSchema= new mongoose.Schema({
     paymentMethod:{
         type: String,
         enum: PAYMENT
+    },
+    status:{
+        type: String,
+        enum: ["Done","Cancel","Processing"]
     }
 
 })
