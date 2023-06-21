@@ -8,11 +8,15 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../redux/store';
 import { setStatusLogin } from "../redux/login";
+import { setLocation } from "../redux/userAddr";
+import * as Location from 'expo-location';
+
 
 export default function RootNavigation() {
 
     const [userId, setUserId] = useState<null | string>(null);
     const changeLogin = useSelector((state: RootState) => state.login);
+    const userAddress = useSelector((state: RootState) => state.userAddr)
     const dispatch = useDispatch();
     useEffect(() => {
         const checkLogin = async () => {
@@ -22,6 +26,20 @@ export default function RootNavigation() {
         }
         checkLogin();
     }, [changeLogin]);
+
+    useEffect(() => {
+        (async () => {
+          
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log('Permission to access location was denied')
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          dispatch(setLocation({lat: location.coords.latitude, lng: location.coords.longitude})); 
+        })();
+    }, []);
 
     if (userId) {
         return (
