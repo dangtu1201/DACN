@@ -28,6 +28,7 @@ import PopularStoreScreen from '../screens/PopularStoreScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import ChangePasswordScreen from '../screens/Profile/ChangePasswordScreen';
 import ReviewScreen from '../screens/ReviewScreen';
+import ReviewItemScreen from '../screens/ReviewItemScreen';
 import { View, Text } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps, RootStackScreenProps } from '../types';
 import { useEffect, useState } from 'react';
@@ -250,6 +251,22 @@ function UserNavigator() {
             backgroundColor: Colors.light.background,
           },
           title: 'Đánh giá đơn hàng',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+        })}
+        />
+        <Stack.Screen name="ReviewItem" component={ReviewItemScreen}
+        options={({navigation} : RootStackScreenProps<"ReviewItem">) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Đánh giá sản phẩm',
           headerTitleStyle: {
             color: Colors.light.contentHeader,
             fontSize: 20,

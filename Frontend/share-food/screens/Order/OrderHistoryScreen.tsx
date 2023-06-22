@@ -47,7 +47,7 @@ export default function OrderHistoryScreen({ navigation }: OrderTabScreenProps<"
                                         <Text style={{ fontWeight: "bold", color: Colors.light.textHighlight }}>Hoàn thành</Text>
                                     </View>
                                     <Pressable style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}
-                                        onPress={() => navigation.navigate("Review", { orderID: "1" })}
+                                        onPress={() => navigation.navigate("Review", { orderId: "1" })}
                                     >
                                         <View style={{ paddingHorizontal: 15, paddingVertical: 5, borderWidth: 1, borderColor: Colors.light.tint, borderRadius: 5, backgroundColor: Colors.light.backgroundIiem }}>
                                             <Text style={{ color: Colors.light.tint }}>Đánh giá</Text>

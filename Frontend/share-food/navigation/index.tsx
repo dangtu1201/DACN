@@ -16,7 +16,6 @@ export default function RootNavigation() {
 
     const [userId, setUserId] = useState<null | string>(null);
     const changeLogin = useSelector((state: RootState) => state.login);
-    const userAddress = useSelector((state: RootState) => state.userAddr)
     const dispatch = useDispatch();
     useEffect(() => {
         const checkLogin = async () => {
