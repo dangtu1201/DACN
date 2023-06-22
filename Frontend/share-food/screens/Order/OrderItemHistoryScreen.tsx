@@ -104,7 +104,7 @@ export default function OrderItemHistoryScreen({ navigation }: RootStackScreenPr
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
                 , width: "90%", borderRadius: 10
                 }}
-                    onPress={() => navigation.navigate("Review", {orderID: "1"})}
+                    onPress={() => navigation.navigate("Review", {orderId: "1"})}
                 >
                     <Text style={{fontSize: 16}}>Đánh giá</Text>
                 </TouchableOpacity>

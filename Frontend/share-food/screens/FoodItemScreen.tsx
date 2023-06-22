@@ -73,6 +73,56 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
                     </Pressable>
                 </View>
+                <View
+                    style={{
+                        borderBottomColor: Colors.light.blurBorder,
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
+                />
+                <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, paddingVertical: 10}}
+                >
+                    <View>
+                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Đánh giá sản phẩm</Text>
+                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
+                            <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
+                            <Text style={{marginLeft: 5}}>4.5 (100)</Text>
+                        </View>
+                    </View>
+                    <Pressable style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}
+                        onPress={()=>{navigation.navigate("ReviewItem", {foodId: "1"})}}
+                    >
+                        <Text style={{ fontWeight: "bold"}}>Xem tất cả</Text>
+                    </Pressable>
+                </View>
+                <View
+                    style={{
+                        borderBottomColor: Colors.light.blurBorder,
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
+                />
+                <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, paddingVertical: 10}}
+                >
+                    <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
+                    <View style={{display: "flex", marginLeft: 10, width: "90%"}}>
+                        <Text>Nguyễn Văn A</Text>
+                        
+                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
+                            {
+                            [1,2,3,4,5].map((item, index) => {
+                                return (
+                                        <Ionicons name="star" size={20} color={Colors.light.textHighlight} key={index}/>
+                                        )
+                                    }
+                                )
+                            }
+                        </View>
+                        <Text style={{marginBottom: 10}}>Bánh mì dài là món ăn ngon nhất thế giới</Text>
+                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
+                            <Image style={{ width:80, height: 80, marginRight: 20}} source={require("../assets/images/icon.png")}/>
+                            <Image style={{ width:80, height: 80}} source={require("../assets/images/icon.png")}/>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
             <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
