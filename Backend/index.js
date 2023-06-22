@@ -21,19 +21,21 @@ import {GridFsStorage} from 'multer-gridfs-storage';
 import Grid from 'gridfs-stream';
 import methodOverride from 'method-override';
 const app = express();
-// const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 3000;
 process.env.TZ = 'Asia/Ho_Chi_Minh'; 
 
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import consola from'consola';
 import {typeDefs} from './graphql/typeDefs/index.js';
 import {resolvers} from './graphql/resolvers/index.js';
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js'
+// import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js'
 
 dotenv.config();
 
 const { API_PORT } = process.env;
+const { API_HOST } = process.env;
 const PORT = process.env.PORT || API_PORT;
+const HOST = process.env.HOST || API_HOST;
 
 app.use(methodOverride('_method'))
 //app.use(cors({ credentials: 'include' }));
@@ -42,7 +44,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 //app.use(express.static(path.join(__dirname, 'assets')));
-app.use(graphqlUploadExpress());
+// app.use(graphqlUploadExpress());
 //{ maxFileSize: 10000, maxFiles: 10 }
 
 app.get('/', (req, res) => {
@@ -93,7 +95,7 @@ const startApp = async () => {
              
                 // Get the user token from the headers.
                 const token = req.header('Authorization') || '';
-
+                
                 // if (token === 'EMPTY_TOKEN') 
                 //     throw new Error('AUTH_ERROR');
              
@@ -128,11 +130,12 @@ const startApp = async () => {
         await server.start();
         server.applyMiddleware({ app: app});
 
-        app.listen(PORT, () => {
+        const apolloserver = app.listen(PORT, '0.0.0.0',() => {
             // console.log(`Listening on ${ PORT }`)
             consola.success({
-                message: `Successfully started server on http://localhost:${ PORT }${ server.graphqlPath } 🙌`,
-                // message: `Successfully started server on http://localhost:${ PORT }`,
+                // message: `Listening on ${ apolloserver.address().address }:${ apolloserver.address().port }🙌`,
+                // message: `Successfully started server on http://localhost:${ PORT }${ server.graphqlPath } 🙌`,
+                message: `Successfully started server on http://${ apolloserver.address().address }:${ apolloserver.address().port }`,
                 badge: true,
             })
         });

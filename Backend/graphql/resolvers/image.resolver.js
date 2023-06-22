@@ -4,7 +4,7 @@ import {generateToken, updateRefreshToken, decodeToken} from '../middlewares/ver
 import jwtVariable from '../../model/auth_var/jwt.js';
 import mongoose from 'mongoose';
 // @ts-ignore
-import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+// import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 import * as path from 'path';
 import * as fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const conn = await mongoose.createConnection(
-    'mongodb+srv://ddung:KbYxEDyj4qWHuADi@my-notes.ab8q1ok.mongodb.net/?retryWrites=true&w=majority'
+    'mongodb+srv://ddung:yjbcEXVQhI6qcmRr@dailygroceries.i9b1fll.mongodb.net/DailyGroceries?retryWrites=true&w=majority'
 );
 
 let gfs;
@@ -31,7 +31,7 @@ conn.once('open', () =>{
 //Create storage engine
 
 const storage = new GridFsStorage({
-    url: 'mongodb+srv://ddung:KbYxEDyj4qWHuADi@my-notes.ab8q1ok.mongodb.net/?retryWrites=true&w=majority',
+    url: 'mongodb+srv://ddung:yjbcEXVQhI6qcmRr@dailygroceries.i9b1fll.mongodb.net/DailyGroceries?retryWrites=true&w=majority',
     file: (req, file) => {
       return new Promise((resolve, reject) => {
         crypto.randomBytes(16, (err, buf) => {
@@ -51,7 +51,7 @@ const storage = new GridFsStorage({
   const upload = multer({ storage });
 
 export const imgResolvers = {
-  Upload: GraphQLUpload,
+  // Upload: GraphQLUpload,
   Query: {
     getUserImg: async (_, args, context) => {
       //return await Image.find({});

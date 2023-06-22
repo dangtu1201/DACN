@@ -16,7 +16,7 @@ export const userTypeDefs = gql`
   }
 
   input createUser{
-    username: String!
+    phone: String
     email: String!
     password: String!
     firstname: String
@@ -26,7 +26,6 @@ export const userTypeDefs = gql`
   }
 
   input updateUser{
-    username: String
     email: String
     password: String
     firstname: String
@@ -39,8 +38,8 @@ export const userTypeDefs = gql`
   
   type User {
     _id: ID!
-    username: String
     email: String
+    phone: String
     password: String
     createAt: DateTime
     updateAt: DateTime

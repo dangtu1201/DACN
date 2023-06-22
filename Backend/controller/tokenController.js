@@ -22,9 +22,9 @@ export async function generateToken(payload, secretSignature, tokenLife) {
 	}
 }
 
-export async function updateRefreshToken (username, refreshToken) {
+export async function updateRefreshToken (phone, refreshToken) {
 	try {
-		await Login.findOneAndUpdate({username: username}, {refreshToken: refreshToken}, {upsert: true});
+		await Login.findOneAndUpdate({phone: phone}, {refreshToken: refreshToken}, {upsert: true});
 		return true;
 	} catch {
 		return false;

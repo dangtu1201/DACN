@@ -7,7 +7,7 @@ export const loginTypeDefs = gql`
   scalar DateTime
 
   input loginInput {
-    username: String
+    phone: String
     email: String
     password: String!
   }
@@ -21,11 +21,15 @@ export const loginTypeDefs = gql`
 
   type Query {
     getAllLogins: [Login!]
-    getLogin(_username: String!): Login
+    getAllShopLogins: [Login!]
+    getLogin(_phone: String!): Login
+    getShopLogin(_phone: String!): Login
   }
 
   type Mutation {
     Login(input: loginInput): Login
     Logout: Login
+    LoginShop(input: loginInput): Login
+    LogoutShop: Login
   }
 `;

@@ -12,6 +12,6 @@ export const isAuthorized = rule()(async (parent, args, context, info) => {
     const token = Authorization.replace("Bearer", "").trim();
   
     const userID = jwt.verify(token, jwtVariable.refreshTokenSecret);
-  
+
     return !!userID;
   });

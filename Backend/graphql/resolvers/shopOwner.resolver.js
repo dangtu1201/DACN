@@ -1,4 +1,4 @@
-import {ShopOwner} from '../../model/shopOwnerModel.js';
+import {Shop} from '../../model/shopModel.js';
 import {generateToken, updateRefreshToken, decodeToken} from '../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../model/auth_var/jwt.js';
@@ -7,16 +7,16 @@ import {registerValidator, editUserValidator} from '../validation/validate.js';
 export const userResolvers = {
   Query: {
     users: async (_, args) => {
-      return await ShopOwner.find({});
+      return await Shop.find({});
     },
     getAllUsers: async () => {
-      return await ShopOwner.find({});
+      return await Shop.find({});
     },            
     getUser: async (_, args, context) => {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
       const ID = decoded.payload.userID;
 
-      const user = await ShopOwner.findById(ID);
+      const user = await Shop.findById(ID);
       const tail = user.image;
       const head = 'http://res.cloudinary.com/dizogp0ro/image/upload/';
       const url = head.concat(tail);
@@ -30,16 +30,16 @@ export const userResolvers = {
       const {error} = registerValidator(input);
       if (error) throw Error(error.details[0].message);
 
-      const checkUsername = await ShopOwner.findOne({username: input.username});
-      const checkEmail = await ShopOwner.findOne({email: input.email});
+      const checkPhone = await Shop.findOne({phone: input.phone});
+      const checkEmail = await Shop.findOne({email: input.email});
 
-      //console.log(`${checkUsername} + ${checkEmail}`)
+      //console.log(`${checkPhone} + ${checkEmail}`)
       
-      if (checkUsername) throw Error("Username already existed!");
+      if (checkPhone) throw Error("Phone already existed!");
       if (checkEmail) throw Error("Email already used!");
 
       console.log("New shop owner:", input);
-      const rs = await ShopOwner.create(input);
+      const rs = await Shop.create(input);
       return rs;
     },
     updateUser: async (_, {input}, context) => {
@@ -52,11 +52,11 @@ export const userResolvers = {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
       const ID = decoded.payload.userID;
       
-      const user = await ShopOwner.findById(ID);
+      const user = await Shop.findById(ID);
 
       //console.log("Data: ", input)
       
-      if (input.username && input.username === user.username)
+      if (input.phone && input.phone === user.phone)
         if (input.email && input.email === user.email)
           if (input.password && input.password === user.password)
             if ((input.firstname && input.firstname === user.firstname) || !input.firstname)
@@ -66,7 +66,7 @@ export const userResolvers = {
                   throw Error("Nothing changed!")
                 }
 
-      const rs = await ShopOwner.findByIdAndUpdate(ID, input, {new: true})
+      const rs = await Shop.findByIdAndUpdate(ID, input, {new: true})
       console.log("Update result: ", rs);
       return rs;
     },
@@ -74,7 +74,7 @@ export const userResolvers = {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
       const ID = decoded.payload.userID;
 
-      const rs = await ShopOwner.findByIdAndRemove(ID);
+      const rs = await Shop.findByIdAndRemove(ID);
 
       console.log("Deleted shop owner: ", rs)
       return rs;

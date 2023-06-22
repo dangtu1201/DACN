@@ -13,16 +13,16 @@ export async function login(req, res) {
 
 	const date = moment().tz("Asia/Ho_Chi_Minh").utc(true).toDate();
 
-	const username = req.body.username.toLowerCase() || 'test';
+	const phone = req.body.phone.toLowerCase() || 'test';
 	const password = req.body.password || '12345';
     // rs._id.toString()
-    const result = await User.findOne( {username: username})
+    const result = await User.findOne( {phone: phone})
     if (!result)
-        await User.findOne( {email: username})
+        await User.findOne( {email: phone})
     // return res.status(500).send('Found');
 
 	if (!result) {
-		return res.status(401).send('Username/email not exist!');
+		return res.status(401).send('Phone/email not exist!');
 	}
 
 	const isPasswordValid = (password === result.password);
@@ -34,7 +34,7 @@ export async function login(req, res) {
 	const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 	const dataForAccessToken = {
-		username: result.username,
+		phone: result.phone,
 	};
 
 	const accessToken = await generateToken(
@@ -52,16 +52,16 @@ export async function login(req, res) {
 	let refreshToken = randToken.generate(jwtVariable.refreshTokenSize); // tạo 1 refresh token ngẫu nhiên
 	if (!result.refreshToken) {
 		// Nếu user này chưa có refresh token thì lưu refresh token đó vào database
-		await updateRefreshToken(result.username, refreshToken);
+		await updateRefreshToken(result.phone, refreshToken);
 	} else {
 		// Nếu user này đã có refresh token thì lấy refresh token đó từ database
 		refreshToken = result.refreshToken;
 	}
 	
-	await Login.findOneAndUpdate({username: username},{username: username, loginAt: date, refreshToken: refreshToken, $unset: { logoutAt: "" }}, {upsert: true})
+	await Login.findOneAndUpdate({phone: phone},{phone: phone, loginAt: date, refreshToken: refreshToken, $unset: { logoutAt: "" }}, {upsert: true})
 	
 	return res.json({
-		msg: `Welcome, ${result.username}`,
+		msg: `Welcome, ${result.phone}`,
 		accessToken,
 		refreshToken,
 		result,
@@ -88,13 +88,13 @@ export async function logout(req, res){
 		return res.status(400).send('Invalid Access Token!');
 	}
 
-	const username = decoded.payload.username; // Lấy username từ payload
+	const phone = decoded.payload.phone; // Lấy phone từ payload
 
 	const date = moment().tz("Asia/Ho_Chi_Minh").utc(true).toDate();
 
-    const result = await Login.findOne( {username: username})
+    const result = await Login.findOne( {phone: phone})
         try {
-            await Login.findOneAndUpdate({username: result.username}, {logoutAt: date, $unset: { refreshToken: "" }}, {upsert: false}, function(err, rs){
+            await Login.findOneAndUpdate({phone: result.phone}, {logoutAt: date, $unset: { refreshToken: "" }}, {upsert: false}, function(err, rs){
                 res.status(200).send(rs);
             }).clone().catch(function(err){ console.log(err)})
         } catch (err) {
@@ -104,9 +104,9 @@ export async function logout(req, res){
 }
 
 // exports.logout = async function(req, res){
-// 	const {username} = req.body
+// 	const {phone} = req.body
 //         try {
-//             await User.findOneAndRemove(username, function(err, rs){
+//             await User.findOneAndRemove(phone, function(err, rs){
 //                 res.status(200).send(rs);
 //             }).clone().catch(function(err){ console.log(err)})
 //         } catch (err) {
@@ -142,9 +142,9 @@ export async function refreshToken (req, res) {
 		return res.status(400).send('Invalid Access Token!');
 	}
 
-	const username = decoded.payload.username; // Lấy username từ payload
+	const phone = decoded.payload.phone; // Lấy phone từ payload
 
-    const result = await Login.findOne( {username: username})
+    const result = await Login.findOne( {phone: phone})
     // console.log(result)
 
 	if (!result) {
@@ -160,7 +160,7 @@ export async function refreshToken (req, res) {
 
 	// Tạo access token mới
 	const dataForAccessToken = {
-		username,
+		phone,
 	};
 
 	const accessToken = await generateToken(

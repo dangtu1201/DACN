@@ -62,10 +62,10 @@ export async function addUser(req, res) {
             const { error } = registerValidator(req.body);
             if (error) return res.status(422).send(error.details[0].message);
 
-            const checkUsername = await User.findOne({ username: req.body.username });
+            const checkPhone = await User.findOne({ phone: req.body.phone });
             const checkEmail = await User.findOne({ email: req.body.email });
 
-            if (checkUsername) return res.status(422).send('Username already existed');
+            if (checkPhone) return res.status(422).send('Phone already existed');
             if (checkEmail) return res.status(422).send('Email already existed');
             console.log("Received add request: ", req.body)
             // const result = 
@@ -101,10 +101,10 @@ export async function updateUser(req, res) {
             const { error } = editUserValidator(req.body);
             if (error) return res.status(422).send(error.details[0].message);
 
-            const checkUsername = await User.findOne({ username: req.body.username });
+            const checkPhone = await User.findOne({ phone: req.body.phone });
             const checkEmail = await User.findOne({ email: req.body.email });
 
-            if (checkUsername) return res.status(422).send('Username already existed');
+            if (checkPhone) return res.status(422).send('Phone already existed');
             if (checkEmail) return res.status(422).send('Email already existed');
 
 

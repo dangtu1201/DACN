@@ -36,10 +36,7 @@ export const userResolvers = {
       //console.log(`${checkPhone} + ${checkEmail}`)
       
       if (checkPhone) throw Error("Phone already existed!");
-      if (checkEmail) {
-        console.log(checkEmail)
-        throw Error("Email already used!");
-      }
+      if (checkEmail) throw Error("Email already used!");
 
       console.log("New user:", input);
       const rs = await User.create(input);

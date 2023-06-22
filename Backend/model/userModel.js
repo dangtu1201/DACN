@@ -33,10 +33,7 @@ const userSchema = mongoose.Schema({
   updateAt: {
     type: Date,
   },
-  firstname: {
-    type: String,
-  },
-  surname: {
+  name: {
     type: String,
   },
   favoriteShop: [

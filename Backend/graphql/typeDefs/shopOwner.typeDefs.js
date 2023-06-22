@@ -1,8 +1,8 @@
 import { gql } from 'apollo-server-express';
-import {ShopOwner} from '../../model/shopOwnerModel.js';
+import {Shop} from '../../model/shopModel.js';
 import { graphql } from 'graphql';
 
-export const shopOwnerTypeDefs = gql`
+export const shopTypeDefs = gql`
   scalar DateTime
 
   type Roles {
@@ -16,7 +16,6 @@ export const shopOwnerTypeDefs = gql`
   }
 
   input createUser{
-    username: String!
     email: String!
     password: String!
     firstname: String
@@ -26,7 +25,6 @@ export const shopOwnerTypeDefs = gql`
   }
 
   input updateUser{
-    username: String
     email: String
     password: String
     firstname: String
@@ -39,7 +37,6 @@ export const shopOwnerTypeDefs = gql`
   
   type User {
     _id: ID!
-    username: String
     email: String
     password: String
     createAt: DateTime
