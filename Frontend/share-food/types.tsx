@@ -34,7 +34,8 @@ export type RootStackParamList = {
   PopularStore: undefined;
   EditProfile: undefined;
   ChangePassword: undefined;
-  Review: {orderID: string};
+  Review: {orderId: string};
+  ReviewItem: {foodId: string};
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
