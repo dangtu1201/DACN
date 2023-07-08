@@ -45,17 +45,17 @@ export default function UserNavigation() {
   const dispatch = useDispatch()
   const userAddress = useSelector((state: RootState) => state.userAddr)
 
-  // const getLocationAddressAsync = useAsync(getLocationAddress)
+  const getLocationAddressAsync = useAsync(getLocationAddress)
 
-  // useEffect(() => {
-  //   getLocationAddressAsync.execute(userAddress.lat, userAddress.lng).then((response) => {
-  //     dispatch(setAddress(response))
-  //     console.log(response)
-  //     console.log(userAddress)
-  //   }).catch((error) => {
-  //     console.log(error)
-  //   })
-  // }, [userAddress.lat, userAddress.lng]);
+  useEffect(() => {
+    getLocationAddressAsync.execute(userAddress.lat, userAddress.lng).then((response) => {
+      if (response !== null) {
+        dispatch(setAddress(response))
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, []);
 
   return (
     <NavigationContainer

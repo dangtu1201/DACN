@@ -10,7 +10,7 @@ axiosRetry(map, {
 
 export const getLocationAddress = async (lat: number, lng: number) => {
 
-    const key = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
+    const key = process.env.REACT_APP_GOOGLE_MAP_API_KEY || "AIzaSyCVoCOyt92UgEHR146aci-afmxrf38sZ6U";
     const res = await map.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`);
     if (res.data.results.length > 0) {
         const address = res.data.results[0].formatted_address;
