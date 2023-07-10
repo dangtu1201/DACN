@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginApp } from "../../redux/login";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
+import { useLoginMutation } from "../../redux/api/authApi";
 
 export default function LoginS2Screen({ navigation, route }: LoginStackScreenProps<"LoginS2">) {
 
@@ -14,6 +15,7 @@ export default function LoginS2Screen({ navigation, route }: LoginStackScreenPro
     const [isShowPassword, setIsShowPassword] = useState(false);
     const { phoneNumber } = route.params;
     const dispatch = useDispatch();
+    const [login, { data, error, isLoading }] = useLoginMutation();
 
     const onChangePassword = (text: string) => {
         // password 6 number
@@ -42,7 +44,24 @@ export default function LoginS2Screen({ navigation, route }: LoginStackScreenPro
 
     const handleLogin = () => {
         if (validatePassword(password)) {
-            dispatch(loginApp(phoneNumber));
+            // dispatch(loginApp(phoneNumber));
+            login(`{"input": {"phone": "${phoneNumber}", "password": "${password}", "as": "Shop"}}`).unwrap().then(
+                res => {
+                    Toast.show({
+                        type: "success",
+                        position: "top",
+                        text1: "Đăng nhập thành công",
+                        visibilityTime: 2000,
+                        autoHide: true,
+                        topOffset: 100,
+                        bottomOffset: 40,
+                    });
+                    console.log(res?.Login?.userID, res?.Login?.refreshToken);
+                    dispatch(loginApp({userId: res?.Login?.userID, usertoKen: res?.Login?.refreshToken}));
+                }
+            ).catch(
+                err => console.log(err)
+            );
         }
     }
 

@@ -8,6 +8,9 @@ import { useNavigation } from "@react-navigation/native";
 import Pagination from "../components/Pagination";
 import Colors from "../constants/Colors";
 import UpdateAndDeleteFood from "../components/UpdateAndDeleteFood";
+import { useGetProductsQuery } from "../redux/api/productApi";
+import { IProduct } from "../type/product";
+import { formatMoney } from "../services/formatMoney";
 
 interface IFillter {
     field: "updateTime" | "createTime" | "price",
@@ -26,7 +29,13 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
     const [isModalOutPress, setIsModalOutPress] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [updateAndDeleteFood, setUpdateAndDeleteFood] = useState(false);
+    const [products, setProducts] = useState<[IProduct]>();
     const totalPage = 10;
+    const fillter = {
+        shopId: "64894d02fd080955888326c4"
+    };
+    
+    const { data, error, isLoading } = useGetProductsQuery(JSON.stringify(fillter));
 
     const fillterOptions = {
         "updateTime": "Ngày cập nhật",
@@ -39,8 +48,6 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
         "inStock": "Đang bán",
         "outStock": "Chưa bán"
     }
-
-    const status = [1,0,1,0,1,0,1,0,1]
 
     return (
         <View style={styles.container}>
@@ -117,19 +124,20 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
             >
-                    {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                    {data?.getProductsByShop?.map((item: IProduct, index: number) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
                             onPress={()=>{setUpdateAndDeleteFood(true)}}
                         >
                             <View style={styles.foodItem}>
                                 <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                 <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
-                                    <Text style={{fontWeight: "bold", display: "flex", width: 200}}>Bánh mì thịt nướng</Text>
-                                    <Text>Số lượng: 10</Text>
-                                    <Text>Trạng thái: <Text style={{color: status[item] ? Colors.light.textHighlight : "#C30000"}}>{status[item] ? "Đang bán" : "Chưa bán"}</Text></Text>
+                                    <Text style={{fontWeight: "bold", display: "flex", width: 200}}>{item?.name}</Text>
+                                    <Text>Số lượng: {item?.quantity}</Text>
+                                    <Text>Trạng thái: <Text style={{color: item?.status === "Active" ? Colors.light.textHighlight : "#C30000"}}>{item?.status === "Active" ? "Đang bán" : "Chưa bán"}</Text></Text>
+                                    <Text>Thời gian bán: {item?.activeTime?.from} - {item?.activeTime?.to}</Text>
                                     <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>
-                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>50.000đ</Text>
-                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>30.000đ</Text>
+                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item?.price_old)}đ</Text>
+                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{formatMoney(item.price)}đ</Text>
                                     </View>
                                 </View>
                             </View>
