@@ -28,8 +28,12 @@ import OrderHistoryItemScreen from '../screens/OrderHistoryItemScreen';
 import RevenueScreen from '../screens/RevenueScreen';
 import HeaderLeft from '../components/HeaderLeft';
 import { Ionicons } from '@expo/vector-icons';
+import { useMeQuery, useShopQuery } from "../redux/api/authApi";
 
 export default function StoreNavigation() {
+  useShopQuery('');
+  useMeQuery('');
+
   return (
     <NavigationContainer>
       <RootNavigator />

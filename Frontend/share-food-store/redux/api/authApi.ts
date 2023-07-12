@@ -2,7 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import {graphqlRequestBaseQuery} from '@rtk-query/graphql-request-base-query'
 import { RootState } from '../store';
 import customFetchBase from './customFetchBase'
-
+import { setShop } from '../shop';
+import { setUserInfo } from '../user';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -47,15 +48,46 @@ export const authApi = createApi({
     }),
     me: builder.query({
       query: () => ({
-        document: `query me {
-          me {
-            id
-            name
+        document: `query GetUser {
+          getUser {
             email
-            role
+            phone
+            name
           }
         }`,
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUserInfo(data.getUser));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+
+      providesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    shop: builder.query({
+      query: () => ({
+        document: `query GetShop {
+          getShop {
+            shopName
+            address
+            _id
+            status
+          }
+        }`,
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          const shop = await queryFulfilled;
+          if (shop.data) {
+            dispatch(setShop(shop.data.getShop));
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      },
       providesTags: [{ type: 'User', id: 'LIST' }],
     }),
   }),
@@ -66,4 +98,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useMeQuery,
+  useShopQuery,
 } = authApi;

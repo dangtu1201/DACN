@@ -11,6 +11,9 @@ import UpdateAndDeleteFood from "../components/UpdateAndDeleteFood";
 import { useGetProductsQuery } from "../redux/api/productApi";
 import { IProduct } from "../type/product";
 import { formatMoney } from "../services/formatMoney";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../redux/store";
+import { setStatus } from "../redux/status";
 
 interface IFillter {
     field: "updateTime" | "createTime" | "price",
@@ -29,13 +32,33 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
     const [isModalOutPress, setIsModalOutPress] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [updateAndDeleteFood, setUpdateAndDeleteFood] = useState(false);
-    const [products, setProducts] = useState<[IProduct]>();
     const totalPage = 10;
-    const fillter = {
-        shopId: "64894d02fd080955888326c4"
-    };
+    const dispatch = useDispatch();
+    const shop = useSelector((state: RootState) => state.shop);
+    const status = useSelector((state: RootState) => state.status);
+    const [fillter, setFillter] = useState({
+        shopId: '',
+    });
     
-    const { data, error, isLoading } = useGetProductsQuery(JSON.stringify(fillter));
+    const { currentData, error, isLoading, refetch } = useGetProductsQuery(JSON.stringify(fillter));
+
+    useEffect(() => {
+        if (shop._id) {
+            setFillter({
+                ...fillter,
+                shopId: shop._id
+            })
+        }
+        console.log(fillter);
+    }, [shop?._id])
+
+    useEffect(() => {
+        if (status.status === "addProductSuccess" || status.status === "updateProductSuccess" || status.status === "deleteProductSuccess") {
+            refetch();
+            dispatch(setStatus({status: ""}));
+        }
+    }, [status])
+
 
     const fillterOptions = {
         "updateTime": "Ngày cập nhật",
@@ -124,7 +147,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
             >
-                    {data?.getProductsByShop?.map((item: IProduct, index: number) => 
+                    {currentData?.getProductsByShop?.map((item: IProduct, index: number) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
                             onPress={()=>{setUpdateAndDeleteFood(true)}}
                         >

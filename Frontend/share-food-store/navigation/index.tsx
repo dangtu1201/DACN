@@ -5,7 +5,7 @@ import StoreNavigation from "./Store";
 import { getUser} from "../services/testLogin";
 import Toast from "react-native-toast-message";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { setStatusLogin, setUser } from "../redux/login";
 import { setLocation } from "../redux/userAddr";
@@ -13,7 +13,6 @@ import * as Location from 'expo-location';
 
 export default function RootNavigation() {
 
-    const [userId, setUserId] = useState<null | string>(null);
     const Login = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
     useEffect(() => {
