@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable } from "react
 import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { loginApp } from "../../redux/login";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';

@@ -13,14 +13,14 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useAddProductMutation } from "../redux/api/productApi";
 import { setStatus } from "../redux/status";
 
-export type IProduct = {
+export type IProductCRUD = {
     name: string;
     price_old: string;
     price: string;
     description: string;
     quantity: string;
     status: string;
-    active_time: {
+    activeTime: {
         from: string;
         to: string;
     };
@@ -35,14 +35,14 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
     const [showTo, setShowTo] = useState(false);
     const [from, setFrom] = useState(new Date());
     const [to, setTo] = useState(new Date());
-    const [product, setProduct] = useState<IProduct>({
+    const [product, setProduct] = useState<IProductCRUD>({
         name: "",
         price_old: "",
         price: "",
         description: "",
         quantity: "",
         status: "Inactive",
-        active_time: {
+        activeTime: {
             from: '00:00',
             to: '00:00',
         }
@@ -76,8 +76,8 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                 quantity: product.quantity ? parseInt(product.quantity) : 0,
                 status: product.status,
                 activeTime: {
-                    from: product.active_time.from,
-                    to: product.active_time.to,
+                    from: product.activeTime.from,
+                    to: product.activeTime.to,
                 },
             }
         });
@@ -175,12 +175,12 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                         <Pressable style={{width: "48%", height: 40, borderBottomWidth: 1, display: "flex", justifyContent: "center"}}
                             onPress={() => setShowFrom(true)}
                         >
-                            <Text>{product.active_time.from}</Text>
+                            <Text>{product.activeTime.from}</Text>
                         </Pressable>
                         <Pressable style={{width: "48%", height: 40, borderBottomWidth: 1, display: "flex", justifyContent: "center"}}
                             onPress={() => setShowTo(true)}
                         >
-                            <Text>{product.active_time.to}</Text>
+                            <Text>{product.activeTime.to}</Text>
                         </Pressable>
                     {showFrom && (
                     <RNDateTimePicker
@@ -194,8 +194,8 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                                 let fromMinute = selectedTime.getMinutes() < 10 ? "0" + selectedTime.getMinutes() : selectedTime.getMinutes();
                                 setProduct({
                                     ...product,
-                                    active_time: {
-                                        ...product.active_time,
+                                    activeTime: {
+                                        ...product.activeTime,
                                         from: fromHour + ":" + fromMinute
                                     }
                                 })
@@ -218,8 +218,8 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                                 let toMinute = selectedTime.getMinutes() < 10 ? "0" + selectedTime.getMinutes() : selectedTime.getMinutes();
                                 setProduct({
                                     ...product,
-                                    active_time: {
-                                        ...product.active_time,
+                                    activeTime: {
+                                        ...product.activeTime,
                                         to: toHour + ":" + toMinute
                                     }
                                 })

@@ -7,40 +7,62 @@ export const productApi = createApi({
     tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: (credentials) => ({
-                document: `query GetProductsByShop($shopId: ID!) {
-                  getProductsByShop(shopID: $shopId) {
-                    _id
-                    name
-                    description
-                    quantity
-                    price_old
-                    price
-                    category
-                    activeTime {
-                      from
-                      to
-                    }
-                    status
-                    image
+          query: (credentials) => ({
+              document: `query GetProductsByShop($shopId: ID!) {
+                getProductsByShop(shopID: $shopId) {
+                  _id
+                  name
+                  description
+                  quantity
+                  price_old
+                  price
+                  category
+                  activeTime {
+                    from
+                    to
                   }
-                }`,
-              variables: credentials,
-            }),
+                  status
+                  image
+                }
+              }`,
+            variables: credentials,
+          }),
         }),
         addProduct: builder.mutation({
-            query: (credentials) => ({
-                document: `mutation Mutation($input: createProduct) {
-                  createProduct(input: $input) {
-                    name
-                    description
-                    quantity
-                  }
-                }`,
-              variables: credentials,
-            }),
+          query: (credentials) => ({
+              document: `mutation Mutation($input: createProduct) {
+                createProduct(input: $input) {
+                  name
+                  description
+                  quantity
+                }
+              }`,
+            variables: credentials,
           }),
+        }),
+        updateProduct: builder.mutation({
+          query: (credentials) => ({
+              document: `mutation UpdateProduct($input: updateProduct) {
+                updateProduct(input: $input) {
+                  name
+                }
+              }
+              `,
+            variables: credentials,
+          }),
+        }),
+        deleteProduct: builder.mutation({
+          query: (credentials) => ({
+              document: `mutation DeleteProduct($id: ID!) {
+                deleteProduct(ID: $id) {
+                  name
+                }
+              }`,
+            variables: credentials,
+            }),
+        }),
+        
     }),
 });
 
-export const { useGetProductsQuery, useAddProductMutation } = productApi;
+export const { useGetProductsQuery, useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation } = productApi;

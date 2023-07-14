@@ -32,6 +32,26 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
     const [isModalOutPress, setIsModalOutPress] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [updateAndDeleteFood, setUpdateAndDeleteFood] = useState(false);
+    const [productUpdateAndDelete, setProductUpdateAndDelete] = useState<IProduct>(
+        {
+            _id: "",
+            name: "",
+            quantity: 0,
+            price: 0,
+            price_old: 0,
+            activeTime: {
+                from: "",
+                to: ""
+            },
+            status: "",
+            description: "",
+            image: "",
+            shop: "",
+            category: [""],
+            discount_id: [""]
+        }
+
+    );
     const totalPage = 10;
     const dispatch = useDispatch();
     const shop = useSelector((state: RootState) => state.shop);
@@ -49,7 +69,6 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 shopId: shop._id
             })
         }
-        console.log(fillter);
     }, [shop?._id])
 
     useEffect(() => {
@@ -149,7 +168,11 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
             >
                     {currentData?.getProductsByShop?.map((item: IProduct, index: number) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                            onPress={()=>{setUpdateAndDeleteFood(true)}}
+                            onPress={()=>{
+                                setProductUpdateAndDelete(item);
+                                setUpdateAndDeleteFood(true);
+                            }
+                            }
                         >
                             <View style={styles.foodItem}>
                                 <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
@@ -175,6 +198,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
             <UpdateAndDeleteFood
                 visible={updateAndDeleteFood}
                 setVisible={setUpdateAndDeleteFood}
+                product={productUpdateAndDelete}
             />
                     
         </View>
