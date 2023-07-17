@@ -1,8 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import customFetchBase from './customFetchBase'
 
-
-
 export const productApi = createApi({
     reducerPath: 'productApi',
     baseQuery: customFetchBase,
@@ -69,7 +67,25 @@ export const productApi = createApi({
                 variables: credentials,
           }),
         }),
+        getProductByShopId: builder.query({
+          query: (credentials) => ({
+              document: `query GetProductsByShop($shopId: ID!) {
+                getProductsByShop(shopID: $shopId) {
+                  _id
+                  name
+                  price_old
+                  price
+                  activeTime {
+                    from
+                    to
+                  }
+                  image
+                }
+              }`,
+              variables: credentials,
+          }),
+        }),
     }),
 });
 
-export const { useGetAllProductsQuery, useGetProductByIdQuery } = productApi;
+export const { useGetAllProductsQuery, useGetProductByIdQuery, useGetProductByShopIdQuery } = productApi;

@@ -12,7 +12,6 @@ const baseQuery = graphqlRequestBaseQuery({
   url: baseUrl,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).login.userToken;
-    console.log("token",token);
     if (token) {
         headers.set('authorization', `${token}`)
     }

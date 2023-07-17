@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 import { useGetProductByIdQuery } from "../redux/api/productApi";
 import { IProduct } from "../type/product";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { formatMoney } from "../services/formatMoney";
 import { calculateDistance } from "../services/distance";
