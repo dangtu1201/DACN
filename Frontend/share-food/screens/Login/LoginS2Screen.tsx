@@ -43,7 +43,7 @@ export default function LoginS2Screen({ navigation, route }: LoginStackScreenPro
 
     const handleLogin = () => {
         if (validatePassword(password)) {
-            dispatch(loginApp({phoneNumber, password}));
+            console.log("login");
         }
     }
 

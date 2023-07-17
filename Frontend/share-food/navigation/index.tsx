@@ -7,7 +7,7 @@ import Toast from "react-native-toast-message";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../redux/store';
-import { setStatusLogin } from "../redux/login";
+import { setStatusLogin, setUser } from "../redux/login";
 import { setLocation } from "../redux/userAddr";
 import * as Location from 'expo-location';
 
@@ -22,6 +22,7 @@ export default function RootNavigation() {
             const user = await getUser();
             setUserId(user?.userId);
             user ? dispatch(setStatusLogin('login')) : dispatch(setStatusLogin('logout'));
+            dispatch(setUser({userId: user?.userId, userToken: user?.userToken}));
         }
         checkLogin();
     }, [changeLogin]);

@@ -1,59 +1,36 @@
 import {
-    BaseQueryFn,
-    FetchArgs,
-    fetchBaseQuery,
-    FetchBaseQueryError,
-  } from '@reduxjs/toolkit/query';
-  import { Mutex } from 'async-mutex';
-    import { logoutApp } from '../login';  
-  const baseUrl = `${process.env.REACT_APP_SERVER_ENDPOINT}/api/`;
-  
-  // Create a new mutex
-  const mutex = new Mutex();
-  
-  const baseQuery = fetchBaseQuery({
-    baseUrl,
-  });
-  
-  const customFetchBase: BaseQueryFn<
-    string | FetchArgs,
-    unknown,
-    FetchBaseQueryError
-  > = async (args, api, extraOptions) => {
-    // wait until the mutex is available without locking it
-    await mutex.waitForUnlock();
-    let result = await baseQuery(args, api, extraOptions);
-    if ((result.error?.data as any)?.message === 'Invalid Access Token!') {
-      if (!mutex.isLocked()) {
-        const release = await mutex.acquire();
-  
-        try {
-          const refreshResult = await baseQuery(
-            { credentials: 'include', url: 'refresh' },
-            api,
-            extraOptions
-          );
-  
-          if (refreshResult.data) {
-            // Retry the initial query
-            result = await baseQuery(args, api, extraOptions);
-          } else {
-            api.dispatch(logoutApp());
-          }
-        } finally {
-          // release must be called once the mutex should be released again.
-          release();
-        }
-      } else {
-        // wait until the mutex is available without locking it
-        await mutex.waitForUnlock();
-        result = await baseQuery(args, api, extraOptions);
-      }
+  BaseQueryFn,
+} from '@reduxjs/toolkit/query';
+import { request, gql, ClientError } from 'graphql-request'
+import {graphqlRequestBaseQuery} from '@rtk-query/graphql-request-base-query'
+import { Mutex } from 'async-mutex';
+import { logoutApp } from '../login';  
+import { RootState } from '../store';
+const baseUrl = `https://18db-27-71-109-175.ngrok-free.app/graphql`;
+
+const baseQuery = graphqlRequestBaseQuery({
+  url: baseUrl,
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).login.userToken;
+    console.log("token",token);
+    if (token) {
+        headers.set('authorization', `${token}`)
     }
+    return headers
+},
+});
+
+const customFetchBase: BaseQueryFn = async (args, api, extraOptions) => {
+  // wait until the mutex is available without locking it
+  let result = await baseQuery(args, api, extraOptions);
+  // console.log("tutut",result.error?.message.includes("invalid signature"));
+  if ((result.error?.message as any) === 'Not Authorised!' || result.error?.message.includes("invalid signature")) {
+      api.dispatch(logoutApp());
+  }
   
-    return result;
-  };
-  
-  export default customFetchBase;
-  
-  
+
+  return result;
+};
+
+export default customFetchBase;
+

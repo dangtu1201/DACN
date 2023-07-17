@@ -9,7 +9,7 @@ import {
   import { Mutex } from 'async-mutex';
   import { logoutApp } from '../login';  
   import { RootState } from '../store';
-  const baseUrl = `https://24b1-27-71-109-175.ngrok-free.app/graphql`;
+  const baseUrl = `https://18db-27-71-109-175.ngrok-free.app/graphql`;
   
   // Create a new mutex
   const mutex = new Mutex();

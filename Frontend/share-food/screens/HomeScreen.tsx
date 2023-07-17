@@ -6,10 +6,12 @@ import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/store';
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+
     return (
         <View style={styles.container}>
             <ScrollView

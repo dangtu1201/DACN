@@ -4,6 +4,9 @@ import { store } from "./store";
 
 export interface LoginModel {
     statusLogin: 'login' | 'logout';
+    userId: string;
+    userToken: string;
+    shopId?: string;
 }
 
 export interface IUser {
@@ -13,16 +16,18 @@ export interface IUser {
 
 const initialState: LoginModel = {
     statusLogin: 'logout',
+    userId: '',
+    userToken: '',
 };
 
 const login = createSlice({
     name: "login",
     initialState,
     reducers: {
-        loginApp: (state, action: PayloadAction<{phoneNumber: string, password: string}>) => {
+        loginApp: (state, action: PayloadAction<{userId: string, usertoKen: string}>) => {
             const user = {
-                userId: action.payload.phoneNumber,
-                userToken: action.payload.password,
+                userId: action.payload.userId,
+                userToken: action.payload.usertoKen,
             }
             storeUser(user);
             state.statusLogin = 'login';
@@ -33,9 +38,13 @@ const login = createSlice({
         },
         setStatusLogin: (state, action: PayloadAction<'login' | 'logout'>) => {
             state.statusLogin = action.payload;
+        },
+        setUser: (state, action: PayloadAction<IUser>) => {
+            state.userId = action.payload.userId;
+            state.userToken = action.payload.userToken;
         }
     }
 });
 
-export const { loginApp, logoutApp, setStatusLogin } = login.actions;
+export const { loginApp, logoutApp, setStatusLogin, setUser } = login.actions;
 export default login.reducer;

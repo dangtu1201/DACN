@@ -37,15 +37,19 @@ import { getLocationAddress } from '../api/getLocationAddress';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserAddr, setAddress, setLocation } from '../redux/userAddr';
 import { RootState } from '../redux/store';
-import { UserAddrModel } from '../redux/userAddr';
+import { useMeQuery } from "../redux/api/authApi";
+
 
 
 export default function UserNavigation() {
 
   const dispatch = useDispatch()
   const userAddress = useSelector((state: RootState) => state.userAddr)
+  const login = useSelector((state: RootState) => state.login)
 
   const getLocationAddressAsync = useAsync(getLocationAddress)
+  
+  useMeQuery('')
 
   useEffect(() => {
     getLocationAddressAsync.execute(userAddress.lat, userAddress.lng).then((response) => {

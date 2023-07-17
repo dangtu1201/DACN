@@ -1,17 +1,38 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Dimensions } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Dimensions, ActivityIndicator } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
+import { useGetProductByIdQuery } from "../redux/api/productApi";
+import { IProduct } from "../type/product";
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../redux/store';
+import { useGetAllProductsQuery } from "../redux/api/productApi";
+import { formatMoney } from "../services/formatMoney";
+import { calculateDistance } from "../services/distance";
 
 export default function FoodScreen({ navigation, route }: RootStackScreenProps<"FoodItem">) {
     const {width} = Dimensions.get("window") ;
     const [count, setCount] = useState(1);
+    const productId = route.params.foodId;
+    const { currentData, error, isLoading } = useGetProductByIdQuery(JSON.stringify({productId: productId}));
+    const userAddr = useSelector((state: RootState) => state.userAddr);
+
+    const [product, setProduct] = useState<IProduct>();
+
+    useEffect(() => {
+        if (currentData) {
+            setProduct(currentData.getProductsById);
+        }
+    }, [currentData]);
+    
     return (
+        
         <View style={styles.container}>
+            {isLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} /> :
             <ScrollView 
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
@@ -22,17 +43,17 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                     </View>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10, marginBottom: 20}}>
                         <View style={{display: "flex"}}>
-                            <Text style={{fontWeight: "bold", fontSize: 20, marginBottom: 4}}>Bánh mì dài</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 20, marginBottom: 4}}>{product?.name}</Text>
                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                 <Text style={{marginLeft: 5}}>4.5 (100)</Text>
                             </View>
-                            <Text>Hôm nay: 8:00 - 22:00</Text>
+                            <Text>Hôm nay: {product?.activeTime.from} - {product?.activeTime.to}</Text>
                         </View>
                         <View style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                            <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginBottom: 4}}>50.000đ</Text>
-                            <Text style={{fontWeight: "bold", fontSize: 16, color: Colors.light.textHighlight ,marginBottom: 4}}>30.000đ</Text>
-                            <Text>Còn lại: 10</Text>
+                            <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginBottom: 4}}>{formatMoney(product?.price_old)}đ</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 16, color: Colors.light.textHighlight ,marginBottom: 4}}>{formatMoney(product?.price)}đ</Text>
+                            <Text>Còn lại: {product?.quantity}</Text>
                         </View>
                     </View>
                     <Text style={{color: Colors.light.blurText, marginBottom: 10}}>Đã bán: 200</Text>
@@ -51,7 +72,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                     </View>
                     <View>
                         <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Mô tả</Text>
-                        <Text style={{color: Colors.light.blurText, marginBottom: 10}}>Bánh mì dài là món ăn ngon nhất thế giới</Text>
+                        <Text style={{color: Colors.light.blurText, marginBottom: 10}}>{product?.description}</Text>
                     </View>
                 </View>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center", backgroundColor: Colors.light.storeBackground, 
@@ -64,12 +85,11 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                             <Text style={{marginLeft: 5}}>4.5 (100)</Text>
                             <Text style={{marginLeft: 5}}>|</Text>
-                            <Text style={{marginLeft: 5}}>0.5 Km</Text>
+                            <Text style={{marginLeft: 5}}>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop.coordinates.lat, product?.shop.coordinates.long)} Km</Text>
                         </View>
-                        <Text>Hôm nay: 8:00 - 22:00</Text>
                         <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM</Text>
                     </View>
-                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: "1"})}}>
+                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: product?.shop._id})}}>
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
                     </Pressable>
                 </View>
@@ -124,6 +144,8 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                     </View>
                 </View>
             </ScrollView>
+            }
+            { isLoading ? null :
             <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
                 , width: "90%", borderRadius: 10}}
@@ -131,6 +153,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                     <Text style={{fontSize: 16}}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
             </View>
+            }
         </View>
     );
 }

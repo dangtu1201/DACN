@@ -1,44 +1,77 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import customFetchBase from './customFetchBase';
+import {graphqlRequestBaseQuery} from '@rtk-query/graphql-request-base-query'
+import { RootState } from '../store';
+import customFetchBase from './customFetchBase'
+import { setUserInfo } from '../user';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: customFetchBase,
   tagTypes: ['User'],
   endpoints: (builder) => ({
-    registerUser: builder.mutation({
-      query(data) {
-        return {
-          url: 'register',
-          method: 'POST',
-          body: data,
-        };
-      }
+    login: builder.mutation({
+      query: (credentials) => ({
+        document: `mutation Mutation($input: loginInput) {
+          Login(input: $input) {
+            refreshToken
+            userID
+          }
+        }`,
+        variables: credentials,
+      }),
     }),
-    loginUser: builder.mutation({
-      query(data) {
-        return {
-          url: 'login',
-          method: 'POST',
-          body: data,
-          credentials: 'include',
-        };
-      },
+    register: builder.mutation({
+      query: (credentials) => ({
+        document: `mutation register($name: String!, $email: String!, $password: String!) {
+          register(name: $name, email: $email, password: $password) {
+            token 
+            user {
+              id
+              name
+              email
+              role
+            }
+          }
+        }`,
+        variables: credentials,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
-    logoutUser: builder.mutation<void, void>({
-      query() {
-        return {
-          url: 'logout',
-          credentials: 'include',
-        };
+    logout: builder.mutation({
+      query: () => ({
+        document: `mutation logout {
+          logout
+        }`,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    me: builder.query({
+      query: () => ({
+        document: `query GetUser {
+          getUser {
+            email
+            phone
+            name
+          }
+        }`,
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUserInfo(data.getUser));
+        } catch (err) {
+          console.log(err);
+        }
       },
+
+      providesTags: [{ type: 'User', id: 'LIST' }],
     }),
   }),
 });
 
 export const {
-  useLoginUserMutation,
-  useRegisterUserMutation,
-  useLogoutUserMutation,
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useMeQuery,
 } = authApi;
-

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -160,6 +160,8 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                     <Text style={{fontSize: 16}}>Chưa bán</Text>
                 </Pressable>
             </View>}
+
+            {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} />}
            
             <ScrollView 
                 showsHorizontalScrollIndicator={false}

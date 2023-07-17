@@ -26,7 +26,7 @@ export type LoginStackParamList = {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   FoodItem: {foodId: string};
-  Store: {storeId: string};
+  Store: {storeId: string | undefined};
   OrderCart: undefined;
   OrderItemProcessing: undefined;
   OrderItemHistory: undefined;
