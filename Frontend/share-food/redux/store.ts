@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import userAddrReducer from "./userAddr";
 import login from "./login";
 import user from "./user";
+import cart from "./cart";
 import { authApi } from "./api/authApi";
 import { productApi } from "./api/productApi";
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     userAddr: userAddrReducer,
     login: login,
     user: user,
+    cart: cart,
     [authApi.reducerPath]: authApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
 });

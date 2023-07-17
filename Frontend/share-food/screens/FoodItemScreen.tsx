@@ -10,9 +10,10 @@ import { useGetProductByIdQuery } from "../redux/api/productApi";
 import { IProduct } from "../type/product";
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../redux/store';
-import { useGetAllProductsQuery } from "../redux/api/productApi";
 import { formatMoney } from "../services/formatMoney";
 import { calculateDistance } from "../services/distance";
+import { addProductToCart } from "../redux/cart";
+import { toast } from "../services/toast";
 
 export default function FoodScreen({ navigation, route }: RootStackScreenProps<"FoodItem">) {
     const {width} = Dimensions.get("window") ;
@@ -20,6 +21,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
     const productId = route.params.foodId;
     const { currentData, error, isLoading } = useGetProductByIdQuery(JSON.stringify({productId: productId}));
     const userAddr = useSelector((state: RootState) => state.userAddr);
+    const dispatch = useDispatch();
 
     const [product, setProduct] = useState<IProduct>();
 
@@ -28,11 +30,16 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
             setProduct(currentData.getProductsById);
         }
     }, [currentData]);
+
+    const handleAddToCart = () => {
+        toast("success", "Thêm vào giỏ hàng thành công", "");
+        dispatch(addProductToCart({product: product, quantity: count}));
+    }
     
     return (
         
         <View style={styles.container}>
-            {isLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} /> :
+            {isLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}} /> :
             <ScrollView 
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
@@ -80,14 +87,14 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                 >
                     <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}></Image>
                     <View style={{display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "55%"}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>Tiệm bánh hạnh phúc</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>{product?.shop.shopName}</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground}}>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                             <Text style={{marginLeft: 5}}>4.5 (100)</Text>
                             <Text style={{marginLeft: 5}}>|</Text>
                             <Text style={{marginLeft: 5}}>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop.coordinates.lat, product?.shop.coordinates.long)} Km</Text>
                         </View>
-                        <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM</Text>
+                        <Text style={{}}>Địa chỉ: {product?.shop.address}</Text>
                     </View>
                     <Pressable onPress={()=>{navigation.navigate("Store", {storeId: product?.shop._id})}}>
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
@@ -149,6 +156,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
             <View style={{height: 60, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
                 , width: "90%", borderRadius: 10}}
+                    onPress={handleAddToCart}
                 >
                     <Text style={{fontSize: 16}}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>

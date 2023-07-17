@@ -6,24 +6,28 @@ import { RootTabScreenProps, RootStackScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/store';
+import { formatMoney } from "../services/formatMoney";
+import { calculateDistance } from "../services/distance";
+import { addQuantityOne, minmusQuantityOne, removeProduct, updatePaymentMethod } from "../redux/cart";
 
 export default function OrderCartScreen({ navigation }: RootStackScreenProps<"OrderCart">) {
 
-    const [paymentMethod, setPaymentMethod] = useState("cash");
-    const [count, setCount] = useState(1);
     const [modalVisible, setModalVisible] = useState(false);
-
-    const [sp, setSp] = useState(false);
-
+    const cart = useSelector((state: RootState) => state.cart);
+    const userAddr = useSelector((state: RootState) => state.userAddr);
+    const dispatch = useDispatch();
+    console.log(cart);
 
     return (
         <View style={styles.container}>
             {
-                !sp ?
+                cart.product.length === 0 ?
                     <View style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
                         <FontAwesome name="shopping-cart" size={50} color={Colors.light.textHighlight} />
                         <Text style={{ fontSize: 16, marginVertical: 16 }}>Chưa có sản phẩm trong giỏ hàng</Text>
-                        <Pressable onPress={() => setSp(true)} style={{ padding: 8, borderRadius: 5, width: "60%", alignItems: "center", borderWidth: 1, borderColor: Colors.light.tint }}>
+                        <Pressable onPress={() => navigation.navigate("Root")} style={{ padding: 8, borderRadius: 5, width: "60%", alignItems: "center", borderWidth: 1, borderColor: Colors.light.tint }}>
                             <Text style={{ color: Colors.light.textHighlight, fontSize: 16 }}>Thêm sản phẩm</Text>
                         </Pressable>
                     </View>
@@ -40,28 +44,27 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                             >
                                 <Image style={{ width: 40, height: 40, borderRadius: 100 }} source={require("../assets/images/icon.png")}></Image>
                                 <View style={{ display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "80%" }}>
-                                    <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 4 }}>Tiệm bánh hạnh phúc</Text>
+                                    <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 4 }}>{cart.shopName}</Text>
                                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground }}>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                         <Text style={{ marginLeft: 5 }}>4.5 (100)</Text>
                                         <Text style={{ marginLeft: 5 }}>|</Text>
-                                        <Text style={{ marginLeft: 5 }}>0.5 Km</Text>
+                                        <Text style={{ marginLeft: 5 }}>{calculateDistance(cart.shopCoordinates.lat, cart.shopCoordinates.long,userAddr.lat, userAddr.lng)} Km</Text>
                                     </View>
-                                    <Text>Hôm nay: 8:00 - 22:00</Text>
-                                    <Text style={{}}>Địa chỉ: 123 Nguyễn Văn Cừ, Quận 5, TP.HCM </Text>
+                                    <Text style={{}}>Địa chỉ: {cart.shopAddress} </Text>
                                 </View>
                             </View>
                             <View style={{ display: "flex", paddingHorizontal: 20 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>Hình thức thanh toán</Text>
-                                <Pressable onPress={() => setPaymentMethod("cash")}>
+                                <Pressable onPress={() => dispatch(updatePaymentMethod({paymentMethod: "CASH"}))}>
                                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                                        {paymentMethod == "cash" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
+                                        {cart.paymentMethod == "CASH" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
                                         <Text style={{ marginLeft: 10 }}>Thanh toán tại cửa hàng</Text>
                                     </View>
                                 </Pressable>
-                                <Pressable onPress={() => setPaymentMethod("momo")}>
+                                <Pressable onPress={() => dispatch(updatePaymentMethod({paymentMethod: "MOMO"}))}>
                                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                                        {paymentMethod == "momo" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
+                                        {cart.paymentMethod == "MOMO" ? <Ionicons name="radio-button-on" size={24} /> : <Ionicons name="radio-button-off" size={24} />}
                                         <Text style={{ marginLeft: 10 }}>Thanh toán momo</Text>
                                     </View>
                                 </Pressable>
@@ -85,36 +88,36 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                                 </View>
                             </View>
                             <View style={styles.foodList}>
-                                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) =>
+                                {cart.product.map((item, index) =>
                                 (<TouchableOpacity key={index} style={{ display: "flex", alignItems: "center", marginTop: 1 }}
-                                    onPress={() => navigation.navigate("FoodItem", { foodId: "1" })}
+                                    onPress={() => navigation.navigate("FoodItem", { foodId: item.product._id })}
                                 >
                                     <View style={styles.foodItem}>
                                         <View style={{ width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10 }}>
                                             <Image style={styles.foodImage} source={require("../assets/images/icon.png")} />
                                         </View>
                                         <View style={{ paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between" }}>
-                                            <Text style={{ fontWeight: "bold", display: "flex" }}>Bánh mì thịt nướng</Text>
+                                            <Text style={{ fontWeight: "bold", display: "flex" }}>{item.product.name}</Text>
                                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                                 <TouchableOpacity style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight }}
-                                                    onPress={() => { count <= 1 ? setCount(1) : setCount(count - 1) }}
+                                                    onPress={() => { dispatch(minmusQuantityOne({productId: item.product._id})) }}
                                                 >
                                                     <Ionicons name="remove" size={24} color={Colors.light.textHighlight} />
                                                 </TouchableOpacity>
-                                                <Text style={{ textAlign: "center", textAlignVertical: "center", width: 28, height: 28, fontSize: 16, marginHorizontal: 10 }}>{count}</Text>
+                                                <Text style={{ textAlign: "center", textAlignVertical: "center", width: 28, height: 28, fontSize: 16, marginHorizontal: 10 }}>{item.quantity}</Text>
                                                 <TouchableOpacity style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 28, height: 28, borderWidth: 1, borderColor: Colors.light.textHighlight }}
-                                                    onPress={() => { setCount(count + 1) }}
+                                                    onPress={() => { dispatch(addQuantityOne({productId: item.product._id})) }}
                                                 >
                                                     <Ionicons name="add" size={24} color={Colors.light.textHighlight} />
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
                                         <View style={{ display: "flex", width: "20%", alignItems: "flex-end", justifyContent: "space-between", borderRadius: 10, backgroundColor: Colors.light.backgroundIiem }}>
-                                            <Pressable style={{ padding: 10 }} onPress={() => { }}>
+                                            <Pressable style={{ padding: 10 }} onPress={() => { dispatch(removeProduct({productId: item.product._id})) }}>
                                                 <Ionicons name="close" size={24} />
                                             </Pressable>
-                                            <Text style={{ color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10 }}>50.000đ</Text>
-                                            <Text style={{ color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10 }}>30.000đ</Text>
+                                            <Text style={{ color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10 }}>{formatMoney(item.product.price_old)}đ</Text>
+                                            <Text style={{ color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10 }}>{formatMoney(item.product.price)}đ</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>)
@@ -124,7 +127,7 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                         <View style={{ height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder }}>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10 }}>
                                 <Text style={{ fontSize: 16, fontWeight: "bold" }}>Tổng tiền</Text>
-                                <Text style={{ fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight }}>300.000đ</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight }}>{formatMoney(cart.total)}đ</Text>
                             </View>
                             <TouchableOpacity style={{
                                 display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50

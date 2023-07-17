@@ -6,7 +6,7 @@ import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { useGetAllProductsQuery } from "../redux/api/productApi";
 import { IProduct } from "../type/product";
@@ -44,7 +44,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 </Pressable>
             </View>   
 
-            {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} />} 
+            {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/>} 
            
             <ScrollView 
                 showsHorizontalScrollIndicator={false}

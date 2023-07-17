@@ -1,14 +1,24 @@
 export interface ProductModel {
-    id: string;
+    _id: string;
+    price_old: number;
     name: string;
     description: string;
-    priceNoDiscount: number;
-    priceDiscount: number;
-    image: string;
-    category: string;
     quantity: number;
-    shopOwner: string;
+    price: number;
+    activeTime: {
+        from: string;
+        to: string;
+    };
     status: string;
-    created_at: Date;
-    updated_at: Date;
+    image: string;
+    shop: {
+        coordinates: {
+            lat: number;
+            long: number;
+        };
+        _id: string;
+        shopName: string;
+        address: string;
+        status: string;
+    };
 }
