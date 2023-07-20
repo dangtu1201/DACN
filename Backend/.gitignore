@@ -1,0 +1,7 @@
+node_modules
+*.env
+.idea/
+credentials
+.DS_Store
+.npmrc
+*.log

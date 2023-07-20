@@ -1,0 +1,12 @@
+{
+    "rules": {
+        "react-native/no-inline-styles": "off"
+    },
+    "globals": {
+        "IntersectionObserver": true,
+        "localStorage": true,
+        "Buffer": true,
+        "redis": true
+    },
+    "extends": ["@salesforce/eslint-config-lwc/recommended"]
+}
