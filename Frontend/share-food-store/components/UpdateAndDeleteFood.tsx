@@ -89,7 +89,6 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     };
 
     const handleUpdateProduct = async () => {
-        console.log(productId);
         let dataUpdate = JSON.stringify(
         { input:
             {
@@ -157,7 +156,7 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={() => {
                                 setIsEnabled(!isEnabled);
-                                setProductCRUD({...productCRUD, status: isEnabled ? "Active" : "Inactive"});
+                                setProductCRUD({...productCRUD, status: !isEnabled ? "Active" : "Inactive"});
                             }}
                             value={isEnabled}
                             style={{marginLeft: 20, transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }]}}

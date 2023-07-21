@@ -80,9 +80,9 @@ export const authApi = createApi({
       }),
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
-          const shop = await queryFulfilled;
-          if (shop.data) {
-            dispatch(setShop(shop.data.getShop));
+          const { data } = await queryFulfilled;
+          if (data) {
+            dispatch(setShop(data.getShop));
           }
         } catch (err) {
           console.log(err);

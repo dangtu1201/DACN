@@ -128,7 +128,7 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={() => {
                             setIsEnabled(!isEnabled),
-                            setProduct({...product, status: isEnabled ? "Active" : "Inactive"})
+                            setProduct({...product, status: !isEnabled ? "Active" : "Inactive"})
                         }}
                         value={isEnabled}
                         style={{marginLeft: 20, transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }]}}

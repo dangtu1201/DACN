@@ -8,18 +8,6 @@ export const orderApi = createApi({
     baseQuery: customFetchBase,
     tagTypes: ['Order'],
     endpoints: (builder) => ({
-        createOrder: builder.mutation({
-            query: (credentials) => ({  
-                document: `mutation Mutation($input: createPayment) {
-                    createPayment(input: $input) {
-                      status
-                    }
-                  }
-                `,
-                variables: credentials
-            }),
-            invalidatesTags: ['Order'],
-        }),
         updateOrder: builder.mutation({
             query: (credentials) => ({
                 document: `mutation UpdatePayment($input: updatePayment) {
@@ -35,16 +23,15 @@ export const orderApi = createApi({
         }),
         getOrderProcessing: builder.query({
             query: (credentials) => ({
-                document: `query GetPayments($input: Payment_) {
-                    getPayments(input: $input) {
+                document: `query GetPaymentsShop($input: Payment_) {
+                    getPaymentsShop(input: $input) {
                       _id
-                      shop {
-                        shopName
-                        address
+                      user {
+                        name
+                        phone
                       }
-                      createAt
                       total
-                      status
+                      createAt
                     }
                   }
                 `,
@@ -53,7 +40,7 @@ export const orderApi = createApi({
             onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(setOrdersProcessing(data.getPayments));
+                    dispatch(setOrdersProcessing(data.getPaymentsShop));
                 } catch (error) {
                     console.log(error);
                 }
@@ -62,25 +49,24 @@ export const orderApi = createApi({
         }),
         getOrderHistory: builder.query({
             query: (credentials) => ({
-                document: `query GetPayments($input: Payment_) {
-                    getPayments(input: $input) {
-                        _id
-                        shop {
-                            shopName
-                            address
-                        }
-                        createAt
-                        status
-                        total
-                        }
+                document: `query GetPaymentsShop($input: Payment_) {
+                    getPaymentsShop(input: $input) {
+                      _id
+                      user {
+                        name
+                        phone
+                      }
+                      total
+                      createAt
                     }
+                  }
                 `,
                 variables: credentials
             }),
             onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(setOrdersHistory(data.getPayments));
+                    dispatch(setOrdersHistory(data.getPaymentsShop));
                 } catch (error) {
                     console.log(error);
                 }
@@ -90,4 +76,4 @@ export const orderApi = createApi({
     }),
 });
 
-export const { useCreateOrderMutation, useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery } = orderApi;
+export const { useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery } = orderApi;

@@ -192,11 +192,11 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                         </TouchableOpacity>)
                     )}
             </ScrollView>
-            <Pagination
+            {/* <Pagination
                 currentPage={currentPage}
                 totalPages = {totalPage}
                 onPress = {setCurrentPage}
-            />
+            /> */}
             <UpdateAndDeleteFood
                 visible={updateAndDeleteFood}
                 setVisible={setUpdateAndDeleteFood}

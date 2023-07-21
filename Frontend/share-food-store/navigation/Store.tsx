@@ -29,10 +29,35 @@ import RevenueScreen from '../screens/RevenueScreen';
 import HeaderLeft from '../components/HeaderLeft';
 import { Ionicons } from '@expo/vector-icons';
 import { useMeQuery, useShopQuery } from "../redux/api/authApi";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/store';
+import { useGetOrderProcessingQuery } from '../redux/api/orderApi';
+import { useGetOrderHistoryQuery } from '../redux/api/orderApi';
+import { useEffect } from 'react';
+import { addOrderStatus } from '../redux/orderStatus';
 
 export default function StoreNavigation() {
   useShopQuery('');
   useMeQuery('');
+  const dispatch = useDispatch();
+  const orderStatus = useSelector((state: RootState) => state.orderStatus);
+  const { refetch: processRefetch, currentData } = useGetOrderProcessingQuery(JSON.stringify({input: { status: ["Processing"]}}))
+  const { refetch: historyRefetch } = useGetOrderHistoryQuery(JSON.stringify({input: { status: ["Done", "Cancel"]}}))
+
+  useEffect(() => {
+    processRefetch();
+    historyRefetch();
+  }, [orderStatus]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(addOrderStatus())
+    }, 10000); // 10000ms = 10 giây
+
+    // Cleanup function để tránh rò rỉ bộ nhớ khi component unmount
+    return () => clearInterval(interval);
+  }, []);
+
 
   return (
     <NavigationContainer>
