@@ -8,8 +8,8 @@ export const productApi = createApi({
     endpoints: (builder) => ({
         getAllProducts: builder.query({
             query: () => ({
-                document: `query GetProducts {
-                    getProducts {
+                document: `query GetAllProducts {
+                    getAllProducts {
                       _id
                       price_old
                       name

@@ -38,18 +38,26 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserAddr, setAddress, setLocation } from '../redux/userAddr';
 import { RootState } from '../redux/store';
 import { useMeQuery } from "../redux/api/authApi";
-
+import { useGetOrderProcessingQuery } from '../redux/api/orderApi';
+import { useGetOrderHistoryQuery } from '../redux/api/orderApi';
 
 
 export default function UserNavigation() {
 
   const dispatch = useDispatch()
   const userAddress = useSelector((state: RootState) => state.userAddr)
-  const login = useSelector((state: RootState) => state.login)
+  const orderStatus = useSelector((state: RootState) => state.orderStatus)
 
   const getLocationAddressAsync = useAsync(getLocationAddress)
   
   useMeQuery('')
+  const { refetch: processRefetch, currentData } = useGetOrderProcessingQuery(JSON.stringify({input: { status: ["Processing"]}}))
+  const { refetch: historyRefetch } = useGetOrderHistoryQuery(JSON.stringify({input: { status: ["Done", "Cancel"]}}))
+
+  useEffect(() => {
+    processRefetch()
+    historyRefetch()
+  }, [orderStatus])
 
   useEffect(() => {
     getLocationAddressAsync.execute(userAddress.lat, userAddress.lng).then((response) => {

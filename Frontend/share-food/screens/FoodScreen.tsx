@@ -51,7 +51,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
             >
-                    {currentData && currentData?.getProducts?.map((item : IProduct, index: any) => 
+                    {currentData && currentData?.getAllProducts?.map((item : IProduct, index: any) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
                             onPress={() => navigation.navigate("FoodItem", {foodId: item._id})}
                         >

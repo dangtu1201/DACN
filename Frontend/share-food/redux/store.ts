@@ -4,23 +4,32 @@ import userAddrReducer from "./userAddr";
 import login from "./login";
 import user from "./user";
 import cart from "./cart";
+import ordersProcessing from "./ordersProcessing";
+import ordersHistory from "./ordersHistory";
+import orderStatus from "./orderStatus";
 import { authApi } from "./api/authApi";
 import { productApi } from "./api/productApi";
 import { shopApi } from "./api/shopApi";
+import { orderApi } from "./api/orderApi";
 
 const rootReducer = combineReducers({
     userAddr: userAddrReducer,
     login: login,
     user: user,
     cart: cart,
+    ordersProcessing: ordersProcessing,
+    ordersHistory: ordersHistory,
+    orderStatus: orderStatus,
     [authApi.reducerPath]: authApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [shopApi.reducerPath]: shopApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
 });
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, productApi.middleware, shopApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, productApi.middleware, shopApi.middleware
+        , orderApi.middleware),
 });
 
 

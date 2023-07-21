@@ -28,8 +28,8 @@ export type RootStackParamList = {
   FoodItem: {foodId: string};
   Store: {storeId: string | undefined};
   OrderCart: undefined;
-  OrderItemProcessing: undefined;
-  OrderItemHistory: undefined;
+  OrderItemProcessing: {orderId: string};
+  OrderItemHistory: {orderId: string};
   Dish: {name: string};
   PopularStore: undefined;
   EditProfile: undefined;

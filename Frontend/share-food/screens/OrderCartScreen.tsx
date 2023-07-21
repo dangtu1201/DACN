@@ -10,7 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { formatMoney } from "../services/formatMoney";
 import { calculateDistance } from "../services/distance";
-import { addQuantityOne, minmusQuantityOne, removeProduct, updatePaymentMethod } from "../redux/cart";
+import { addQuantityOne, clearCart, minmusQuantityOne, removeProduct, updatePaymentMethod } from "../redux/cart";
+import { useCreateOrderMutation } from "../redux/api/orderApi";
+import { toast } from "../services/toast";
+import { setOrderStatus } from "../redux/orderStatus";
 
 export default function OrderCartScreen({ navigation }: RootStackScreenProps<"OrderCart">) {
 
@@ -18,7 +21,33 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
     const cart = useSelector((state: RootState) => state.cart);
     const userAddr = useSelector((state: RootState) => state.userAddr);
     const dispatch = useDispatch();
-    console.log(cart);
+    const login = useSelector((state: RootState) => state.login);
+    const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
+    const handleOrder = () => {
+        let order = { input : {
+            shop: cart.shopId,
+            user : login.userId,
+            total: cart.total,
+            paymentMethod: cart.paymentMethod,
+            products: cart.product.map((item) => {
+                return {
+                    product: item.product._id,
+                    quantity: item.quantity
+                }
+            }),
+            status: "Processing"
+        }};
+        console.log(order.input);
+        dispatch(setOrderStatus({status: "orderSuccess"}))
+        createOrder(JSON.stringify(order)).unwrap().then((res) => {
+            dispatch(clearCart());
+            setModalVisible(false);
+            toast("success","Đặt hàng thành công","");
+            navigation.navigate("Root");
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
 
     return (
         <View style={styles.container}>
@@ -163,7 +192,7 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                                             display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonSuccess, height: 50
                                             , width: "45%", borderRadius: 10
                                         }}
-                                            onPress={() => { setModalVisible(!modalVisible) }}
+                                            onPress={handleOrder}
                                         >
                                             <Text style={{ fontSize: 16 }}>Đặt hàng</Text>
                                         </TouchableOpacity>
