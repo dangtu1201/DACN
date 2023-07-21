@@ -52,7 +52,7 @@ export default function OrderHistoryScreen({ navigation }: OrderTabScreenProps<"
                                         {
                                             item.status == "Done" ? 
                                             <Text style={{ fontWeight: "bold", color: Colors.light.textHighlight }}>Hoàn thành</Text>
-                                            : <Text style={{ fontWeight: "bold", color: Colors.light.buttonCancel }}>Đã hủy</Text>
+                                            : <Text style={{ fontWeight: "bold", color: Colors.light.textCancel }}>Đã hủy</Text>
                                         }
                                     </View>
                                     <Pressable style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}

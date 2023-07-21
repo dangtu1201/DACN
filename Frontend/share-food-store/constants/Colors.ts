@@ -15,5 +15,6 @@ export default {
     storeBackground: "#E2FEDD",
     buttonSuccess: "#9EEDA1",
     buttonCancel: "#F4B9B9",
+    textCancel: "#F44336",
   },
 };

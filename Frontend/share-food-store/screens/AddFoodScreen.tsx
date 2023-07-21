@@ -93,6 +93,8 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
 
     }
 
+    console.log(selectedImage)
+
     return (
         <View style={styles.container}>
             <ScrollView

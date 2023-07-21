@@ -34,7 +34,7 @@ export default function OrderHistoryScreen({ navigation }: RootStackScreenProps<
                                     {
                                         item.status == "Done" ?
                                         <Text style={{fontWeight: "bold", color: Colors.light.textHighlight}}>Hoàn thành</Text>
-                                        : <Text style={{fontWeight: "bold", color: Colors.light.buttonCancel}}>Đã hủy</Text>
+                                        : <Text style={{fontWeight: "bold", color: Colors.light.textCancel}}>Đã hủy</Text>
                                     }
                                 </View>
                                 <Text style={{marginTop: 5}}>{item.user.phone}</Text>

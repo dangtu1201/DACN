@@ -22,8 +22,8 @@ export const orderApi = createApi({
         }),
         updateOrder: builder.mutation({
             query: (credentials) => ({
-                document: `mutation UpdatePayment($input: updatePayment) {
-                    updatePayment(input: $input) {
+                document: `mutation UpdatePayment($input: updatePayment, $id: ID!) {
+                    updatePayment(input: $input, ID: $id) {
                       total
                       _id
                     }
@@ -87,7 +87,51 @@ export const orderApi = createApi({
             },
             providesTags: ['Order'],
         }),
+        getOrderByID: builder.query({
+            query: (credentials) => ({
+                document: `query GetPaymentById($id: ID) {
+                    getPaymentById(ID: $id) {
+                      _id
+                      products {
+                        product {
+                          _id
+                          name
+                          price_old
+                          price
+                          activeTime {
+                            from
+                            to
+                          }
+                          status
+                          image
+                        }
+                        quantity
+                      }
+                      shop {
+                        _id
+                        shopName
+                        address
+                        coordinates {
+                          lat
+                          long
+                        }
+                        shopOwner {
+                          phone
+                        }
+                        status
+                      }
+                      total
+                      status
+                      paymentMethod
+                    }
+                  }
+                `,
+                variables: credentials
+                }),
+            providesTags: ['Order'],
+        }),
+
     }),
 });
 
-export const { useCreateOrderMutation, useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery } = orderApi;
+export const { useCreateOrderMutation, useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery, useGetOrderByIDQuery } = orderApi;

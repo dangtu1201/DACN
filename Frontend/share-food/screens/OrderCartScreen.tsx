@@ -38,11 +38,11 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
             status: "Processing"
         }};
         console.log(order.input);
-        dispatch(setOrderStatus({status: "orderSuccess"}))
         createOrder(JSON.stringify(order)).unwrap().then((res) => {
             dispatch(clearCart());
             setModalVisible(false);
             toast("success","Đặt hàng thành công","");
+            dispatch(setOrderStatus({status: "orderSuccess"}))
             navigation.navigate("Root");
         }).catch((err) => {
             console.log(err);
@@ -107,8 +107,8 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                             <View style={{ display: "flex", paddingHorizontal: 20, marginTop: 20 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>Chi tiết đơn hàng</Text>
                                 <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                                    <Text style={{ fontWeight: "bold", fontSize: 16 }}>Tiệm bánh hạnh phúc</Text>
-                                    <Pressable onPress={() => navigation.navigate("Store", { storeId: "1" })}>
+                                    <Text style={{ fontWeight: "bold", fontSize: 16 }}>{cart.shopName}</Text>
+                                    <Pressable onPress={() => navigation.navigate("Store", { storeId: cart.shopId })}>
                                         <Text style={{
                                             color: Colors.light.textHighlight, paddingHorizontal: 10, borderColor: Colors.light.textHighlight, backgroundColor: Colors.light.storeBackground
                                             , borderRadius: 10, borderWidth: 1
