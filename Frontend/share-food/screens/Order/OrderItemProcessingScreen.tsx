@@ -44,8 +44,8 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
 
     return (
         <View style={styles.container}>
-            {orderLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/> :
-            <View>
+            {orderLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/>}
+            {!orderLoading &&
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
@@ -126,6 +126,8 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
                     )}
                 </View>
             </ScrollView>
+            }
+            {!orderLoading && 
             <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
                     <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
@@ -138,7 +140,7 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
                     <Text style={{fontSize: 16}}>Hủy đơn</Text>
                 </TouchableOpacity>
             </View>
-            
+            }
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -173,7 +175,6 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
                     </TouchableOpacity>
                 </Pressable>
             </Modal>
-            </View>}
         </View>
     );
 }

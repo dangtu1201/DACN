@@ -67,7 +67,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                                     </View>
                                     <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item.price_old)}đ</Text>
-                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{item.price}đ</Text>
+                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{formatMoney(item.price)}đ</Text>
                                     </View>
                                 </View>
                             </View>
