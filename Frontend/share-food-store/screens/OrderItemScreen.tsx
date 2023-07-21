@@ -4,12 +4,44 @@ import { Text, View } from "../components/Themed";
 import { RootStackScreenProps  } from "../types";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { useGetOrderByIDQuery, useUpdateOrderMutation } from "../redux/api/orderApi";
+import { useSelector, useDispatch } from 'react-redux';
+import { formatMoney } from "../services/formatMoney";
+import { IProductItem } from "../type/order";
+import { toast } from "../services/toast";
+import { addOrderStatus, setOrderStatus } from "../redux/orderStatus";
 
-export default function OrderItemScreen({ navigation }: RootStackScreenProps<"OrderItem">) {
+export default function OrderItemScreen({ navigation, route }: RootStackScreenProps<"OrderItem">) {
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [successModalVisible, setSuccessModalVisible] = useState(false);
+    const orderId = route.params.orderId;
+    const { currentData, isLoading } = useGetOrderByIDQuery({"id": orderId});
+
+    const dispatch = useDispatch();
+
+    const [updateOrder, { data, error, isLoading: isUpdating }] = useUpdateOrderMutation();
+
+    const handleCancelOrder = () => {
+        updateOrder({"id": orderId, "input": {"status": "Cancel"}}).unwrap().then(() => {
+            toast("success","Hủy đơn hàng thành công","");
+            dispatch(addOrderStatus());
+            navigation.navigate("Root");
+        }).catch((err) => {
+            toast("error","Hủy đơn hàng thất bại","");
+        });
+    }
+
+    const handleSuccessOrder = () => {
+        updateOrder({"id": orderId, "input": {"status": "Done"}}).unwrap().then(() => {
+            toast("success","Hoàn thành đơn hàng thành công","");
+            dispatch(addOrderStatus());
+            navigation.navigate("Root");
+        }).catch((err) => {
+            toast("error","Hoàn thành đơn hàng thất bại","");
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -20,8 +52,8 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                 <View style={{display: "flex", justifyContent:"center",
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
                 >
-                    <Text style={{marginLeft: 20}}>Tên khách hàng: Nguyễn Văn A</Text>
-                    <Text style={{marginLeft: 20, marginTop: 10}}>Số điện thoại: 0903123923</Text>
+                    <Text style={{marginLeft: 20}}>Tên khách hàng: {currentData?.getPaymentById?.user?.name}</Text>
+                    <Text style={{marginLeft: 20, marginTop: 10}}>Số điện thoại: {currentData?.getPaymentById?.user?.phone}</Text>
                 </View>
                 <View
                 style={{
@@ -33,13 +65,13 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                     <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Hình thức thanh toán</Text>
                     <Pressable>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10}}>
-                            {paymentMethod=="cash"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
+                            {currentData?.getPaymentById?.paymentMethod=="CASH"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
                             <Text style={{marginLeft: 10}}>Thanh toán tại cửa hàng</Text>
                         </View>
                     </Pressable>
                     <Pressable>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 10}}>
-                            {paymentMethod=="momo"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
+                            {currentData?.getPaymentById?.paymentMethod=="MOMO"?<Ionicons name="radio-button-on" size={24}/>:<Ionicons name="radio-button-off" size={24}/>}
                             <Text style={{marginLeft: 10}}>Thanh toán momo</Text>
                         </View>
                     </Pressable>
@@ -53,11 +85,11 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                 <View style={{display: "flex", paddingHorizontal: 20, marginTop: 20}}>
                     <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Chi tiết đơn hàng</Text>
                     <View style={{display: "flex", flexDirection: "row", justifyContent:"space-between", alignItems: "center", marginBottom: 10}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16}}>Tiệm bánh hạnh phúc</Text> 
+                        <Text style={{fontWeight: "bold", fontSize: 16}}>{currentData?.getPaymentById?.shop?.shopName}</Text> 
                     </View>
                 </View>
                 <View style={styles.foodList}>
-                        {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                        {currentData?.getPaymentById?.products.map((item: IProductItem, index: number) => 
                             (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
                             >
                                 <View style={styles.foodItem}>
@@ -65,14 +97,14 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                                         <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
                                     </View>
                                     <View style={{paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between"}}>
-                                        <Text style={{fontWeight: "bold", display: "flex"}}>Bánh mì thịt nướng</Text>
-                                        <Text style={{fontWeight: "bold", display: "flex"}}>Số lượng: 1</Text>
+                                        <Text style={{fontWeight: "bold", display: "flex"}}>{item.product.name}</Text>
+                                        <Text style={{fontWeight: "bold", display: "flex"}}>Số lượng: {item.quantity}</Text>
                                     </View>
                                     <View style={{display: "flex", width: "20%", alignItems: "flex-end", justifyContent: "space-between", borderRadius: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Pressable style={{padding: 10, marginBottom: 20}}>
                                         </Pressable>
-                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10}}>50.000đ</Text>
-                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10}}>30.000đ</Text>
+                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through", marginRight: 10}}>{formatMoney(item.product.price_old)}đ</Text>
+                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold", marginRight: 10, marginBottom: 10}}>{formatMoney(item.product.price)}đ</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>)
@@ -82,7 +114,7 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
             <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
                     <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
-                    <Text style={{fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight}}>300.000đ</Text>
+                    <Text style={{fontSize: 16, fontWeight: "bold", color: Colors.light.textHighlight}}>{formatMoney(currentData?.getPaymentById?.total)}đ</Text>
                 </View>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%"}}>
                     <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", backgroundColor: Colors.light.buttonCancel, height: 50
@@ -129,7 +161,7 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                             <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess, width: "45%", height: 50, borderRadius: 10}}
                                 onPress={() => {
                                     setCancelModalVisible(!cancelModalVisible);
-                                    navigation.navigate("Root");
+                                    handleCancelOrder();
                                 }}
                             >
                                 <Text style={{fontSize: 16}}>Xác nhận</Text>
@@ -166,7 +198,7 @@ export default function OrderItemScreen({ navigation }: RootStackScreenProps<"Or
                             <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess, width: "45%", height: 50, borderRadius: 10}}
                                 onPress={() => {
                                     setSuccessModalVisible(!successModalVisible);
-                                    navigation.navigate("Root");
+                                    handleSuccessOrder();
                                 }}
                             >
                                 <Text style={{fontSize: 16}}>Xác nhận</Text>

@@ -22,7 +22,7 @@ export default function OrderScreen({ navigation }: RootTabScreenProps<"Order">)
       >
           {ordersProcessing.data.map((item, index) =>(
               <TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                  onPress={() => navigation.navigate("OrderItem")}
+                  onPress={() => navigation.navigate("OrderItem", {orderId: item._id})}
               >
                   <View style={styles.orderItem}>
                       <Text style={{color: Colors.light.blurText}}>Đơn: {item._id}</Text>

@@ -52,7 +52,7 @@ export default function StoreNavigation() {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(addOrderStatus())
-    }, 10000); // 10000ms = 10 giây
+    }, 20000); // 20000ms = 20 giây
 
     // Cleanup function để tránh rò rỉ bộ nhớ khi component unmount
     return () => clearInterval(interval);

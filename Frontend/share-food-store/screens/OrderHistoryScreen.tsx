@@ -22,7 +22,7 @@ export default function OrderHistoryScreen({ navigation }: RootStackScreenProps<
       >
           {ordersHistory.data.map((item, index) =>(
               <TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                    onPress={() => navigation.navigate("OrderHistoryItem")}
+                    onPress={() => navigation.navigate("OrderHistoryItem", {orderId: item._id})}
               >
                   <View style={styles.orderItem}>
                       <Text style={{color: Colors.light.blurText}}>Đơn: {item._id}</Text>

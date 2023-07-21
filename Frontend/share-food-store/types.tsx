@@ -28,11 +28,11 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   AddFood: undefined;
-  OrderItem: undefined;
+  OrderItem: {orderId: string};
   EditProfile: undefined;
   ChangePassword: undefined;
   OrderHistory: undefined;
-  OrderHistoryItem: undefined;
+  OrderHistoryItem: {orderId: string};
   Revenue: undefined;
 };
 

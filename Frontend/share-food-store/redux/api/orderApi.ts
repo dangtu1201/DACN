@@ -10,12 +10,12 @@ export const orderApi = createApi({
     endpoints: (builder) => ({
         updateOrder: builder.mutation({
             query: (credentials) => ({
-                document: `mutation UpdatePayment($input: updatePayment) {
-                    updatePayment(input: $input) {
-                      total
-                      _id
-                    }
+                document: `mutation UpdatePayment($input: updatePayment, $id: ID!) {
+                  updatePayment(input: $input, ID: $id) {
+                    total
+                    _id
                   }
+                }
                 `,
                 variables: credentials
             }),
@@ -57,6 +57,7 @@ export const orderApi = createApi({
                         phone
                       }
                       total
+                      status
                       createAt
                     }
                   }
@@ -73,7 +74,45 @@ export const orderApi = createApi({
             },
             providesTags: ['Order'],
         }),
+        getOrderByID: builder.query({
+            query: (credentials) => ({
+                document: `query GetPaymentById($id: ID) {
+                  getPaymentById(ID: $id) {
+                    _id
+                    products {
+                      product {
+                        _id
+                        name
+                        price_old
+                        price
+                        activeTime {
+                          from
+                          to
+                        }
+                        status
+                        image
+                      }
+                      quantity
+                    }
+                    shop {
+                      _id
+                      shopName
+                    }
+                    total
+                    status
+                    paymentMethod
+                    user {
+                      name
+                      phone
+                    }
+                  }
+                }
+                `,
+                variables: credentials
+              }),
+            providesTags: ['Order'],
+        }),
     }),
 });
 
-export const { useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery } = orderApi;
+export const { useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery, useGetOrderByIDQuery } = orderApi;
