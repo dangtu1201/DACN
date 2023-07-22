@@ -1,0 +1,18 @@
+# flyctl launch added from .gitignore
+**\node_modules
+**\*.env
+**\.idea
+**\credentials
+**\.DS_Store
+**\.npmrc
+**\*.log
+
+# flyctl launch added from node_modules\fs-capacitor\.gitignore
+node_modules\fs-capacitor\**\.DS_Store
+node_modules\fs-capacitor\**\node_modules
+node_modules\fs-capacitor\**\package-lock.json
+node_modules\fs-capacitor\**\npm-debug.log
+node_modules\fs-capacitor\**\yarn.lock
+node_modules\fs-capacitor\**\yarn-error.log
+node_modules\fs-capacitor\**\lib
+fly.toml

@@ -26,7 +26,7 @@ const typeDefs = gql`
   }
 
   extend type Mutation {
-    singleUpload(input: url): File
+    singleUpload(photo: String): File
   }
 `;
 

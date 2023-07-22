@@ -68,7 +68,7 @@ const typeDefs = gql`
     coupon: Float
     total: Float
     paymentMethod: paymentMethod
-    status: String
+    status: [String]
   }
 
   type Payment {
@@ -99,7 +99,7 @@ const typeDefs = gql`
   extend type Mutation {
     createPayment(input: createPayment): Payment!
 
-    updatePayment(input: updatePayment): Payment!
+    updatePayment(ID: ID!, input: updatePayment): Payment!
 
     deletePayment(ID: ID!): Payment
   }

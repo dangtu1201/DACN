@@ -29,6 +29,7 @@ const typeDefs = gql`
     customer: [ID]
     products: [ID]
     status: status
+    CID: String
   }
 
   input updateShop{
@@ -40,6 +41,7 @@ const typeDefs = gql`
     customer: [ID]
     products: [ID]
     status: status
+    CID: String
   }
   
   type Shop {
@@ -54,6 +56,7 @@ const typeDefs = gql`
     customer: [User]
     products: [Product]
     status: status
+    CID: String
   }
 
   extend type Query {

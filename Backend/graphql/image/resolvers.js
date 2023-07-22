@@ -85,26 +85,29 @@ export const imgResolvers = {
     },
   },
   Mutation: {
-    singleUpload: async (_, {input}) => {
-      //console.log("Pre-getfile!");
-      const { createReadStream, filename, mimetype, encoding } = await input.file;
+    singleUpload: async (_, { photo }) => {
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
 
-      //console.log("Got file!")
-
-      const stream = createReadStream();
-
-      const pathName = path.join(__dirname, `../../client/assets/${filename}`);
-      await stream.pipe(fs.createWriteStream(pathName));
-
-      //const url = `http://localhost:3000/images/${filename}`;
-      
-      const rs = await Image.create({filename: filename, filepath: pathName, mimetype: mimetype, encoding: encoding, url: input.url});
-
-      //console.log("Result: ", rs);
-
-      return rs;
-    }
-  }
+      try {
+        const result = await cloudinary.v2.uploader.upload(photo, {
+          allowed_formats: ["jpg", "png"], //chose to allow only jpg and png upload
+          public_id: "", //generates a new id for each uploaded image
+          folder: "your_folder_name", //creates a folder called "your_folder_name" where images will be stored.
+        });
+      }
+      catch (e) {
+          return `Image could not be uploaded:${e.message}`; //returns an error message on image upload failure
+        }
+      /*returns uploaded photo url if successful `result.url`.
+      if we were going to store image name in database,this
+      */
+      return `Successful-Photo URL: ${result.url}`;     
+    },
+  },
 }
 
 const image = [imgResolvers];
