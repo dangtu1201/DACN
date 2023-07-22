@@ -136,7 +136,7 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                             lat: `${registerInfo.storeLocation.latitude}`,
                             long: `${registerInfo.storeLocation.longitude}`,
                         },
-                        shopOwner: res?.data?.createUser?._id,
+                        shopOwner: res?.createUser?._id,
                         CID: registerInfo.cardId,
                         status: "Approved",
                     }
