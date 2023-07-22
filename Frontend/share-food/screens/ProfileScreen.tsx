@@ -5,17 +5,20 @@ import { RootTabScreenProps } from "../types";
 import Colors from "../constants/Colors";
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutApp } from "../redux/login";
+import { RootState } from "../redux/store";
 
 export default function ProfileScreen({ navigation }: RootTabScreenProps<"Profile">) {
 
     const dispatch = useDispatch();
+    const userInfo = useSelector((state: RootState) => state.user);
+
     return (
         <View style={styles.container}>
             <View style={[styles.item,{paddingVertical: 20, paddingHorizontal: 10}]}>
                 <Image style={{width: 40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
                 <View style={{display: "flex", flexDirection: "column", marginLeft: 10, backgroundColor: Colors.light.backgroundIiem}}>
-                    <Text style={{fontWeight: "bold", fontSize: 16}}>Nguyễn Văn A</Text>
-                    <Text style={{color: "#8F8F8F"}}>0123456789</Text>
+                    <Text style={{fontWeight: "bold", fontSize: 16}}>{userInfo.name}</Text>
+                    <Text style={{color: "#8F8F8F"}}>{userInfo.phone}</Text>
                 </View>
             </View>
             <TouchableOpacity style={styles.item}

@@ -6,13 +6,15 @@ import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../redux/store";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+    const userInfo = useSelector((state: RootState) => state.userInfo);
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 16}}>Chào mừng <Text style={{fontWeight: "bold"}}>Nguyễn Văn A</Text> đến với trang quản lý cửa hàng</Text>
+            <Text style={{fontSize: 16}}>Chào mừng <Text style={{fontWeight: "bold"}}>{userInfo.name}</Text> đến với trang quản lý cửa hàng</Text>
             <View style={{marginTop: 20}}>
                 <TouchableOpacity style={{display: "flex", flexDirection: "row", alignItems: "center", backgroundColor: Colors.light.backgroundIiem,
                     width: "99%", borderRadius: 10, elevation: 2, marginBottom: 10, paddingVertical: 10, paddingHorizontal: 16

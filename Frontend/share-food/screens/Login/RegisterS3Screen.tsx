@@ -7,6 +7,8 @@ import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import { useRegisterMutation } from "../../redux/api/authApi";
+import { toast } from "../../services/toast";
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -23,6 +25,7 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [register, { isLoading, data, error }] = useRegisterMutation();
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,54 +64,22 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
     const validateRegisterInfo = (registerInfo: RegisterInfo) => {
         // name is not empty
         if (registerInfo.name.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Họ và tên không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Họ và tên không hợp lệ","");
             return false;
         }
         // email is not empty
         if (registerInfo.email.length === 0 || !validateEmail(registerInfo.email)) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Email không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Email không hợp lệ","");
             return false;
         }
         // password is 6 digits
         if (registerInfo.password.length < 6) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu phải có 6 ký tự",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu phải có 6 ký tự","");
             return false;
         }
         // password and confirm password are the same
         if (registerInfo.password !== confirmPassword) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu không khớp",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu không khớp","");
             return false;
         }
         return true;
@@ -117,16 +88,23 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
     // handle click register button
     const onClickRegister = () => {
         if (validateRegisterInfo(registerInfo)) {
-            Toast.show({
-                type: "success",
-                position: "top",
-                text1: "Đăng ký thành công",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
+            let registerInput = {
+                input: {
+                    phone: registerInfo.phoneNumber,
+                    name: registerInfo.name,
+                    email: registerInfo.email,
+                    password: registerInfo.password,
+                    image: selectedImage,
+                    roles: "User"
+                }
+            }
+            register(JSON.stringify(registerInput)).unwrap().then((res) => {
+                toast("success","Đăng ký thành công","");
+                navigation.navigate("Login");
+            }).catch((err) => {
+                toast("error",err?.message,"");
+                console.log(err);
             });
-            navigation.navigate("Login");
         }
     }
 

@@ -22,15 +22,11 @@ export const authApi = createApi({
     }),
     register: builder.mutation({
       query: (credentials) => ({
-        document: `mutation register($name: String!, $email: String!, $password: String!) {
-          register(name: $name, email: $email, password: $password) {
-            token 
-            user {
-              id
-              name
-              email
-              role
-            }
+        document: `mutation CreateUser($input: createUser) {
+          createUser(input: $input) {
+            _id
+            email
+            phone
           }
         }`,
         variables: credentials,
@@ -52,6 +48,7 @@ export const authApi = createApi({
             email
             phone
             name
+            image
           }
         }`,
       }),

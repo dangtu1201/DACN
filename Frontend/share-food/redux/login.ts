@@ -34,6 +34,8 @@ const login = createSlice({
         },
         logoutApp: (state) => {
             clearUser();
+            state.userId = '';
+            state.userToken = '';
             state.statusLogin = 'logout';
         },
         setStatusLogin: (state, action: PayloadAction<'login' | 'logout'>) => {
