@@ -5,15 +5,8 @@ import moment from 'moment-timezone';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
-import ObjectId from 'mongodb';
-
-const getUnshared = (arr1, arr2) => {
-  return arr2.filter(x => !arr1.includes(x));
-}
-
-const getShared = (arr1, arr2) => {
-  return arr2.filter(x => arr1.includes(x));
-}
+import pkg from 'mongodb';
+const {ObjectId} = pkg;
 
 export const productResolvers = {
   Query: {
@@ -28,8 +21,8 @@ export const productResolvers = {
       if(!checkShop) throw Error(`You are not a shop owner!`);
       if (!ID) throw Error(`Please login! <Received ID: ${ID} >`);
 
-      const rs = await Product.find({userID: ObjectId(ID)}).populate('shop');
-      const shop = await Shop.findOne({shopOwner: ObjectId(ID)});
+      const rs = await Product.find({shop: (checkShop._id)}).populate('shop');
+      // const shop = await Shop.findOne({shopOwner: ObjectId(ID)});
 
       console.log("Result: ", rs)
       return rs;
@@ -40,9 +33,7 @@ export const productResolvers = {
       
       if (!ID) throw Error(`Please login! <Received ID: ${ID} >`);
 
-      console.log(shopID)
-
-      const rs = await Product.find({'shop._id': ObjectId(shopID)}).populate('shop');
+      const rs = await Product.find({shop: ObjectId(shopID)}).populate('shop');
 
       console.log("Result: ", rs)
       return rs;

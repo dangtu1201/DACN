@@ -57,21 +57,21 @@ const paymentSchema= new mongoose.Schema({
 
 })
 
-paymentSchema.post('save', function(next) {
+// paymentSchema.post('save', function(next) {
 
-    // do something
+//     // do something
 
-    next();   //dont forget next();
+//     next();   //dont forget next();
 
-});
+// });
 
-paymentSchema.post('update', function(next) {
+// paymentSchema.post('update', function(next) {
 
-    // do something
+//     // do something
 
-    next();   //dont forget next();
+//     next();   //dont forget next();
 
-});
+// });
 
 //shareSchema.plugin(mongoosePaginate);
 // export const Payment = mongoose.model("Payment", paymentSchema)

@@ -6,7 +6,8 @@ import moment from 'moment-timezone';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
-import ObjectId from 'mongodb';
+import pkg from 'mongodb';
+const {ObjectId} = pkg;
 
 export const paymentResolvers = {
   Query: {
@@ -37,7 +38,7 @@ export const paymentResolvers = {
       return rs;
     },
     getPaymentById: async (_, {ID}, context) => {
-      return await Payment.findById(ObjectId(ID));
+      return await Payment.findById(ObjectId(ID)).populate(['user', 'shop',{path: 'products', populate: {path: 'product', model: 'Product'}}]);
     },
   },
   Mutation: {
@@ -56,11 +57,11 @@ export const paymentResolvers = {
       const rs = await Payment.create(input);
       return rs;
     },
-    updatePayment: async (_, {input}, context) => {
+    updatePayment: async (_, {ID, input}, context) => {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
-      const ID = decoded.payload.userID;
+      // const ID = decoded.payload.userID;
 
-      const rs = await Payment.findOneAndUpdate({user: ID}, input, {new: true})
+      const rs = await Payment.findByIdAndUpdate(ID, input, {new: true})
       return rs;
     },
     deletePayment: async (_, {ID}, context) => {

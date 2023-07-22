@@ -109,7 +109,7 @@ process.env.TZ = 'Asia/Ho_Chi_Minh';
                 t: req.t,
             };
         },
-        tracing: true,
+        tracing: false,
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({
@@ -120,15 +120,15 @@ process.env.TZ = 'Asia/Ho_Chi_Minh';
     apolloServer.installSubscriptionHandlers(httpServer);
 
     const PORT = process.env.PORT || 1338;
-    httpServer.listen(PORT, async () => {
+    httpServer.listen(PORT, '0.0.0.0', async () => {
         console.log(`Server listen on port ${PORT}`);
         console.log(
             `🚀 Subscriptions ready at http://localhost:${PORT}${apolloServer.subscriptionsPath}`,
         );
         // console.log(process.env.DB_CONNECT);
-        await mongoose.connect(
+        mongoose.connect(
             process.env.DB_CONNECT,
-            { useUnifiedTopology: true, useNewUrlParser: true }
+            { useUnifiedTopology: true, useNewUrlParser: true}
         );
     });
 })();

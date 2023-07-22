@@ -5,7 +5,8 @@ import moment from 'moment-timezone';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
-import ObjectId from 'mongodb';
+import pkg from 'mongodb';
+const {ObjectId} = pkg;
 
 export const cartResolvers = {
   Query: {

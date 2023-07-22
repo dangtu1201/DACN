@@ -25,6 +25,9 @@ const shopSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  CID: {
+    type: String,
+  },
   shopName: {
     type: String,
   },

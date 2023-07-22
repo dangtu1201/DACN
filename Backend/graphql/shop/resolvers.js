@@ -1,9 +1,11 @@
 import Shop from '../../models/shopModel.js';
+import Product from '../../models/productModel.js';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
 import {registerValidator, editUserValidator} from '../../validation/validation.js';
-import ObjectId from 'mongodb';
+import pkg from 'mongodb';
+const {ObjectId} = pkg;
 
 export const shopResolvers = {
   Query: {
@@ -29,8 +31,11 @@ export const shopResolvers = {
   },
   Mutation: {
     createShop: async (_, {input}, context) => {
-      const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
-      const ID = decoded.payload.userID;
+      // const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
+      // const ID = decoded.payload.userID;
+
+      const check = await Shop.findOne({shopOwner: input.shopOwner});
+      if (check) throw Error('You already have a shop!', check._id) 
 
       console.log("New shop:", input);
       const rs = await Shop.create(input);
@@ -38,10 +43,10 @@ export const shopResolvers = {
     },
     updateShop: async (_, {input}, context) => {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
-      // const ID = decoded.payload.userID;
-      const ID = input._id;
+      const ID = decoded.payload.userID;
+      const check = await Shop.findOne({shopOwner: ID});
 
-      const rs = await Product.findByIdAndUpdate(ID, input, {new: true})
+      const rs = await Shop.findByIdAndUpdate(check._id, input, {new: true})
       return rs;
     },
     deleteShop: async (_, {ID}, context) => {

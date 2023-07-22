@@ -9,11 +9,15 @@
         "prd": "NODE_ENV=production ENV=production babel-node index.js",
         "generateToken": "babel-node generateToken.js",
         "test": "jest --runInBand",
-        "start": "nodemon --exec babel-node index.js"
+        "start": "nodemon --exec babel-node index.js",
+        "babel-version": "babel --version"
     },
     "dependencies": {
         "@apollo/client": "^3.6.9",
         "@apollo/server": "^4.7.5",
+        "@babel/cli": "^7.22.9",
+        "@cloudinary/react": "^1.11.2",
+        "@cloudinary/url-gen": "^1.10.2",
         "@graphql-tools/schema": "^10.0.0",
         "@meanie/mongoose-upsert-many": "^2.2.0",
         "@react-native-community/push-notification-ios": "^1.11.0",
@@ -81,16 +85,18 @@
         "ws": "^8.13.0"
     },
     "devDependencies": {
+        "@babel/cli": "^7.22.9",
         "@babel/core": "^7.12.9",
         "@babel/node": "^7.12.6",
         "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.12.7",
         "@babel/preset-flow": "^7.13.13",
+        "@flydotio/dockerfile": "^0.3.3",
         "@salesforce/eslint-config-lwc": "^3.3.3",
         "eslint": "^8.20.0",
         "eslint-plugin-import": "^2.26.0",
         "jest": "^27.2.1",
-        "nodemon": "^2.0.7",
+        "nodemon": "^3.0.1",
         "prettier": "^2.7.1"
     }
 }
