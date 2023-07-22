@@ -7,3 +7,8 @@ export const formatDayTime = (dateString : string) => {
     const minute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
     return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
+
+export const formatMessage = (message : string) => {
+    let result = message.split(': ')[0];
+    return result;
+}

@@ -8,6 +8,8 @@ import Toast from 'react-native-toast-message';
 import { useLoginMutation } from "../../redux/api/authApi";
 import { useSelector, useDispatch } from 'react-redux';
 import { loginApp } from "../../redux/login";
+import { toast } from "../../services/toast";
+import { formatMessage } from "../../services/format";
 
 
 export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login">) {
@@ -29,15 +31,7 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
     const validatePassword = (password: string) => {
         // password 6 number
         if (password.length < 6) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu phải có 6 ký tự",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error", "Mật khẩu phải có 6 ký tự", "");
             return false;
         }
         return true;
@@ -55,15 +49,7 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
     const validatePhoneNumber = (phoneNumber: string) => {
         // phone number 10 number
         if (phoneNumber.length < 10) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Số điện thoại không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error", "Số điện thoại không hợp lệ", "");
             return false;
         }
         return true;
@@ -73,20 +59,14 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
         if ( validatePhoneNumber(phoneNumber) && validatePassword(password)) {
             login(`{"input": {"phone": "${phoneNumber}", "password": "${password}", "as": "Shop"}}`).unwrap().then(
                 res => {
-                    Toast.show({
-                        type: "success",
-                        position: "top",
-                        text1: "Đăng nhập thành công",
-                        visibilityTime: 2000,
-                        autoHide: true,
-                        topOffset: 100,
-                        bottomOffset: 40,
-                    });
+                    toast("success", "Đăng nhập thành công", "");
                     console.log(res?.Login?.userID, res?.Login?.refreshToken);
                     dispatch(loginApp({userId: res?.Login?.userID, usertoKen: res?.Login?.refreshToken}));
                 }
             ).catch(
-                err => console.log(err)
+                err => {
+                    toast("error", formatMessage(err.message), "")
+                }
             );
         }
     }

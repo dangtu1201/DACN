@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { useRegisterMutation } from "../../redux/api/authApi";
 import { toast } from "../../services/toast";
+import { formatMessage } from "../../services/format";
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -102,8 +103,7 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                 toast("success","Đăng ký thành công","");
                 navigation.navigate("Login");
             }).catch((err) => {
-                toast("error",err?.message,"");
-                console.log(err);
+                toast("error",formatMessage(err.message),"");
             });
         }
     }

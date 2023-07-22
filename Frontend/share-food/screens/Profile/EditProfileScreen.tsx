@@ -9,6 +9,7 @@ import { toast } from "../../services/toast";
 import { useUpdateUserInfoMutation } from "../../redux/api/authApi";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { formatMessage } from "../../services/format";
 
 interface UpdateInfo {
     name: string;
@@ -57,7 +58,7 @@ export default function EditProfileScreen({ navigation }: RootStackScreenProps<"
                 toast("success","Cập nhật thành công","");
                 navigation.navigate("Root")
             }).catch((err) => {
-                toast("error",err?.message,"");
+                toast("error",formatMessage(err.message),"");
                 console.log(err);
             });
         }

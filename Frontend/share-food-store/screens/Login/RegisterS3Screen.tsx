@@ -11,6 +11,7 @@ import { useRegisterMutation, useCreateShopMutation } from "../../redux/api/auth
 import { toast } from "../../services/toast";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { formatMessage } from "../../services/format";
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -146,12 +147,12 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
                     navigation.navigate("Login");
                 }
                 ).catch((err) => {
-                    toast("error",err?.message,"");
+                    toast("error", formatMessage(err.message),"");
                     console.log(err);
                 }
                 );
             }).catch((err) => {
-                toast("error",err?.message,"");
+                toast("error", formatMessage(err.message), "");
                 console.log(err?.message);
             });
         }
