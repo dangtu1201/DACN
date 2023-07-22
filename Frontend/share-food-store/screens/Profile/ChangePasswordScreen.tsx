@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
 import { toast } from "../../services/toast";
 import { useUpdateUserInfoMutation, useGetUserPasswordQuery } from "../../redux/api/authApi";
+import { formatMessage } from "../../services/format";
 
 export default function ChangePasswordScreen({ navigation }: RootStackScreenProps<"ChangePassword">) {
 
@@ -82,8 +83,7 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
                 toast("success","Cập nhật thành công","");
                 navigation.navigate("Root")
             }).catch((err) => {
-                toast("error",err?.message,"");
-                console.log(err);
+                toast("error",formatMessage(err.message),"");
             });
         }
     }
