@@ -6,6 +6,11 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
+import * as ImagePicker from 'expo-image-picker';
+import { useRegisterMutation, useCreateShopMutation } from "../../redux/api/authApi";
+import { toast } from "../../services/toast";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 interface RegisterInfo {
     phoneNumber: string;
@@ -24,14 +29,30 @@ interface RegisterInfo {
 export default function RegisterS3Screen({ navigation, route }: LoginStackScreenProps<"RegisterS3">) {
 
     const { phoneNumber } = route.params;
+    const userAddr = useSelector((state: RootState) => state.userAddr);
     const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({phoneNumber: phoneNumber, name: "", email: "", cardId: "", storeName: "", storeAddress: "", storeLocation: {
-        latitude: 10.772029,
-        longitude: 106.657817,
+        latitude: userAddr.lat,
+        longitude: userAddr.lng,
     }, password: ""});
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
     const [isShowMap, setIsShowMap] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [register, { isLoading, data, error }] = useRegisterMutation();
+    const [createShop, { isLoading: isLoadingCreateShop, data: dataCreateShop, error: errorCreateShop }] = useCreateShopMutation();
+
+    const pickImageAsync = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1,
+            aspect: [3, 3],
+        });
+
+        if (!result.canceled) {
+            setSelectedImage(result.assets[0].uri);
+        }
+    };
 
     const onChangePassword = (text: string) => {
         // password is 6 digits
@@ -58,93 +79,37 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
     const validateRegisterInfo = (registerInfo: RegisterInfo) => {
         // name is not empty
         if (registerInfo.name.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Họ và tên không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Họ và tên không hợp lệ","");
             return false;
         }
         // email is not empty
         if (registerInfo.email.length === 0 || !validateEmail(registerInfo.email)) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Email không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Email không hợp lệ","");
             return false;
         }
         // cardId is not empty
         if (registerInfo.cardId.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Số CMND không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Số CMND không hợp lệ","");
             return false;
         }
         // storeName is not empty
         if (registerInfo.storeName.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Tên cửa hàng không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Tên cửa hàng không hợp lệ","");
             return false;
         }
         // storeAddress is not empty
         if (registerInfo.storeAddress.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Địa chỉ cửa hàng không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Địa chỉ cửa hàng không hợp lệ","");
             return false;
         }
         // password is 6 digits
         if (registerInfo.password.length < 6) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu phải có 6 ký tự",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu phải có 6 ký tự","");
             return false;
         }
         // password and confirm password are the same
         if (registerInfo.password !== confirmPassword) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu không khớp",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu không khớp","");
             return false;
         }
         return true;
@@ -152,24 +117,72 @@ export default function RegisterS3Screen({ navigation, route }: LoginStackScreen
 
     const onClickRegister = () => {
         if (validateRegisterInfo(registerInfo)) {
-            Toast.show({
-                type: "success",
-                position: "top",
-                text1: "Đăng ký thành công",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
+            let registerInput = {
+                input: {
+                    phone: registerInfo.phoneNumber,
+                    name: registerInfo.name,
+                    email: registerInfo.email,
+                    password: registerInfo.password,
+                    image: selectedImage,
+                    roles: "User"
+                }
+            }
+            register(JSON.stringify(registerInput)).unwrap().then((res) => {
+                let createShopInput = {
+                    input: {
+                        shopName: registerInfo.storeName,
+                        address: registerInfo.storeAddress,
+                        coordinates: {
+                            lat: `${registerInfo.storeLocation.latitude}`,
+                            long: `${registerInfo.storeLocation.longitude}`,
+                        },
+                        shopOwner: res?.data?.createUser?._id,
+                        CID: registerInfo.cardId,
+                        status: "Approved",
+                    }
+                }
+                createShop(JSON.stringify(createShopInput)).unwrap().then((res) => {
+                    toast("success","Đăng ký thành công","");
+                    navigation.navigate("Login");
+                }
+                ).catch((err) => {
+                    toast("error",err?.message,"");
+                    console.log(err);
+                }
+                );
+            }).catch((err) => {
+                toast("error",err?.message,"");
+                console.log(err?.message);
             });
-            navigation.navigate("Login");
         }
     }
 
     return (
         <View style={styles.container}>
             <ScrollView 
+                showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
             >
+            <View>
+                <Pressable
+                    style={{ width: 200, height: 200, borderWidth: 1, borderRadius: 10, marginBottom: 20, display: "flex", justifyContent: "center", alignItems: "center" }}
+                    onPress={() => pickImageAsync()}
+                >
+                    {selectedImage ? (
+                        <View>
+                            <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200, borderRadius: 10 }} />
+                            <Pressable
+                                style={{ position: "absolute", top: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", width: 30, height: 30, borderRadius: 15, display: "flex", justifyContent: "center", alignItems: "center" }}
+                                onPress={() => setSelectedImage(null)}
+                            >
+                                <Ionicons name="close" size={20} color="#fff" />
+                            </Pressable>
+                        </View>
+                    ) : (
+                        <Ionicons name="add-circle-outline" size={50} color={Colors.light.tabIconDefault} />
+                    )}
+                </Pressable>
+            </View>
             <Text style={{fontSize: 16}}>Họ và tên</Text>
             <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
                 placeholder="Nhập họ và tên"

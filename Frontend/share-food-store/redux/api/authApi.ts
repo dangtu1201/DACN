@@ -86,6 +86,23 @@ export const authApi = createApi({
       },
       providesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    createShop: builder.mutation({
+      query: (shop) => ({
+        document: `mutation CreateShop($input: createShop) {
+          createShop(input: $input) {
+            shopOwner {
+              email
+              phone
+            }
+            _id
+            status
+          }
+        }
+        `,
+        variables: shop,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -95,4 +112,5 @@ export const {
   useLogoutMutation,
   useMeQuery,
   useShopQuery,
+  useCreateShopMutation,
 } = authApi;
