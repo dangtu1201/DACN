@@ -63,6 +63,30 @@ export const authApi = createApi({
 
       providesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    updateUserInfo: builder.mutation({
+      query: (user) => ({
+        document: `mutation UpdateUser($input: updateUser) {
+          updateUser(input: $input) {
+            email
+            phone
+            _id
+            name
+          }
+        }
+        `,
+        variables: user,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    getUserPassword: builder.query({
+      query: () => ({
+        document: `query GetUser {
+          getUser {
+            password
+          }
+        }`,
+      }),
+    }),
   }),
 });
 
@@ -71,4 +95,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useMeQuery,
+  useUpdateUserInfoMutation,
+  useGetUserPasswordQuery,
 } = authApi;

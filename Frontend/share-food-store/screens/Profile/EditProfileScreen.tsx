@@ -5,6 +5,10 @@ import { RootStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
+import { toast } from "../../services/toast";
+import { useUpdateUserInfoMutation, useUpdateShopMutation } from "../../redux/api/authApi";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 interface UpdateInfo {
     name: string;
@@ -14,7 +18,12 @@ interface UpdateInfo {
 
 export default function EditProfileScreen({ navigation }: RootStackScreenProps<"EditProfile">) {
 
-    const [updateInfo, setUpdateInfo] = useState<UpdateInfo>({name: "", email: "", storeName: ""});
+    const userInfo = useSelector((state: RootState) => state.userInfo);
+    const [updateUserInfo, { isLoading }] = useUpdateUserInfoMutation();
+    const shop = useSelector((state: RootState) => state.shop);
+    const [updateShop, { isLoading: isLoadingShop }] = useUpdateShopMutation();
+
+    const [updateInfo, setUpdateInfo] = useState<UpdateInfo>({name: userInfo.name, email: userInfo.email, storeName: shop.shopName});
 
     // validate email
     const validateEmail = (email: string) => {
@@ -27,41 +36,17 @@ export default function EditProfileScreen({ navigation }: RootStackScreenProps<"
     const validateUpdateInfo = (updateInfo: UpdateInfo) => {
         // name is not empty
         if (updateInfo.name.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Họ và tên không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Họ và tên không hợp lệ","");
             return false;
         }
         // email is not empty
         if (updateInfo.email.length === 0 || !validateEmail(updateInfo.email)) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Email không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Email không hợp lệ","");
             return false;
         }
         // store name is not empty
         if (updateInfo.storeName.length === 0) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Tên cửa hàng không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Tên cửa hàng không hợp lệ","");
             return false;
         }
         
@@ -71,16 +56,31 @@ export default function EditProfileScreen({ navigation }: RootStackScreenProps<"
     // handle click register button
     const onClickUpdate = () => {
         if (validateUpdateInfo(updateInfo)) {
-            Toast.show({
-                type: "success",
-                position: "top",
-                text1: "Cập nhật thành công",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
+            let updateInput = {
+                input: {
+                    name: updateInfo.name,
+                    email: updateInfo.email,
+                }
+            }
+            updateUserInfo(JSON.stringify(updateInput)).unwrap().then((res) => {
+                let updateShopInput = {
+                    input: {
+                        shopName: updateInfo.storeName,
+                    }
+                }
+                updateShop(JSON.stringify(updateShopInput)).unwrap().then((res) => {
+                    toast("success","Cập nhật thành công","");
+                    navigation.navigate("Root")
+                }
+                ).catch((err) => {
+                    toast("error",err?.message,"");
+                    console.log(err);
+                }
+                );
+            }).catch((err) => {
+                toast("error",err?.message,"");
+                console.log(err);
             });
-            navigation.navigate("Root");
         }
     }
 

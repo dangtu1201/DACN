@@ -103,6 +103,42 @@ export const authApi = createApi({
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    updateUserInfo: builder.mutation({
+      query: (user) => ({
+        document: `mutation UpdateUser($input: updateUser) {
+          updateUser(input: $input) {
+            email
+            phone
+            _id
+            name
+          }
+        }
+        `,
+        variables: user,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    getUserPassword: builder.query({
+      query: () => ({
+        document: `query GetUser {
+          getUser {
+            password
+          }
+        }`,
+      }),
+    }),
+    updateShop: builder.mutation({
+      query: (shop) => ({
+        document: `mutation UpdateShop($input: updateShop) {
+          updateShop(input: $input) {
+            shopName
+          }
+        }
+        `,
+        variables: shop,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -113,4 +149,7 @@ export const {
   useMeQuery,
   useShopQuery,
   useCreateShopMutation,
+  useUpdateUserInfoMutation,
+  useUpdateShopMutation,
+  useGetUserPasswordQuery,
 } = authApi;
