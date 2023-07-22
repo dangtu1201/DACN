@@ -22,15 +22,11 @@ export const authApi = createApi({
     }),
     register: builder.mutation({
       query: (credentials) => ({
-        document: `mutation register($name: String!, $email: String!, $password: String!) {
-          register(name: $name, email: $email, password: $password) {
-            token 
-            user {
-              id
-              name
-              email
-              role
-            }
+        document: `mutation CreateUser($input: createUser) {
+          createUser(input: $input) {
+            _id
+            email
+            phone
           }
         }`,
         variables: credentials,
@@ -52,6 +48,7 @@ export const authApi = createApi({
             email
             phone
             name
+            image
           }
         }`,
       }),
@@ -66,6 +63,30 @@ export const authApi = createApi({
 
       providesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    updateUserInfo: builder.mutation({
+      query: (user) => ({
+        document: `mutation UpdateUser($input: updateUser) {
+          updateUser(input: $input) {
+            email
+            phone
+            _id
+            name
+          }
+        }
+        `,
+        variables: user,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    getUserPassword: builder.query({
+      query: () => ({
+        document: `query GetUser {
+          getUser {
+            password
+          }
+        }`,
+      }),
+    }),
   }),
 });
 
@@ -74,4 +95,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useMeQuery,
+  useUpdateUserInfoMutation,
+  useGetUserPasswordQuery,
 } = authApi;

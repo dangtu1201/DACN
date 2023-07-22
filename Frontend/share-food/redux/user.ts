@@ -5,12 +5,14 @@ export interface UserModel {
     email: string;
     phone: string;
     name: string;
+    image: string;
 }
 
 const initialState: UserModel = {
     email: '',
     phone: '',
     name: '',
+    image: '',
 };
 
 const userInfo = createSlice({
@@ -21,6 +23,7 @@ const userInfo = createSlice({
             state.email = action.payload.email;
             state.phone = action.payload.phone;
             state.name = action.payload.name;
+            state.image = action.payload.image;
         }
     }
 });

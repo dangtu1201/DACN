@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 
 import userAddrReducer from "./userAddr";
 import login from "./login";
-import user from "./user";
+import userInfo from "./user";
 import cart from "./cart";
 import ordersProcessing from "./ordersProcessing";
 import ordersHistory from "./ordersHistory";
@@ -15,7 +15,7 @@ import { orderApi } from "./api/orderApi";
 const rootReducer = combineReducers({
     userAddr: userAddrReducer,
     login: login,
-    user: user,
+    user: userInfo,
     cart: cart,
     ordersProcessing: ordersProcessing,
     ordersHistory: ordersHistory,

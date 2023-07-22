@@ -5,8 +5,8 @@ import { RootStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
-
-
+import { toast } from "../../services/toast";
+import { useUpdateUserInfoMutation, useGetUserPasswordQuery } from "../../redux/api/authApi";
 
 export default function ChangePasswordScreen({ navigation }: RootStackScreenProps<"ChangePassword">) {
 
@@ -18,6 +18,9 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
 
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
+    const [updateUserInfo, { isLoading }] = useUpdateUserInfoMutation();
+    const { currentData: userPassword, error, isLoading: isLoadingPassword, refetch } = useGetUserPasswordQuery('');
 
     // onChange old password
     const onChangeOldPassword = (text: string) => {
@@ -47,41 +50,17 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
     const validateUpdatePassword = (oldPassword: string, updatePassword: string, confirmPassword: string) => {
         // old password is 6 digits
         if (oldPassword.length < 6) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu cũ không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu cũ không hợp lệ","");
             return false;
         }
         // new password is 6 digits
         if (updatePassword.length < 6) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu mới không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu mới không hợp lệ","");
             return false;
         }
         // confirm password is same as new password
         if (confirmPassword !== updatePassword) {
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Mật khẩu không khớp",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
-            });
+            toast("error","Mật khẩu không khớp","");
             return false;
         }
         return true;
@@ -89,16 +68,23 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
 
     const onClickUpdate = () => {
         if (validateUpdatePassword(oldPassword, updatePassword, confirmPassword)) {
-            Toast.show({
-                type: "success",
-                position: "top",
-                text1: "Cập nhật thành công",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100,
-                bottomOffset: 40,
+            if(userPassword?.getUser?.password !== oldPassword) {
+                toast("error","Mật khẩu cũ không đúng","");
+                return;
+            }
+            let updateInput = {
+                input: {
+                    password: updatePassword,
+                }
+            }
+            updateUserInfo(JSON.stringify(updateInput)).unwrap().then((res) => {
+                refetch();
+                toast("success","Cập nhật thành công","");
+                navigation.navigate("Root")
+            }).catch((err) => {
+                toast("error",err?.message,"");
+                console.log(err);
             });
-            navigation.navigate("Root");
         }
     }
 

@@ -23,15 +23,11 @@ export const authApi = createApi({
     }),
     register: builder.mutation({
       query: (credentials) => ({
-        document: `mutation register($name: String!, $email: String!, $password: String!) {
-          register(name: $name, email: $email, password: $password) {
-            token 
-            user {
-              id
-              name
-              email
-              role
-            }
+        document: `mutation CreateUser($input: createUser) {
+          createUser(input: $input) {
+            _id
+            email
+            phone
           }
         }`,
         variables: credentials,
@@ -90,6 +86,59 @@ export const authApi = createApi({
       },
       providesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    createShop: builder.mutation({
+      query: (shop) => ({
+        document: `mutation CreateShop($input: createShop) {
+          createShop(input: $input) {
+            shopOwner {
+              email
+              phone
+            }
+            _id
+            status
+          }
+        }
+        `,
+        variables: shop,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    updateUserInfo: builder.mutation({
+      query: (user) => ({
+        document: `mutation UpdateUser($input: updateUser) {
+          updateUser(input: $input) {
+            email
+            phone
+            _id
+            name
+          }
+        }
+        `,
+        variables: user,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    getUserPassword: builder.query({
+      query: () => ({
+        document: `query GetUser {
+          getUser {
+            password
+          }
+        }`,
+      }),
+    }),
+    updateShop: builder.mutation({
+      query: (shop) => ({
+        document: `mutation UpdateShop($input: updateShop) {
+          updateShop(input: $input) {
+            shopName
+          }
+        }
+        `,
+        variables: shop,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -99,4 +148,8 @@ export const {
   useLogoutMutation,
   useMeQuery,
   useShopQuery,
+  useCreateShopMutation,
+  useUpdateUserInfoMutation,
+  useUpdateShopMutation,
+  useGetUserPasswordQuery,
 } = authApi;
