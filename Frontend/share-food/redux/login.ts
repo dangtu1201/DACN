@@ -31,6 +31,8 @@ const login = createSlice({
             }
             storeUser(user);
             state.statusLogin = 'login';
+            state.userId = action.payload.userId;
+            state.userToken = action.payload.usertoKen;
         },
         logoutApp: (state) => {
             clearUser();
