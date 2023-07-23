@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator, RefreshControl } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -17,8 +17,18 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
 
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("near");
-    const { currentData, error, isLoading } = useGetAllProductsQuery('');
+    const { currentData, error, isLoading, refetch } = useGetAllProductsQuery('');
     const userAddr = useSelector((state: RootState) => state.userAddr);
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -50,6 +60,10 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+                    
             >
                     {currentData && currentData?.getAllProducts?.map((item : IProduct, index: any) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}

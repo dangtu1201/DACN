@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, RefreshControl } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { OrderTabScreenProps } from "../../types";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -8,10 +8,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { formatMoney } from "../../services/formatMoney";
 import { formatDayTime } from "../../services/format";
+import { setOrderStatus } from "../../redux/orderStatus";
 
 export default function OrderProcessingScreen({ navigation }: OrderTabScreenProps<"OrderProcessing">) {
 
     const ordersProcessing = useSelector((state: RootState) => state.ordersProcessing);
+    const dispatch = useDispatch();
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(setOrderStatus({status: "processing"}));
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -29,6 +41,9 @@ export default function OrderProcessingScreen({ navigation }: OrderTabScreenProp
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         style={styles.orderList}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
                     >
                         {ordersProcessing.data.map((item, index) => (
                             <TouchableOpacity key={index} style={{ display: "flex", alignItems: "center", marginTop: 1 }}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator} from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator, RefreshControl} from "react-native";
 import { Text, View } from "../../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -19,16 +19,29 @@ import { setOrderStatus } from "../../redux/orderStatus";
 export default function OrderItemHistoryScreen({ navigation, route }: RootStackScreenProps<"OrderItemHistory">) {
 
     const orderId = route.params.orderId;
-    const { currentData, isLoading } = useGetOrderByIDQuery({"id": orderId});
+    const { currentData, isLoading, refetch } = useGetOrderByIDQuery({"id": orderId});
     const userAddr = useSelector((state: RootState) => state.userAddr);
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <View style={styles.container}>
             { isLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/> :
-            <View>
+            <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center", backgroundColor: Colors.light.storeBackground, 
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
@@ -129,7 +142,7 @@ export default function OrderItemHistoryScreen({ navigation, route }: RootStackS
                     <Text style={{fontSize: 16}}>Đánh giá</Text>
                 </TouchableOpacity>
             </View>
-            </View>
+            </>
             }
         </View>
     );

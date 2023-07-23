@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, Modal } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, Modal, RefreshControl, ActivityIndicator } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps  } from "../types";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -17,7 +17,7 @@ export default function OrderItemScreen({ navigation, route }: RootStackScreenPr
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [successModalVisible, setSuccessModalVisible] = useState(false);
     const orderId = route.params.orderId;
-    const { currentData, isLoading } = useGetOrderByIDQuery({"id": orderId});
+    const { currentData, isLoading, refetch } = useGetOrderByIDQuery({"id": orderId});
 
     const dispatch = useDispatch();
 
@@ -43,11 +43,26 @@ export default function OrderItemScreen({ navigation, route }: RootStackScreenPr
         });
     }
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
+
     return (
         <View style={styles.container}>
+            {isLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/> : 
+            <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View style={{display: "flex", justifyContent:"center",
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
@@ -133,7 +148,7 @@ export default function OrderItemScreen({ navigation, route }: RootStackScreenPr
                     </TouchableOpacity>
                 </View>
             </View>
-
+            </>}
             <Modal
                 animationType="fade"
                 transparent={true}

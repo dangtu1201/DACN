@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Dimensions, ActivityIndicator } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Dimensions, ActivityIndicator, RefreshControl } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
     const {width} = Dimensions.get("window") ;
     const [count, setCount] = useState(1);
     const productId = route.params.foodId;
-    const { currentData, error, isLoading } = useGetProductByIdQuery(JSON.stringify({productId: productId}));
+    const { currentData, error, isLoading, refetch } = useGetProductByIdQuery(JSON.stringify({productId: productId}));
     const userAddr = useSelector((state: RootState) => state.userAddr);
     const dispatch = useDispatch();
 
@@ -35,6 +35,16 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
         toast("success", "Thêm vào giỏ hàng thành công", "");
         dispatch(addProductToCart({product: product, quantity: count}));
     }
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
     
     return (
         
@@ -43,6 +53,9 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
             <ScrollView 
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View style={{paddingHorizontal: 20}}>
                     <View style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: 20}}>

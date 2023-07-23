@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, RefreshControl } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps } from "../types";
 import Colors from "../constants/Colors";
@@ -8,10 +8,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { formatMoney } from "../services/formatMoney";
 import { formatDayTime } from "../services/format";
+import { addOrderStatus } from "../redux/orderStatus";
 
 export default function OrderHistoryScreen({ navigation }: RootStackScreenProps<"OrderHistory">) {
 
     const ordersHistory = useSelector((state: RootState) => state.ordersHistory);
+    const dispatch = useDispatch();
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(addOrderStatus());
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
       <View style={styles.container}>
@@ -19,6 +31,9 @@ export default function OrderHistoryScreen({ navigation }: RootStackScreenProps<
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           style={styles.orderList}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
       >
           {ordersHistory.data.map((item, index) =>(
               <TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}

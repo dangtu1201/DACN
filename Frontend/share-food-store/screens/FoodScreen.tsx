@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator, RefreshControl } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -91,6 +91,17 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
         "outStock": "Chưa bán"
     }
 
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
+
     return (
         <View style={styles.container}>
             <Pressable style={{position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1, display: isModalOutPress ? "flex" : "none"}}
@@ -167,6 +178,9 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                     {currentData?.getProductsByShop?.map((item: IProduct, index: number) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}

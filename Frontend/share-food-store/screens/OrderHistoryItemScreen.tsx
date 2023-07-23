@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, ActivityIndicator } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, ScrollView, Pressable, ActivityIndicator, RefreshControl } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps  } from "../types";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -13,7 +13,16 @@ export default function OrderHistoryItemScreen({ navigation, route }: RootStackS
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
     const orderId = route.params.orderId;
-    const { currentData, isLoading } = useGetOrderByIDQuery({"id": orderId});
+    const { currentData, isLoading, refetch } = useGetOrderByIDQuery({"id": orderId});
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -22,6 +31,9 @@ export default function OrderHistoryItemScreen({ navigation, route }: RootStackS
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View style={{display: "flex", justifyContent:"center",
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}

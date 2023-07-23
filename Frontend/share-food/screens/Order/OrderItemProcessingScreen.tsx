@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Pressable, ScrollView, Modal, ActivityIndicator } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Pressable, ScrollView, Modal, ActivityIndicator, RefreshControl } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { RootTabScreenProps, RootStackScreenProps } from "../../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -21,7 +21,7 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
     const [modalVisible, setModalVisible] = useState(false);
     const orderId = route.params.orderId;
     const [updateOrder, { isLoading, isError, error }] = useUpdateOrderMutation();
-    const { currentData, isLoading: orderLoading } = useGetOrderByIDQuery({"id": orderId});
+    const { currentData, isLoading: orderLoading, refetch } = useGetOrderByIDQuery({"id": orderId});
     const userAddr = useSelector((state: RootState) => state.userAddr);
     const dispatch = useDispatch();
     
@@ -41,14 +41,27 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
         });
     }
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
+
 
     return (
         <View style={styles.container}>
-            {orderLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/>}
-            {!orderLoading &&
+            {orderLoading ? <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/> :
+            <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent:"center", backgroundColor: Colors.light.storeBackground, 
                     marginVertical: 20, paddingVertical: 10, marginBottom: 20}}
@@ -126,8 +139,6 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
                     )}
                 </View>
             </ScrollView>
-            }
-            {!orderLoading && 
             <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
                     <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
@@ -140,6 +151,7 @@ export default function OrderItemProcessingScreen({ navigation, route }: RootSta
                     <Text style={{fontSize: 16}}>Hủy đơn</Text>
                 </TouchableOpacity>
             </View>
+            </>
             }
             <Modal
                 animationType="fade"
