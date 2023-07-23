@@ -54,6 +54,10 @@ const cartSlice = createSlice({
             }
             const index = state.product.findIndex((item) => item.product._id === product._id);
             if (index !== -1) {
+                if( state.product[index].quantity + quantity > product.quantity) {
+                    toast("error", "Lỗi", "Số lượng sản phẩm không đủ");
+                    return;
+                }
                 state.product[index].quantity += quantity;
             } else {
                 state.product.push({ product, quantity });
@@ -78,6 +82,11 @@ const cartSlice = createSlice({
             const { productId } = action.payload;
             const index = state.product.findIndex((item) => item.product._id === productId);
             if (index !== -1) {
+                // check if product is available
+                if (state.product[index].quantity + 1 > state.product[index].product.quantity) {
+                    toast("error", "Lỗi", "Số lượng sản phẩm không đủ");
+                    return;
+                }
                 state.product[index].quantity += 1;
                 state.total = state.product.reduce((total, item) => total + item.product.price * item.quantity, 0);
             }
