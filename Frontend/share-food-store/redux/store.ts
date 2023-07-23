@@ -11,6 +11,7 @@ import orderStatus from "./orderStatus";
 import { authApi } from "./api/authApi";
 import { productApi } from "./api/productApi";
 import { orderApi } from "./api/orderApi";
+import { imageApi } from "./api/imageApi";
 
 const rootReducer = combineReducers({
     userAddr: userAddrReducer,
@@ -24,11 +25,12 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
+    [imageApi.reducerPath]: imageApi.reducer,
 });
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, productApi.middleware, orderApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, productApi.middleware, orderApi.middleware, imageApi.middleware),
 });
 
 

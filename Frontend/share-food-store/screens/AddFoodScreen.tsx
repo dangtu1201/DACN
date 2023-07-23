@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useAddProductMutation } from "../redux/api/productApi";
 import { setStatus } from "../redux/status";
+import { useUploadImageMutation } from "../redux/api/imageApi";
 
 export type IProductCRUD = {
     name: string;
@@ -27,6 +28,8 @@ export type IProductCRUD = {
 }
 
 export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddFood">) {
+
+    const [uploadImage, { data: dataUploadImage, error: errorUploadImage, isLoading: isLoadingUploadImage }] = useUploadImageMutation();
     
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(false);
@@ -61,7 +64,8 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
         } 
     };
 
-    const uriToBase64 = async (uri: string) => {
+    const uriToBase64 = async (uri: string | null) => {
+        if (!uri) return;
         let base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
         return base64;
     };
@@ -90,7 +94,6 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
             console.log(err);
         }
         );
-
     }
 
     console.log(selectedImage)
