@@ -11,7 +11,7 @@ import Colors from "../constants/Colors";
 
 export default function ReviewScreen({ navigation, route }: RootStackScreenProps<"Review">) {
 
-    const { orderID } = route.params;
+    const { orderId } = route.params;
 
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [star, setStar] = useState<number>(0);
