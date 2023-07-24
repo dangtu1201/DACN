@@ -54,13 +54,16 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          quality: 1,
           aspect: [3, 3],
+          quality: 1,
+          base64: true
         });
     
         if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
+            // setSelectedImage(result.assets[0].uri);
+            setSelectedImage(`data:image/jpg;base64,${result.assets[0].base64}`);
         } 
     };
 
@@ -71,32 +74,40 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
     };
 
     const handleAddProduct = async () => {
-        let data = JSON.stringify({
-            input: {
-                name: product.name,
-                price_old: product.price_old ? parseInt(product.price_old) : 0,
-                price: product.price ? parseInt(product.price) : 0,
-                description: product.description,
-                quantity: product.quantity ? parseInt(product.quantity) : 0,
-                status: product.status,
-                activeTime: {
-                    from: product.activeTime.from,
-                    to: product.activeTime.to,
-                },
-            }
+        let imgQuery = JSON.stringify({
+            photo: ((selectedImage))
         });
-        console.log(data);
-        addProduct(data).unwrap().then((res) => {
-            console.log(res);
-            dispatch(setStatus({status: "addProductSuccess"}))
-            navigation.navigate("Root");
-        }).catch((err) => {
-            console.log(err);
-        }
-        );
+        await uploadImage(imgQuery).unwrap().then((res) => {
+            const image = res.singleUpload;
+            setSelectedImage(image);
+            let data = JSON.stringify({
+                input: {
+                    name: product.name,
+                    price_old: product.price_old ? parseInt(product.price_old) : 0,
+                    price: product.price ? parseInt(product.price) : 0,
+                    description: product.description,
+                    quantity: product.quantity ? parseInt(product.quantity) : 0,
+                    status: product.status,
+                    activeTime: {
+                        from: product.activeTime.from,
+                        to: product.activeTime.to,
+                    },
+                    image: image,
+                }
+            });
+            console.log(data);
+            addProduct(data).unwrap().then((res) => {
+                console.log(res);
+                dispatch(setStatus({status: "addProductSuccess"}))
+                navigation.navigate("Root");
+            }).catch((err) => {
+                console.log(err);
+            }
+            );
+        });
     }
 
-    console.log(selectedImage)
+    // console.log(selectedImage)
 
     return (
         <View style={styles.container}>

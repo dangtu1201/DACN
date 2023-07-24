@@ -9,12 +9,7 @@ export const imageApi = createApi({
         uploadImage: builder.mutation({
             query: (credentials) => ({
                 document: `mutation SingleUpload($photo: String) {
-                    singleUpload(photo: $photo) {
-                      filename
-                      _id
-                      filepath
-                      mimetype
-                    }
+                    singleUpload(photo: $photo)
                   }
                 `,
                 variables: credentials
