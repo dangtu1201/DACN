@@ -191,7 +191,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                             }
                         >
                             <View style={styles.foodItem}>
-                                <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                <Image style={styles.foodImage} source={{ uri: item.image }}/>
                                 <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                     <Text style={{fontWeight: "bold", display: "flex", width: 200}}>{item?.name}</Text>
                                     <Text>Số lượng: {item?.quantity}</Text>
