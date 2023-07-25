@@ -12,6 +12,7 @@ import { dirname } from 'path';
 import multer from 'multer';
 import {GridFsStorage} from 'multer-gridfs-storage';
 import Grid from 'gridfs-stream';
+import {v2 as cloudinary} from 'cloudinary';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -92,20 +93,26 @@ export const imgResolvers = {
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
 
+      // console.log("CALLED");
+      // console.log((photo));
+      // console.log("CALLED AGAIN");
       try {
-        const result = await cloudinary.v2.uploader.upload(photo, {
+        const result = await cloudinary.uploader.upload_large(photo, {
           allowed_formats: ["jpg", "png"], //chose to allow only jpg and png upload
           public_id: "", //generates a new id for each uploaded image
-          folder: "your_folder_name", //creates a folder called "your_folder_name" where images will be stored.
+          folder: "daily-groceries", //creates a folder called "your_folder_name" where images will be stored.
         });
+        
+        /*returns uploaded photo url if successful `result.url`.
+        if we were going to store image name in database,this
+        */
+        console.log("Cloudinary URL: ", result.url);
+        return result.url; 
       }
       catch (e) {
-          return `Image could not be uploaded:${e.message}`; //returns an error message on image upload failure
-        }
-      /*returns uploaded photo url if successful `result.url`.
-      if we were going to store image name in database,this
-      */
-      return `Successful-Photo URL: ${result.url}`;     
+        console.log(`Image could not be uploaded:${e.message}`);
+        return `Image could not be uploaded:${e.message}`; //returns an error message on image upload failure
+      }    
     },
   },
 }

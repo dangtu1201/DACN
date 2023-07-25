@@ -4,29 +4,25 @@ import { graphql   } from 'graphql';
 
 const typeDefs = gql`
   input url {
-    url: String!
+    url: String
   }
 
   type Url {
-    url: String!
+    url: String
   }
 
   type File {
     _id: ID!
-    filename: String
-    filepath: String
-    mimetype: String
-    encoding: String
     url: String
   }
 
   extend type Query {
-    getProductImg: String
-    getUserImg: Url
+    getProductImg(productID: ID): Url
+    getUserImg(userID: ID): Url
   }
 
   extend type Mutation {
-    singleUpload(photo: String): File
+    singleUpload(photo: String): String
   }
 `;
 

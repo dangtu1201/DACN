@@ -79,6 +79,8 @@ const typeDefs = gql`
     activeTime: activeTime
     status: Status
     image: String
+    rating: Float
+    rating_list: [Int]
   }
 
   extend type Query {

@@ -84,6 +84,7 @@ const typeDefs = gql`
     status: String
     createAt: DateTime
     updateAt: DateTime
+    isReviewed: Boolean
   }
 
   extend type Query {

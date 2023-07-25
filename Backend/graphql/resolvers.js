@@ -8,8 +8,9 @@ import payment from './payment/resolvers.js';
 import product from './product/resolvers.js';
 import shop from './shop/resolvers.js';
 import user from './user/resolvers.js';
+import review from './review/resolvers.js';
 
-const resolvers = merge(cart, image, login, payment, product, shop, global, user);
+const resolvers = merge(cart, image, login, payment, product, shop, global, user, review);
 // resolvers = merge(comment, global)
 
 export default resolvers;

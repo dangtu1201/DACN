@@ -61,7 +61,14 @@ const shopSchema = mongoose.Schema({
   status:{
     type: String,
     enum: STATUS,
-  }
+  },
+  rating:{
+    type: Number,
+    default: 0,
+  },
+  rating_list:[{
+    type: Number,
+  }]
 });
 
 shopSchema.pre("findOneAndUpdate", function(next) {
@@ -72,6 +79,20 @@ shopSchema.pre("findOneAndUpdate", function(next) {
   
   next()
 })
+
+// shopSchema.pre("findOneAndUpdate", async function(next) {
+//   const data = this.getUpdate()
+//   const db_data = await this.model.findOne(this._conditions);
+//   const old_rating = db_data.rating;
+
+//   if (old_rating) data.rating = (data.rating + old_rating)/2;
+//   else data.rating = data.rating;
+  
+
+//   this.update({}, data)
+  
+//   next()
+// });
 
 
 // export const Shop = mongoose.model("Shop", shopSchema);

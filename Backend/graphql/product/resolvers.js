@@ -6,6 +6,7 @@ import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
 import pkg from 'mongodb';
+import resolvers from '../global/resolvers/index.js';
 const {ObjectId} = pkg;
 
 export const productResolvers = {
@@ -24,7 +25,7 @@ export const productResolvers = {
       const rs = await Product.find({shop: (checkShop._id)}).populate('shop');
       // const shop = await Shop.findOne({shopOwner: ObjectId(ID)});
 
-      console.log("Result: ", rs)
+      console.log("Result (getProducts): ", rs)
       return rs;
     },
     getProductsByShop: async (_, {shopID}, context) => {
@@ -35,7 +36,7 @@ export const productResolvers = {
 
       const rs = await Product.find({shop: ObjectId(shopID)}).populate('shop');
 
-      console.log("Result: ", rs)
+      console.log("Result (getProductsByShop): ", rs)
       return rs;
     },
     getProductsById: async (_, {productID}, context) => {
@@ -48,7 +49,7 @@ export const productResolvers = {
 
       const rs = await Product.findById(productID).populate('shop');
 
-      console.log("Result: ", rs)
+      console.log("Result (getProductsById): ", rs)
       return rs;
     },
   },
@@ -62,13 +63,15 @@ export const productResolvers = {
       if (!ID) throw Error(`Please login! <Received ID: ${ID} >`);
       Object.assign(input, {shop: shopID._id});
 
-      const image = ObjectId(input.image)
       const discount_id = (input.discount_id) ? (input.discount_id).map(ObjectId) : [];
       input.discount_id = discount_id;
-      input.image = image;
 
-      console.log("New product:", input);
-      const rs = await Product.create(input);
+      // console.log("New product:", input);
+      const rs = await Product.create(input).then(async (item) => {
+        // console.log(item._id);
+        await Shop.findByIdAndUpdate(shopID._id, { $push: { products: item._id } }, {new: true});
+        return item;
+      })
       return rs;
     },
     updateProduct: async (_, {input}, context) => {
@@ -83,11 +86,16 @@ export const productResolvers = {
       const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
       const userID = decoded.payload.userID;
 
-      if (!userID) throw Error('This is not your product! ', ID) 
+      const shopID = await Shop.findOne({shopOwner: userID});
+      if (!shopID) throw Error('This is not your product! ', ID) 
       
-      const rs = await Product.findByIdAndRemove(ID);
+      const rs = await Product.findByIdAndRemove(ID).then(async (item) => {
+        // console.log(item._id);
+        await Shop.findByIdAndUpdate(shopID._id, { $pull: { products: item._id } }, {new: true});
+        return item;
+      })
 
-      console.log(`Deleted product with name: ${rs.name} and description: ${rs.description} of user ${rs.userID}`)
+      console.log(`Deleted product with name: ${rs.name} and description: ${rs.description} of shop ${shopID._id}`)
       return rs;
     },
     // shareProduct: async (_, {input}, context) => {

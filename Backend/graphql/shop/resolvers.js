@@ -34,6 +34,8 @@ export const shopResolvers = {
       // const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
       // const ID = decoded.payload.userID;
 
+      console.log(input);
+
       const check = await Shop.findOne({shopOwner: input.shopOwner});
       if (check) throw Error('You already have a shop!', check._id) 
 

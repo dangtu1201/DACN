@@ -6,7 +6,8 @@ import payment from './payment/typeDefs.js';
 import product from './product/typeDefs.js';
 import shop from './shop/typeDefs.js';
 import user from './user/typeDefs.js';
+import review from './review/typeDefs.js';
 
-const typeDefs = [...global, cart, image, login, payment, product, shop, user];
+const typeDefs = [...global, cart, image, login, payment, product, shop, user, review];
 
 export default typeDefs;

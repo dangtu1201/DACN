@@ -45,6 +45,8 @@ process.env.TZ = 'Asia/Ho_Chi_Minh';
 
     const app = express();
 
+    app.use(express.json({limit: '100mb'}));
+
     app.use(
         cors(),
         bodyParser.json(),

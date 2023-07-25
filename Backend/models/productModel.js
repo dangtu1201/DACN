@@ -40,8 +40,8 @@ const productSchema =  mongoose.Schema({
     ref: 'Shop'
   },
   image: {
-    type: mongoose.Types.ObjectId,
-    ref: 'Image'
+    type: String,
+    default: 'https://res.cloudinary.com/dizogp0ro/image/upload/v1690190704/daily-groceries/404_gduny9.jpg',
   },
   category: [
     {
@@ -60,7 +60,14 @@ const productSchema =  mongoose.Schema({
   status:{
     type: String,
     enum: STATUS
-  }
+  },
+  rating:{
+    type: Number,
+    default: 0,
+  },
+  rating_list:[{
+    type: Number,
+  }]
 }
 );
 
@@ -72,6 +79,28 @@ productSchema.pre("findOneAndUpdate", function(next) {
   
   next()
 })
+
+// productSchema.post("findOneAndUpdate", async function(result) {
+//     // const data = this.getUpdate()
+//     const db_data = await this.model.findOne(this._conditions);
+//     const rating_list = db_data.rating_list;
+
+//     // rating_list.push(data.rating)
+//     const average = rating_list.reduce((a, b) => a + b, 0) / rating_list.length;
+
+//     // console.log(db_data.rating);
+//     // const test = await this.update({}, {rating: average}, {new: true})
+//     // console.log(test);
+//     this.rating = average;
+//     this.save(function(err){
+
+//       console.log("Document Updated");       
+//     });
+
+//     // this.update({}, data)
+    
+//     // next()
+//   });
 
 
 // export const Product = mongoose.model("Product", productSchema);

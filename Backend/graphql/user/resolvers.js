@@ -6,8 +6,8 @@ import {registerValidator, editUserValidator} from '../../validation/validation.
 
 export const userResolvers = {
   Query: {
-    users: async (_, args) => {
-      return await User.find({});
+    users: async (_, {phone}) => {
+      return await User.findOne({phone: phone});
     },
     getAllUsers: async () => {
       return await User.find({});

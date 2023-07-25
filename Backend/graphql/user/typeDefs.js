@@ -42,7 +42,7 @@ const typeDefs = gql`
   }
 
   extend type Query {
-    users: [User!]!
+    users(phone: String): User
     getAllUsers: [User!]!
     getUser: User!
   }

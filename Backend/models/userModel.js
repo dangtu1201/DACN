@@ -47,7 +47,7 @@ const userSchema = mongoose.Schema({
   ],
   image:{
     type: String,
-    default: 'v1658478688/user/default_am11ol.webp'
+    default: 'https://res.cloudinary.com/dizogp0ro/image/upload/v1690190704/daily-groceries/404_gduny9.jpg',
   }
 });
 

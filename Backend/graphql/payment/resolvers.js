@@ -2,11 +2,13 @@ import Product from '../../models/productModel.js';
 import Payment from '../../models/paymentModel.js';
 import User from '../../models/userModel.js';
 import Shop from '../../models/shopModel.js';
+import Review from '../../models/reviewModel.js';
 import moment from 'moment-timezone';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
 import jwtVariable from '../../models/auth_var/jwt.js';
 import pkg from 'mongodb';
+import { productResolvers } from '../product/resolvers.js';
 const {ObjectId} = pkg;
 
 export const paymentResolvers = {
@@ -75,6 +77,30 @@ export const paymentResolvers = {
       console.log(`Deleted payment with name: ${rs.name} and description: ${rs.description} of user ${rs.userID}`)
       return rs;
     },
+  },
+  Payment: {
+    isReviewed: async (parent, args, context) => {
+      try {
+        const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
+        const userID = decoded.payload.userID;
+
+        // console.log(parent.products)
+        const products = parent.products.map(item => ObjectId(item.product._id));
+
+        const reviewed = await Review.findOne({
+            user: parent.user._id,
+            product: {$in: products}
+        });
+
+        // const reviewed = await Payment.find({});
+        if (reviewed) return true;
+        else return false;
+      }
+      catch (error) {
+        console.log(error);
+        throw Error(error);
+      }
+    }
   }
 }
 

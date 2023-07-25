@@ -57,6 +57,8 @@ const typeDefs = gql`
     products: [Product]
     status: status
     CID: String
+    rating: Float
+    rating_list: [Int]
   }
 
   extend type Query {
