@@ -8,32 +8,33 @@ export const productApi = createApi({
     endpoints: (builder) => ({
         getAllProducts: builder.query({
             query: () => ({
-                document: `query GetAllProducts {
-                    getAllProducts {
-                      _id
-                      price_old
-                      name
-                      description
-                      quantity
-                      price
-                      activeTime {
-                        from
-                        to
-                      }
-                      status
-                      image
-                      shop {
-                        coordinates {
-                          lat
-                          long
-                        }
-                        _id
-                        shopName
-                        address
-                        status
-                      }
+                document: `query GetAllProducts($input: Product_) {
+                  getAllProducts(input: $input) {
+                    _id
+                    price_old
+                    name
+                    description
+                    quantity
+                    price
+                    activeTime {
+                      from
+                      to
                     }
-                  }`,
+                    status
+                    image
+                    rating
+                    shop {
+                      coordinates {
+                        lat
+                        long
+                      }
+                      _id
+                      shopName
+                      address
+                      status
+                    }
+                  }
+                }`,
             }),
         }),
         getProductById: builder.query({
@@ -52,6 +53,7 @@ export const productApi = createApi({
                     }
                     status
                     image
+                    rating
                     shop {
                       _id
                       coordinates {
@@ -75,6 +77,7 @@ export const productApi = createApi({
                   name
                   price_old
                   price
+                  rating
                   activeTime {
                     from
                     to

@@ -16,6 +16,7 @@ export interface IProductItem {
         price: number,
         price_old: number,
         image: string,
+        rating: number,
         activeTime: {
             from: string,
             to: string,

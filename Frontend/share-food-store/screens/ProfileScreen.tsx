@@ -15,7 +15,7 @@ export default function ProfileScreen({ navigation }: RootTabScreenProps<"Profil
     return (
         <View style={styles.container}>
             <View style={[styles.item,{paddingVertical: 20, paddingHorizontal: 10}]}>
-                <Image style={{width: 40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
+                <Image style={{width: 40, height: 40, borderRadius: 100}} source={{ uri: userInfo.image }}/>
                 <View style={{display: "flex", flexDirection: "column", marginLeft: 10, backgroundColor: Colors.light.backgroundIiem}}>
                     <Text style={{fontWeight: "bold", fontSize: 16}}>{userInfo.name}</Text>
                     <Text style={{color: "#8F8F8F"}}>{userInfo.phone}</Text>

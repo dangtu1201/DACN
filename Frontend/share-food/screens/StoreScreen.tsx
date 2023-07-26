@@ -89,7 +89,7 @@ export default function StoreScreen({ navigation, route }: RootStackScreenProps<
                                 onPress={() => navigation.navigate("FoodItem", {foodId: item._id})}
                             >
                                 <View style={styles.foodItem}>
-                                    <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                    <Image style={styles.foodImage} source={{ uri: item.image }}/>
                                     <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Text style={{fontWeight: "bold", display: "flex"}}>{item.name}</Text>
                                         <Text>Hôm nay: {item.activeTime.from} - {item.activeTime.to}</Text>

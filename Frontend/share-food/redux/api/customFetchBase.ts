@@ -6,7 +6,7 @@ import {graphqlRequestBaseQuery} from '@rtk-query/graphql-request-base-query'
 import { Mutex } from 'async-mutex';
 import { logoutApp } from '../login';  
 import { RootState } from '../store';
-const baseUrl = `https://6dc2-2a09-bac1-7ac0-10-00-245-18.ngrok-free.app/dailygroceries/graphql/subscriptions`;
+const baseUrl = `https://daily-groceries.fly.dev/dailygroceries/graphql/subscriptions`;
 
 const baseQuery = graphqlRequestBaseQuery({
   url: baseUrl,

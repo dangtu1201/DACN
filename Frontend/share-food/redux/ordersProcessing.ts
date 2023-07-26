@@ -11,7 +11,6 @@ const ordersProcessing = createSlice({
     reducers: {
         setOrdersProcessing: (state, action: PayloadAction<OrderModal[]>) => {
             state.data = action.payload;
-            console.log(state.data);
         }
     }
 });

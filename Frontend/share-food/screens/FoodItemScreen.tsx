@@ -59,7 +59,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
             >
                 <View style={{paddingHorizontal: 20}}>
                     <View style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: 20}}>
-                        <Image style={{width: width - 40, height: width - 40, borderRadius: 10}} source={require("../assets/images/icon.png")}/>
+                        <Image style={{width: width - 40, height: width - 40, borderRadius: 10}} source={{ uri: product?.image }}/>
                     </View>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10, marginBottom: 20}}>
                         <View style={{display: "flex"}}>

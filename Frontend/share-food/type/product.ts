@@ -11,6 +11,7 @@ export interface IProduct {
     };
     status: string;
     image: string;
+    rating: number;
     shop: {
         coordinates: {
             lat: number;
@@ -45,5 +46,5 @@ export interface IProductDetail {
         address: string;
         status: string;
     };
-    images: string[];
+    images: string;
 }

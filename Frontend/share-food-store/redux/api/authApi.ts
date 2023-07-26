@@ -49,6 +49,7 @@ export const authApi = createApi({
             email
             phone
             name
+            image
           }
         }`,
       }),

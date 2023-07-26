@@ -14,15 +14,14 @@ import * as Location from 'expo-location';
 
 export default function RootNavigation() {
 
-    const [userId, setUserId] = useState<null | string>(null);
     const changeLogin = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
     useEffect(() => {
         const checkLogin = async () => {
             const user = await getUser();
-            setUserId(user?.userId);
             user ? dispatch(setStatusLogin('login')) : dispatch(setStatusLogin('logout'));
             dispatch(setUser({userId: user?.userId, userToken: user?.userToken}));
+            
         }
         checkLogin();
     }, [changeLogin]);
@@ -41,7 +40,7 @@ export default function RootNavigation() {
         })();
     }, []);
 
-    if (userId) {
+    if (changeLogin.userId) {
         return (
             <SafeAreaProvider>
                 <UserNavigation/>

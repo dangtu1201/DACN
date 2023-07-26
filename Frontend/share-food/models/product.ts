@@ -11,6 +11,7 @@ export interface ProductModel {
     };
     status: string;
     image: string;
+    rating: number;
     shop: {
         coordinates: {
             lat: number;

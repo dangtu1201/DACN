@@ -93,7 +93,7 @@ export default function OrderHistoryItemScreen({ navigation, route }: RootStackS
                             >
                                 <View style={styles.foodItem}>
                                     <View style={{width: "35%", backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
-                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                        <Image style={styles.foodImage} source={{ uri: item.product.image }}/>
                                     </View>
                                     <View style={{paddingVertical: 10, backgroundColor: Colors.light.backgroundIiem, width: "45%", justifyContent: "space-between"}}>
                                         <Text style={{fontWeight: "bold", display: "flex"}}>{item.product.name}</Text>
