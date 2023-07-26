@@ -12,6 +12,7 @@ export interface ProductModel {
     status: string;
     image: string;
     rating: number;
+    rating_list: number[];
     shop: {
         coordinates: {
             lat: number;
@@ -21,5 +22,7 @@ export interface ProductModel {
         shopName: string;
         address: string;
         status: string;
+        rating: number;
+        rating_list: number[];
     };
 }

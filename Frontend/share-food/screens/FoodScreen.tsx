@@ -75,8 +75,12 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                                     <Text style={{fontWeight: "bold", display: "flex", width: 200}}>{item?.name}</Text>
                                     <Text>Hôm nay: {item?.activeTime?.from} - {item?.activeTime?.to}</Text>
                                     <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
+                                        {item.rating != 0 && 
+                                        <>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                        <Text>4.5  |  </Text>
+                                        <Text>{item.rating} ({item.rating_list.length})  |  </Text>
+                                        </>
+                                        }
                                         <Text>{calculateDistance(userAddr.lat, userAddr.lng, item.shop.coordinates.lat, item.shop.coordinates.long)} km</Text>
                                     </View>
                                     <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>

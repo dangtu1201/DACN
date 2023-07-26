@@ -66,7 +66,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             <Text style={{fontWeight: "bold", fontSize: 20, marginBottom: 4}}>{product?.name}</Text>
                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                <Text style={{marginLeft: 5}}>4.5 (100)</Text>
+                                { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
                             </View>
                             <Text>Hôm nay: {product?.activeTime.from} - {product?.activeTime.to}</Text>
                         </View>
@@ -102,10 +102,14 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                     <View style={{display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "55%"}}>
                         <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>{product?.shop.shopName}</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground}}>
+                            { product?.shop.rating != 0 &&
+                            <>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>4.5 (100)</Text>
-                            <Text style={{marginLeft: 5}}>|</Text>
-                            <Text style={{marginLeft: 5}}>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop.coordinates.lat, product?.shop.coordinates.long)} Km</Text>
+                            <Text style={{marginLeft: 5}}>{product?.shop.rating}</Text>
+                            <Text style={{marginHorizontal: 5}}>|</Text>
+                            </>
+                            }
+                            <Text>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop.coordinates.lat, product?.shop.coordinates.long)} Km</Text>
                         </View>
                         <Text style={{}}>Địa chỉ: {product?.shop.address}</Text>
                     </View>
@@ -125,7 +129,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Đánh giá sản phẩm</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>4.5 (100)</Text>
+                            { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
                         </View>
                     </View>
                     <Pressable style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}
@@ -140,6 +144,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         borderBottomWidth: StyleSheet.hairlineWidth,
                     }}
                 />
+                { product?.rating != 0 &&
                 <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, paddingVertical: 10}}
                 >
                     <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
@@ -163,6 +168,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         </View>
                     </View>
                 </View>
+                }
             </ScrollView>
             }
             { isLoading ? null :

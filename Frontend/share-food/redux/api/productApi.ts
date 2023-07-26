@@ -23,6 +23,7 @@ export const productApi = createApi({
                     status
                     image
                     rating
+                    rating_list
                     shop {
                       coordinates {
                         lat
@@ -54,6 +55,7 @@ export const productApi = createApi({
                     status
                     image
                     rating
+                    rating_list
                     shop {
                       _id
                       coordinates {
@@ -63,6 +65,8 @@ export const productApi = createApi({
                       shopName
                       address
                       status
+                      rating
+                      rating_list
                     }
                   }
                 }`,
@@ -78,6 +82,7 @@ export const productApi = createApi({
                   price_old
                   price
                   rating
+                  rating_list
                   activeTime {
                     from
                     to
