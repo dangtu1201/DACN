@@ -1,6 +1,5 @@
 # flyctl launch added from .gitignore
 **\node_modules
-**\*.env
 **\.idea
 **\credentials
 **\.DS_Store
@@ -16,3 +15,5 @@ node_modules\fs-capacitor\**\yarn.lock
 node_modules\fs-capacitor\**\yarn-error.log
 node_modules\fs-capacitor\**\lib
 fly.toml
+
+/node_modules

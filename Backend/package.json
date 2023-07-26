@@ -5,11 +5,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "wings",
+        "dev": "nodemon --exec yarn start",
         "prd": "NODE_ENV=production ENV=production babel-node index.js",
         "generateToken": "babel-node generateToken.js",
         "test": "jest --runInBand",
-        "start": "nodemon --exec babel-node index.js",
+        "start": "nodemon --exec babel-node ./index.js",
         "babel-version": "babel --version"
     },
     "dependencies": {
@@ -43,6 +43,7 @@
         "express": "^4.17.1",
         "express-basic-auth": "^1.2.0",
         "flatted": "^3.2.6",
+        "global": "^4.4.0",
         "graphql": "^15.4.0",
         "graphql-middleware": "^4.0.2",
         "graphql-redis-subscriptions": "^2.4.0",
@@ -90,8 +91,8 @@
     },
     "devDependencies": {
         "@babel/cli": "^7.22.9",
-        "@babel/core": "^7.12.9",
-        "@babel/node": "^7.12.6",
+        "@babel/core": "^7.22.9",
+        "@babel/node": "^7.22.6",
         "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.12.7",
         "@babel/preset-flow": "^7.13.13",

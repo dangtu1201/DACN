@@ -10,7 +10,7 @@ LABEL fly_launch_runtime="Node.js"
 WORKDIR /app
 
 # Set production environment
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ARG YARN_VERSION=1.22.4
 RUN npm install -g yarn@$YARN_VERSION --force
 
@@ -23,12 +23,12 @@ RUN apt-get update -qq && \
     apt-get install -y python-is-python3 pkg-config build-essential 
 
 # Install node modules
-COPY --link package-lock.json package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-RUN yarn add global nodemon
+COPY --link package.json yarn.lock ./
+RUN yarn install
 
 # Copy application code
-COPY --link . .
+COPY . .
+COPY src/ src/
 
 
 # Final stage for app image
@@ -38,5 +38,5 @@ FROM base
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 4000
+EXPOSE 3000
 CMD [ "yarn", "run", "start" ]

@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for daily-groceries on 2023-07-20T09:41:07+07:00
+# fly.toml app configuration file generated for daily-groceries on 2023-07-26T13:05:47+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,7 +7,7 @@ app = "daily-groceries"
 primary_region = "sin"
 
 [http_service]
-  internal_port = 4000
+  internal_port = 3000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
