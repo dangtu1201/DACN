@@ -2,9 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, Switch, Modal } from "react-native";
 import { Text, View } from "../components/Themed";
-import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { IProduct } from "../type/product";
 import { IProductCRUD } from "../screens/AddFoodScreen";
 import { useUpdateProductMutation, useDeleteProductMutation } from "../redux/api/productApi";
@@ -12,14 +10,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import Colors from "../constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import { setStatus } from "../redux/status";
+import { useUploadImageMutation } from "../redux/api/imageApi";
 
 export default function UpdateAndDeleteFood({visible, setVisible, product}:{visible: boolean, setVisible: React.Dispatch<React.SetStateAction<boolean>>, product: IProduct}) {
 
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>();
     const [showFrom, setShowFrom] = useState(false);
     const [showTo, setShowTo] = useState(false);
     const [from, setFrom] = useState(new Date());
@@ -37,6 +35,14 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
             to: product.activeTime?.to,
         }
     });
+
+    useEffect(() => {
+        setSelectedImage(product.image);
+    }, [product.image]);
+
+    useEffect(() => {
+        setIsEnabled(product.status == "Active" ? true : false);
+    }, [product.status]);
 
     useEffect(() => {
         setProductCRUD({
@@ -57,23 +63,22 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+    const [uploadImage, { data: dataUploadImage, error: errorUploadImage, isLoading: isLoadingUploadImage }] = useUploadImageMutation();
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           allowsEditing: true,
           quality: 1,
           aspect: [3, 3],
+          base64: true,
         });
     
         if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
+            // setSelectedImage(result.assets[0].uri);
+            setSelectedImage(`data:image/jpg;base64,${result.assets[0].base64}`);
         } 
     };
 
-    const uriToBase64 = async (uri: string) => {
-        let base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
-        return base64;
-    };
 
     const handleDeleteProduct = async () => {
         let dataDel = JSON.stringify({
@@ -89,29 +94,64 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     };
 
     const handleUpdateProduct = async () => {
-        let dataUpdate = JSON.stringify(
-        { input:
-            {
-            _id: productId,
-            name: productCRUD.name,
-            price_old: parseInt(productCRUD.price_old),
-            price: parseInt(productCRUD.price),
-            description: productCRUD.description,
-            quantity: parseInt(productCRUD.quantity),
-            status: productCRUD.status,
-            activeTime: {
-                from: productCRUD.activeTime.from,
-                to: productCRUD.activeTime.to,
+        if (selectedImage == product.image) {
+            let dataUpdate = JSON.stringify(
+            { input:
+                {
+                _id: productId,
+                name: productCRUD.name,
+                price_old: parseInt(productCRUD.price_old),
+                price: parseInt(productCRUD.price),
+                description: productCRUD.description,
+                quantity: parseInt(productCRUD.quantity),
+                status: productCRUD.status,
+                activeTime: {
+                    from: productCRUD.activeTime.from,
+                    to: productCRUD.activeTime.to,
+                }
             }
+            });
+            await updateProduct(dataUpdate).unwrap().then((res) => {
+                console.log(res);
+                setVisible(false);
+                dispatch(setStatus({status: "updateProductSuccess"}))
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else {
+            let imgQuery = JSON.stringify({
+                photo: ((selectedImage))
+            });
+            await uploadImage(imgQuery).unwrap().then((res) => {
+                const image = res.singleUpload;
+                setSelectedImage(image);
+                let data = JSON.stringify({
+                    input: {
+                        _id: productId,
+                        name: productCRUD.name,
+                        price_old: parseInt(productCRUD.price_old),
+                        price: parseInt(productCRUD.price),
+                        description: productCRUD.description,
+                        quantity: parseInt(productCRUD.quantity),
+                        status: productCRUD.status,
+                        activeTime: {
+                            from: productCRUD.activeTime.from,
+                            to: productCRUD.activeTime.to,
+                        },
+                        image: image,
+                    }
+                });
+                console.log(data);
+                updateProduct(data).unwrap().then((res) => {
+                    console.log(res);
+                    setVisible(false);
+                    dispatch(setStatus({status: "updateProductSuccess"}))
+                }).catch((err) => {
+                    console.log(err);
+                }
+                );
+            });
         }
-        });
-        await updateProduct(dataUpdate).unwrap().then((res) => {
-            console.log(res);
-            setVisible(false);
-            dispatch(setStatus({status: "updateProductSuccess"}))
-        }).catch((err) => {
-            console.log(err);
-        });
     };
 
     return (

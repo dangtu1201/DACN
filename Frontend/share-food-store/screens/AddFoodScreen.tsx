@@ -4,10 +4,8 @@ import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, 
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import { useSelector, useDispatch } from 'react-redux';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useAddProductMutation } from "../redux/api/productApi";
@@ -65,12 +63,6 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
             // setSelectedImage(result.assets[0].uri);
             setSelectedImage(`data:image/jpg;base64,${result.assets[0].base64}`);
         } 
-    };
-
-    const uriToBase64 = async (uri: string | null) => {
-        if (!uri) return;
-        let base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
-        return base64;
     };
 
     const handleAddProduct = async () => {
