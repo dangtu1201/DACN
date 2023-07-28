@@ -24,7 +24,7 @@ const customFetchBase: BaseQueryFn = async (args, api, extraOptions) => {
   // wait until the mutex is available without locking it
   let result = await baseQuery(args, api, extraOptions);
   // console.log("tutut",result.error?.message.includes("invalid signature"));
-  if ((result.error?.message as any) === 'Not Authorised!' || result.error?.message.includes("invalid signature")) {
+  if (result.error?.message.includes('Not Authorised') || result.error?.message.includes("invalid signature")) {
       api.dispatch(logoutApp());
   }
   

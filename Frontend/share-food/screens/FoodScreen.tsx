@@ -81,7 +81,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                                         <Text>{item.rating} ({item.rating_list.length})  |  </Text>
                                         </>
                                         }
-                                        <Text>{calculateDistance(userAddr.lat, userAddr.lng, item.shop.coordinates.lat, item.shop.coordinates.long)} km</Text>
+                                        <Text>{calculateDistance(userAddr.lat, userAddr.lng, item?.shop?.coordinates.lat, item?.shop?.coordinates.long)} km</Text>
                                     </View>
                                     <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>
                                         <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item.price_old)}đ</Text>
