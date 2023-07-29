@@ -44,6 +44,7 @@ export const orderApi = createApi({
                       }
                       createAt
                       total
+                      isReviewed
                       status
                     }
                   }
@@ -71,6 +72,7 @@ export const orderApi = createApi({
                         }
                         createAt
                         status
+                        isReviewed
                         total
                         }
                     }
@@ -122,6 +124,7 @@ export const orderApi = createApi({
                       }
                       total
                       status
+                      isReviewed
                       paymentMethod
                     }
                   }
@@ -130,8 +133,22 @@ export const orderApi = createApi({
                 }),
             providesTags: ['Order'],
         }),
+        reviewOrder: builder.mutation({
+            query: (credentials) => ({
+                document: `mutation CreateReviewPayment($paymentId: ID, $input: createReviewPayment) {
+                  createReviewPayment(paymentID: $paymentId, input: $input) {
+                    user
+                    rating
+                    product
+                  }
+                }
+                `,
+                variables: credentials
+            }),
+            invalidatesTags: ['Order'],
+        }),
 
     }),
 });
 
-export const { useCreateOrderMutation, useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery, useGetOrderByIDQuery } = orderApi;
+export const { useCreateOrderMutation, useUpdateOrderMutation, useGetOrderProcessingQuery, useGetOrderHistoryQuery, useGetOrderByIDQuery, useReviewOrderMutation } = orderApi;

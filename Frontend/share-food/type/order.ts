@@ -6,6 +6,7 @@ export interface OrderModal {
     };
     createAt: string;
     status: string;
+    isReviewed: boolean;
     total: number;
 }
 

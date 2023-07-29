@@ -129,6 +129,7 @@ export default function OrderItemHistoryScreen({ navigation, route }: RootStackS
                     )}
                 </View>
             </ScrollView>
+            {!currentData?.getPaymentById?.isReviewed &&
             <View style={{height: 100, display: "flex", justifyContent: "center", alignItems: "center", borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", marginBottom: 10}}>
                     <Text style={{fontSize: 16, fontWeight: "bold"}}>Tổng tiền</Text>
@@ -142,6 +143,7 @@ export default function OrderItemHistoryScreen({ navigation, route }: RootStackS
                     <Text style={{fontSize: 16}}>Đánh giá</Text>
                 </TouchableOpacity>
             </View>
+            }
             </>
             }
         </View>

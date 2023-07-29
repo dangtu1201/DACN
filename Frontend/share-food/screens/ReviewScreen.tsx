@@ -6,8 +6,12 @@ import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import Colors from "../constants/Colors";
+import { useSelector, useDispatch } from 'react-redux';
+import { useUpdateOrderMutation, useReviewOrderMutation } from "../redux/api/orderApi";
+import { useUploadImageMutation } from "../redux/api/imageApi";
+import { toast } from "../services/toast";
+import { setOrderStatus } from "../redux/orderStatus";
 
 export default function ReviewScreen({ navigation, route }: RootStackScreenProps<"Review">) {
 
@@ -16,18 +20,62 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [star, setStar] = useState<number>(0);
     const [comment, setComment] = useState<string>("");
+    const dispatch = useDispatch();
+    const [updateOrder, { isLoading: isLoadingUpdateOrder }] = useUpdateOrderMutation();
+    const [reviewOrder, { isLoading: isLoadingReviewOrder }] = useReviewOrderMutation();
+    const [uploadImage, { isLoading: isLoadingUploadImage }] = useUploadImageMutation();
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           allowsEditing: true,
           quality: 1,
           aspect: [3, 3],
+          base64: true,
         });
     
         if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
+            setSelectedImage(`data:image/jpg;base64,${result.assets[0].base64}`);
         } 
     };
+
+    const handleReview = async () => {
+        if (star == 0) {
+            toast("error","Bạn chưa chọn số sao","");
+            return;
+        }
+        let imgQuery = JSON.stringify({
+            photo: ((selectedImage))
+        });
+        uploadImage(imgQuery).unwrap().then((res) => {
+            const image = res.singleUpload;
+            setSelectedImage(image);
+            let reviewInput = {
+                paymentId: orderId,
+                input: {
+                    rating: star,
+                    body: comment,
+                    image: selectedImage
+                }
+            }
+            reviewOrder(JSON.stringify(reviewInput)).unwrap().then((res) => {
+                updateOrder(JSON.stringify({id: orderId, input: {isReviewed: true}})).unwrap().then((res) => {
+                    dispatch(setOrderStatus({status: "reviewedSuccess"}))
+                    toast("success","Đánh giá thành công","");
+                    navigation.navigate("Root")
+                }).catch((err) => {
+                    toast("error",err.message,"");
+                });
+            }
+            ).catch((err) => {
+                toast("error",err.message,"");
+            }
+            );
+        }).catch((err) => {
+            toast("error",err.message,"");
+        }
+        );
+    }
+
 
     return (
         <View style={styles.container}>
@@ -81,7 +129,7 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
                 <Pressable
                     style={{width: 300, height: 50, borderRadius: 10, marginTop: 10, marginBottom: 10,
                     display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess}}
-                    onPress={() => navigation.navigate("Root")}
+                    onPress={handleReview}
                 >
                     <Text style={{fontSize: 16}}>Gửi</Text>
                 </Pressable>

@@ -57,6 +57,7 @@ export const orderApi = createApi({
                         phone
                       }
                       total
+                      isReviewed
                       status
                       createAt
                     }
@@ -100,6 +101,7 @@ export const orderApi = createApi({
                     }
                     total
                     status
+                    isReviewed
                     paymentMethod
                     user {
                       name

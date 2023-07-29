@@ -70,13 +70,15 @@ export default function OrderHistoryScreen({ navigation }: OrderTabScreenProps<"
                                             : <Text style={{ fontWeight: "bold", color: Colors.light.textCancel }}>Đã hủy</Text>
                                         }
                                     </View>
+                                    { !item.isReviewed &&
                                     <Pressable style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}
-                                        onPress={() => navigation.navigate("Review", { orderId: "1" })}
+                                        onPress={() => navigation.navigate("Review", { orderId: item._id })}
                                     >
                                         <View style={{ paddingHorizontal: 15, paddingVertical: 5, borderWidth: 1, borderColor: Colors.light.tint, borderRadius: 5, backgroundColor: Colors.light.backgroundIiem }}>
                                             <Text style={{ color: Colors.light.tint }}>Đánh giá</Text>
                                         </View>
                                     </Pressable>
+                                    }
                                     <View style={{ display: "flex", flexDirection: "row", marginBottom: 5, justifyContent: "space-between", alignItems: "center", backgroundColor: Colors.light.backgroundIiem }}>
                                         <Text>{formatDayTime(item.createAt)}</Text>
                                         <Pressable>
