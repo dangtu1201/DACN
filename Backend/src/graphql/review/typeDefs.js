@@ -9,6 +9,12 @@ const typeDefs = gql`
     image: String
   }
 
+  input createReviewPayment{
+    body: String
+    rating: Int
+    image: String
+  }
+
   input updateReview{
     _id: ID!
     body: String
@@ -39,6 +45,8 @@ const typeDefs = gql`
 
   extend type Mutation {
     createReview(input: createReview): Review!
+
+    createReviewPayment(paymentID: ID, input: createReviewPayment): [Review!]
 
     updateReview(input: updateReview): Review
 

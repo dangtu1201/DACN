@@ -30,7 +30,6 @@ RUN yarn install
 COPY . .
 COPY src/ src/
 
-
 # Final stage for app image
 FROM base
 

@@ -2,6 +2,7 @@ import Product from '../../models/productModel.js';
 import Shop from '../../models/shopModel.js';
 import User from '../../models/userModel.js';
 import Review from '../../models/reviewModel.js';
+import Payment from '../../models/paymentModel.js';
 import moment from 'moment-timezone';
 import {generateToken, updateRefreshToken, decodeToken} from '../../middlewares/verifyToken.js';
 import jwt from 'jsonwebtoken';
@@ -190,6 +191,53 @@ export const reviewResolvers = {
     catch(err){
       console.log(err);
     }
+    },
+    createReviewPayment: async (_, {paymentID, input}, context) => {
+      const decoded = await decodeToken(context.token, jwtVariable.refreshTokenSecret);
+      const ID = decoded.payload.userID;
+
+      if (!ID) throw Error(`Please login! <Received ID: ${ID} >`);
+      // Object.assign(input, {user: ObjectId(ID)});
+
+      let products = await Payment.findById(paymentID, {_id: 0}).select('products');
+      products = products.products.map(item => ObjectId(item.product._id));
+
+      let rs = []
+      for (var i = 0, len = products.length; i < len; i++) {
+        Product.findByIdAndUpdate(products[i], {$push: {rating_list: input.rating}}, {new: true})
+        .then(async result => {
+            const rating_list = result.rating_list;
+            const average = rating_list.reduce((a, b) => a + b, 0) / rating_list.length;
+
+            result.rating = average;
+            result.save(function(err){
+
+              console.log("Product Rating Updated");       
+            });
+        });
+
+        Shop.findOneAndUpdate({products: ObjectId(products[i])}, {$push: {rating_list: input.rating}}, {new: true})
+        .then(async result => {
+            const rating_list = result.rating_list;
+            const average = rating_list.reduce((a, b) => a + b, 0) / rating_list.length;
+
+            result.rating = average;
+            result.save(function(err){
+
+              console.log("Shop Rating Updated");       
+            });
+        });
+        
+        let temp = input;
+        Object.assign(temp, {user: ObjectId(ID)})
+        Object.assign(temp, {product: ObjectId(products[i])})
+
+        rs.push(await Review.create(temp));
+        console.log(rs);
+      }
+      // const rs = await Review.create(input);
+      // console.log()
+      return rs;
     },
   },
 }
