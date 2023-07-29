@@ -27,70 +27,98 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-          allowsEditing: true,
-          quality: 1,
-          aspect: [3, 3],
-          base64: true,
+            allowsEditing: true,
+            quality: 1,
+            aspect: [3, 3],
+            base64: true,
         });
-    
+
         if (!result.canceled) {
             setSelectedImage(`data:image/jpg;base64,${result.assets[0].base64}`);
-        } 
+        }
     };
 
     const handleReview = async () => {
         if (star == 0) {
-            toast("error","Bạn chưa chọn số sao","");
+            toast("error", "Bạn chưa chọn số sao", "");
             return;
         }
-        let imgQuery = JSON.stringify({
-            photo: ((selectedImage))
-        });
-        uploadImage(imgQuery).unwrap().then((res) => {
-            const image = res.singleUpload;
-            setSelectedImage(image);
+        if (selectedImage) {
+            let imgQuery = JSON.stringify({
+                photo: ((selectedImage))
+            });
+            uploadImage(imgQuery).unwrap().then((res) => {
+                const image = res.singleUpload;
+                setSelectedImage(image);
+                let reviewInput = {
+                    paymentId: orderId,
+                    input: {
+                        rating: star,
+                        body: comment,
+                        image: selectedImage
+                    }
+                }
+                reviewOrder(JSON.stringify(reviewInput)).unwrap().then((res) => {
+                    updateOrder(JSON.stringify({ id: orderId, input: { isReviewed: true } })).unwrap().then((res) => {
+                        dispatch(setOrderStatus({ status: "reviewedSuccess" }))
+                        toast("success", "Đánh giá thành công", "");
+                        navigation.navigate("Root")
+                    }).catch((err) => {
+                        toast("error", err.message, "");
+                    });
+                }
+                ).catch((err) => {
+                    toast("error", err.message, "");
+                }
+                );
+            }).catch((err) => {
+                toast("error", err.message, "");
+            }
+            );
+        } else {
             let reviewInput = {
                 paymentId: orderId,
                 input: {
                     rating: star,
                     body: comment,
-                    image: selectedImage
+                    image: ''
                 }
             }
             reviewOrder(JSON.stringify(reviewInput)).unwrap().then((res) => {
-                updateOrder(JSON.stringify({id: orderId, input: {isReviewed: true}})).unwrap().then((res) => {
-                    dispatch(setOrderStatus({status: "reviewedSuccess"}))
-                    toast("success","Đánh giá thành công","");
+                updateOrder(JSON.stringify({ id: orderId, input: { isReviewed: true } })).unwrap().then((res) => {
+                    dispatch(setOrderStatus({ status: "reviewedSuccess" }))
+                    toast("success", "Đánh giá thành công", "");
                     navigation.navigate("Root")
                 }).catch((err) => {
-                    toast("error",err.message,"");
+                    toast("error", err.message, "");
                 });
             }
             ).catch((err) => {
-                toast("error",err.message,"");
+                toast("error", err.message, "");
             }
             );
-        }).catch((err) => {
-            toast("error",err.message,"");
         }
-        );
     }
 
 
     return (
         <View style={styles.container}>
-            <Pressable 
-                style={{width: 200, height: 200, borderWidth: 1, borderRadius: 10, marginTop: 30, marginBottom: 10,
-                display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.backgroundIiem}}
+            <Pressable
+                style={{
+                    width: 200, height: 200, borderWidth: 1, borderRadius: 10, marginTop: 30, marginBottom: 10,
+                    display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.backgroundIiem
+                }}
                 onPress={() => pickImageAsync()}
             >
                 {selectedImage ? (
                     <View>
-                        <Image source={{uri: selectedImage}} style={{width: 200, height: 200, borderRadius: 10}} />
+                        <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200, borderRadius: 10 }} />
                         <Pressable
-                        style={{position: "absolute", top: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", width: 30, height: 30, borderRadius: 15, 
-                        display: "flex", justifyContent: "center", alignItems: "center",}}
-                        onPress={() => setSelectedImage(null)}
+                            style={{
+                                position: "absolute", top: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", width: 30, height: 30, borderRadius: 15,
+                                display: "flex", justifyContent: "center", alignItems: "center",
+                            }}
+                            onPress={() => setSelectedImage(null)}
                         >
                             <Ionicons name="close" size={20} color="#fff" />
                         </Pressable>
@@ -99,7 +127,7 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
                     <Ionicons name="add-circle-outline" size={50} color={Colors.light.tabIconDefault} />
                 )}
             </Pressable>
-            <View style={{display: "flex", flexDirection: "row", marginTop: 10, justifyContent: "space-between", width: "60%"}}>
+            <View style={{ display: "flex", flexDirection: "row", marginTop: 10, justifyContent: "space-between", width: "60%" }}>
                 <Pressable onPress={() => setStar(1)}>
                     <FontAwesome name={star >= 1 ? "star" : "star-o"} size={24} color={Colors.light.textHighlight} />
                 </Pressable>
@@ -117,21 +145,25 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
                 </Pressable>
             </View>
             <TextInput
-                style={{height: 100, width: 300, borderWidth: 1, borderRadius: 10, marginTop: 20, 
-                padding: 10, textAlignVertical: "top", fontSize: 16}}
+                style={{
+                    height: 100, width: 300, borderWidth: 1, borderRadius: 10, marginTop: 20,
+                    padding: 10, textAlignVertical: "top", fontSize: 16
+                }}
                 multiline={true}
                 numberOfLines={5}
                 placeholder="Đánh giá"
                 onChangeText={text => setComment(text)}
                 value={comment}
             />
-            <View style={{borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder, position: "absolute", bottom: 0, width: "100%", alignItems: "center"}}>
+            <View style={{ borderTopWidth: 0.5, borderTopColor: Colors.light.blurBorder, position: "absolute", bottom: 0, width: "100%", alignItems: "center" }}>
                 <Pressable
-                    style={{width: 300, height: 50, borderRadius: 10, marginTop: 10, marginBottom: 10,
-                    display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess}}
+                    style={{
+                        width: 300, height: 50, borderRadius: 10, marginTop: 10, marginBottom: 10,
+                        display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: Colors.light.buttonSuccess
+                    }}
                     onPress={handleReview}
                 >
-                    <Text style={{fontSize: 16}}>Gửi</Text>
+                    <Text style={{ fontSize: 16 }}>Gửi</Text>
                 </Pressable>
             </View>
         </View>
@@ -143,6 +175,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
-    
+
 });
 
