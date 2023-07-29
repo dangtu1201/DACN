@@ -36,7 +36,6 @@ export default function OrderCartScreen({ navigation }: RootStackScreenProps<"Or
                 }
             }),
             status: "Processing",
-            isReviewed: false
         }};
         console.log(order.input);
         createOrder(JSON.stringify(order)).unwrap().then((res) => {
