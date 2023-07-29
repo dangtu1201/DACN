@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Colors from "../constants/Colors";
 import { useSelector, useDispatch } from 'react-redux';
-import { useUpdateOrderMutation, useReviewOrderMutation } from "../redux/api/orderApi";
+import { useReviewOrderMutation } from "../redux/api/orderApi";
 import { useUploadImageMutation } from "../redux/api/imageApi";
 import { toast } from "../services/toast";
 import { setOrderStatus } from "../redux/orderStatus";
@@ -21,7 +21,6 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
     const [star, setStar] = useState<number>(0);
     const [comment, setComment] = useState<string>("");
     const dispatch = useDispatch();
-    const [updateOrder, { isLoading: isLoadingUpdateOrder }] = useUpdateOrderMutation();
     const [reviewOrder, { isLoading: isLoadingReviewOrder }] = useReviewOrderMutation();
     const [uploadImage, { isLoading: isLoadingUploadImage }] = useUploadImageMutation();
 
@@ -59,18 +58,12 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
                     }
                 }
                 reviewOrder(JSON.stringify(reviewInput)).unwrap().then((res) => {
-                    updateOrder(JSON.stringify({ id: orderId, input: { isReviewed: true } })).unwrap().then((res) => {
-                        dispatch(setOrderStatus({ status: "reviewedSuccess" }))
-                        toast("success", "Đánh giá thành công", "");
-                        navigation.navigate("Root")
-                    }).catch((err) => {
-                        toast("error", err.message, "");
-                    });
-                }
-                ).catch((err) => {
+                    dispatch(setOrderStatus({ status: "reviewedSuccess" }))
+                    toast("success", "Đánh giá thành công", "");
+                    navigation.navigate("Root")
+                }).catch((err) => {
                     toast("error", err.message, "");
-                }
-                );
+                });
             }).catch((err) => {
                 toast("error", err.message, "");
             }
@@ -85,15 +78,10 @@ export default function ReviewScreen({ navigation, route }: RootStackScreenProps
                 }
             }
             reviewOrder(JSON.stringify(reviewInput)).unwrap().then((res) => {
-                updateOrder(JSON.stringify({ id: orderId, input: { isReviewed: true } })).unwrap().then((res) => {
-                    dispatch(setOrderStatus({ status: "reviewedSuccess" }))
-                    toast("success", "Đánh giá thành công", "");
-                    navigation.navigate("Root")
-                }).catch((err) => {
-                    toast("error", err.message, "");
-                });
-            }
-            ).catch((err) => {
+                dispatch(setOrderStatus({ status: "reviewedSuccess" }))
+                toast("success", "Đánh giá thành công", "");
+                navigation.navigate("Root")
+            }).catch((err) => {
                 toast("error", err.message, "");
             }
             );
