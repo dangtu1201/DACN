@@ -45,7 +45,7 @@ const cartSlice = createSlice({
                 return;
             }
             // check shop status
-            if (product.shop.status == "Inactive") {
+            if (product.shop?.status == "Inactive") {
                 toast("error", "Lỗi", "Cửa hàng đã đóng cửa");
                 return;
             } else if (product.shop.status == "Unapproved") {
@@ -64,10 +64,10 @@ const cartSlice = createSlice({
             }
             state.total += product.price * quantity;
             if (state.shopId === "") {
-                state.shopId = product.shop._id;
-                state.shopName = product.shop.shopName;
-                state.shopAddress = product.shop.address;
-                state.shopCoordinates = product.shop.coordinates;
+                state.shopId = product.shop?._id;
+                state.shopName = product.shop?.shopName;
+                state.shopAddress = product.shop?.address;
+                state.shopCoordinates = product.shop?.coordinates;
             }
         },
         updateQuantity(state, action: PayloadAction<{ productId: string; quantity: number }>) {

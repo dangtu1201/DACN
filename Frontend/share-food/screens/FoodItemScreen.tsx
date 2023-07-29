@@ -100,20 +100,20 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                 >
                     <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}></Image>
                     <View style={{display: "flex", marginLeft: 10, backgroundColor: Colors.light.storeBackground, width: "55%"}}>
-                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>{product?.shop.shopName}</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 4}}>{product?.shop?.shopName}</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4, backgroundColor: Colors.light.storeBackground}}>
-                            { product?.shop.rating != 0 &&
+                            { product?.shop?.rating != 0 &&
                             <>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>{product?.shop.rating}</Text>
+                            <Text style={{marginLeft: 5}}>{product?.shop?.rating}</Text>
                             <Text style={{marginHorizontal: 5}}>|</Text>
                             </>
                             }
-                            <Text>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop.coordinates.lat, product?.shop.coordinates.long)} Km</Text>
+                            <Text>{calculateDistance(userAddr.lat, userAddr.lng, product?.shop?.coordinates?.lat, product?.shop?.coordinates?.long)} Km</Text>
                         </View>
-                        <Text style={{}}>Địa chỉ: {product?.shop.address}</Text>
+                        <Text style={{}}>Địa chỉ: {product?.shop?.address}</Text>
                     </View>
-                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: product?.shop._id})}}>
+                    <Pressable onPress={()=>{navigation.navigate("Store", {storeId: product?.shop?._id})}}>
                         <Text style={{fontWeight: "bold"}}>Xem sản phẩm</Text>
                     </Pressable>
                 </View>
@@ -129,7 +129,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Đánh giá sản phẩm</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
+                            { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list?.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
                         </View>
                     </View>
                     <Pressable style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}
