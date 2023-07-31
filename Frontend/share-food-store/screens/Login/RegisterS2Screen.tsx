@@ -4,12 +4,14 @@ import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import Toast from 'react-native-toast-message';
-
+import { useGetUserByPhoneQuery } from "../../redux/api/authApi";
+import { toast } from "../../services/toast";
 export default function RegisterS2Screen({ navigation, route }: LoginStackScreenProps<"RegisterS2">) {
 
     const [otp, setOtp] = useState("");
     const { phoneNumber } = route.params;
+    const { currentData } = useGetUserByPhoneQuery(JSON.stringify({phone: phoneNumber}))
+
 
     const handleOtpChange = (text: string) => {
         // otp is 6 digits
@@ -30,7 +32,11 @@ export default function RegisterS2Screen({ navigation, route }: LoginStackScreen
     // handle click continue button
     const onClickContinue = () => {
         if (validateOtp(otp)) {
-            navigation.navigate("RegisterS3", {phoneNumber: phoneNumber});
+            if (currentData.users) {
+                navigation.navigate("RegisterS4", {phoneNumber: phoneNumber, id: currentData.users._id});
+            } else {
+                navigation.navigate("RegisterS3", {phoneNumber: phoneNumber});
+            }
         }
     }
 

@@ -140,6 +140,18 @@ export const authApi = createApi({
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
+    getUserByPhone: builder.query({
+      query: (phone) => ({
+        document: `query Users($phone: String) {
+          users(phone: $phone) {
+            _id
+            phone
+          }
+        }
+        `,
+        variables: phone,
+      }),
+    }),
   }),
 });
 
@@ -153,4 +165,5 @@ export const {
   useUpdateUserInfoMutation,
   useUpdateShopMutation,
   useGetUserPasswordQuery,
+  useGetUserByPhoneQuery,
 } = authApi;

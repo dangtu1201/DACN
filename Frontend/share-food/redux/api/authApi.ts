@@ -87,6 +87,17 @@ export const authApi = createApi({
         }`,
       }),
     }),
+    getUserByPhone: builder.query({
+      query: (phone) => ({
+        document: `query Users($phone: String) {
+          users(phone: $phone) {
+            phone
+          }
+        }
+        `,
+        variables: phone,
+      }),
+    }),
   }),
 });
 
@@ -97,4 +108,5 @@ export const {
   useMeQuery,
   useUpdateUserInfoMutation,
   useGetUserPasswordQuery,
+  useGetUserByPhoneQuery,
 } = authApi;

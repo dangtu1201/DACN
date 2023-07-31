@@ -30,7 +30,10 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, productApi.middleware, shopApi.middleware
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+        immutableCheck: false,
+    }).concat(authApi.middleware, productApi.middleware, shopApi.middleware
         , orderApi.middleware, imageApi.middleware),
 });
 

@@ -9,6 +9,7 @@ import HeaderLeft from '../components/HeaderLeft';
 import LoginS2Screen from '../screens/Login/LoginS2Screen';
 import RegisterS2Screen from '../screens/Login/RegisterS2Screen';
 import RegisterS3Screen from '../screens/Login/RegisterS3Screen';
+import RegisterS4Screen from '../screens/Login/RegisterS4Screen';
 
 export default function LoginNavigation() {
   return (
@@ -91,6 +92,22 @@ function LoginNavigator() {
         })}
         />
         <LoginStack.Screen name="RegisterS3" component={RegisterS3Screen}
+        options={() => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.light.background,
+          },
+          title: 'Đăng ký',
+          headerTitleStyle: {
+            color: Colors.light.contentHeader,
+            fontSize: 20,
+          },
+          headerLeft: () => (
+            <HeaderLeft/>
+          ),
+        })}
+        />
+        <LoginStack.Screen name="RegisterS4" component={RegisterS4Screen}
         options={() => ({
           headerShown: true,
           headerStyle: {

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
 import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
-import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import Toast from 'react-native-toast-message';
+import { useGetUserByPhoneQuery } from "../../redux/api/authApi";
+import { toast } from "../../services/toast";
 
 export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Register">) {
 
     const [phoneNumber, setPhoneNumber] = useState("");
+    const { currentData } = useGetUserByPhoneQuery(JSON.stringify({phone: phoneNumber}))
 
     // phone number is 10 digits
     const onChangePhoneNumber = (text: string) => {
@@ -23,15 +25,7 @@ export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Re
         // phone number 10 number
         if (phoneNumber.length < 10) {
             // show toast on top screen
-            Toast.show({
-                type: "error",
-                position: "top",
-                text1: "Số điện thoại không hợp lệ",
-                visibilityTime: 2000,
-                autoHide: true,
-                topOffset: 100, 
-                bottomOffset: 40,
-            });
+            toast("error","Số điện thoại không hợp lệ","");
             return false;
         }
         return true;
@@ -40,7 +34,11 @@ export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Re
     // handle click continue button
     const onClickContinue = () => {
         if (validatePhoneNumber(phoneNumber)) {
-            navigation.navigate("RegisterS2", {phoneNumber: phoneNumber});
+            if (currentData.users) {
+                toast("error","Số điện thoại đã đăng ký","");
+            } else {
+                navigation.navigate("RegisterS2", {phoneNumber: phoneNumber});
+            }
         }
     }
 

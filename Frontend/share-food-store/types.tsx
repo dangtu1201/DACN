@@ -20,6 +20,7 @@ export type LoginStackParamList = {
   Register: undefined;
   RegisterS2: {phoneNumber: string};
   RegisterS3: {phoneNumber: string};
+  RegisterS4: {phoneNumber: string, id: string};
   Welcome: undefined;
 };
 
