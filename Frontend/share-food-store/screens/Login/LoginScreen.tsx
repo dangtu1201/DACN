@@ -4,7 +4,6 @@ import { Text, View } from "../../components/Themed";
 import { LoginStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import Toast from 'react-native-toast-message';
 import { useLoginMutation } from "../../redux/api/authApi";
 import { useSelector, useDispatch } from 'react-redux';
 import { loginApp } from "../../redux/login";

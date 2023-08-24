@@ -137,9 +137,7 @@ export const orderApi = createApi({
             query: (credentials) => ({
                 document: `mutation CreateReviewPayment($paymentId: ID, $input: createReviewPayment) {
                   createReviewPayment(paymentID: $paymentId, input: $input) {
-                    user
                     rating
-                    product
                   }
                 }
                 `,

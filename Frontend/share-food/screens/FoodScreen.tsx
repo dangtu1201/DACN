@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
-import { useGetAllProductsQuery } from "../redux/api/productApi";
+import { useFilterProductQuery } from "../redux/api/productApi";
 import { IProduct } from "../type/product";
 import { formatMoney } from "../services/formatMoney";
 import { calculateDistance } from "../services/distance";
@@ -17,8 +17,13 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
 
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("near");
-    const { currentData, error, isLoading, refetch } = useGetAllProductsQuery(JSON.stringify({ input: {status: "Active"}}));
     const userAddr = useSelector((state: RootState) => state.userAddr);
+    const { currentData, error, isLoading, refetch } = useFilterProductQuery(JSON.stringify({
+        input: { 
+            status: "Active", 
+            userCoordinates: { lat: `${userAddr.lat}`, long: `${userAddr.lng}` }
+        }
+    }));
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -26,15 +31,15 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
         setRefreshing(true);
         refetch();
         setTimeout(() => {
-        setRefreshing(false);
+            setRefreshing(false);
         }, 2000);
     }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.search}>
-                <Ionicons name="search" size={24} color="black" style={{alignItems:"center", marginRight: 5}}/>
-                <TextInput style={styles.searchInput}/>
+                <Ionicons name="search" size={24} color="black" style={{ alignItems: "center", marginRight: 5 }} />
+                <TextInput style={styles.searchInput} />
             </View>
             <View style={styles.filterFood}>
                 <Pressable onPress={() => setFilter("near")}>
@@ -52,45 +57,45 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                         <Text style={filter == "price" ? styles.filterFoodItemTextSelected : styles.filterFoodItemTextNotSelected}>Giá thấp</Text>
                     </View>
                 </Pressable>
-            </View>   
+            </View>
 
-            {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{marginTop: 30}}/>} 
-           
-            <ScrollView 
+            {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{ marginTop: 30 }} />}
+
+            <ScrollView
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
-                    
+
             >
-                    {currentData && currentData?.getAllProducts?.map((item : IProduct, index: any) => 
-                        (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                            onPress={() => navigation.navigate("FoodItem", {foodId: item._id})}
-                        >
-                            <View style={styles.foodItem}>
-                                <Image style={styles.foodImage} source={{ uri: item.image }}/>
-                                <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem}}>
-                                    <Text style={{fontWeight: "bold", display: "flex", width: 200}}>{item?.name}</Text>
-                                    <Text>Hôm nay: {item?.activeTime?.from} - {item?.activeTime?.to}</Text>
-                                    <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
-                                        {item.rating != 0 && 
-                                        <>
+                {currentData && currentData?.filterProduct?.map((item: IProduct, index: any) =>
+                (<TouchableOpacity key={index} style={{ display: "flex", alignItems: "center", marginTop: 1 }}
+                    onPress={() => navigation.navigate("FoodItem", { foodId: item._id })}
+                >
+                    <View style={styles.foodItem}>
+                        <Image style={styles.foodImage} source={{ uri: item.image }} />
+                        <View style={{ padding: 10, backgroundColor: Colors.light.backgroundIiem }}>
+                            <Text style={{ fontWeight: "bold", display: "flex", width: 200 }}>{item?.name}</Text>
+                            <Text>Hôm nay: {item?.activeTime?.from} - {item?.activeTime?.to}</Text>
+                            <View style={{ display: "flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem }}>
+                                {item.rating != 0 &&
+                                    <>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
                                         <Text>{item.rating} ({item.rating_list.length})  |  </Text>
-                                        </>
-                                        }
-                                        <Text>{calculateDistance(userAddr.lat, userAddr.lng, item?.shop?.coordinates.lat, item?.shop?.coordinates.long)} km</Text>
-                                    </View>
-                                    <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem}}>
-                                        <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item.price_old)}đ</Text>
-                                        <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{formatMoney(item.price)}đ</Text>
-                                    </View>
-                                </View>
+                                    </>
+                                }
+                                <Text>{calculateDistance(userAddr.lat, userAddr.lng, item?.shop?.coordinates.lat, item?.shop?.coordinates.long)} km</Text>
                             </View>
-                        </TouchableOpacity>)
-                    )}
+                            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: 200, marginTop: 4, backgroundColor: Colors.light.backgroundIiem }}>
+                                <Text style={{ color: Colors.light.blurText, textDecorationLine: "line-through" }}>{formatMoney(item.price_old)}đ</Text>
+                                <Text style={{ color: Colors.light.textHighlight, fontWeight: "bold" }}>{formatMoney(item.price)}đ</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>)
+                )}
             </ScrollView>
         </View>
     );
