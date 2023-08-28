@@ -11,6 +11,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useAddProductMutation } from "../redux/api/productApi";
 import { setStatus } from "../redux/status";
 import { useUploadImageMutation } from "../redux/api/imageApi";
+import {Picker} from '@react-native-picker/picker';
 
 export type IProductCRUD = {
     name: string;
@@ -19,6 +20,7 @@ export type IProductCRUD = {
     description: string;
     quantity: string;
     status: string;
+    category?: string;
     activeTime: {
         from: string;
         to: string;
@@ -42,12 +44,14 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
         price: "",
         description: "",
         quantity: "",
+        category: "Cơm",
         status: "Inactive",
         activeTime: {
             from: '00:00',
             to: '00:00',
-        }
+        },
     });
+    const listCategory = ['Cơm', 'Phở', 'Bún', 'Mì', 'Bánh mì', 'Bánh', 'Trà sữa', 'Nước ngọt', 'Nước ép', 'Cafe', 'Tráng miệng', 'Khác']
     const [addProduct, { data, error, isLoading }] = useAddProductMutation();
 
     const pickImageAsync = async () => {
@@ -142,7 +146,23 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                         style={{marginLeft: 20, transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }]}}
                     />
                 </View>
-                <View>
+                <View style={{marginTop: 20}}>
+                    <Text style={{fontSize: 16}}>Loại sản phẩm</Text>
+                    <View style={{ borderBottomWidth: 1 }}>
+                        <Picker
+                            selectedValue={product.category}
+                            style={{height: 46, width: "100%", marginLeft: -15}}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setProduct({...product, category: itemValue})
+                            }
+                        >
+                            {listCategory.map((item, index) => {
+                                return <Picker.Item label={item} value={item} key={index} />
+                            })}
+                        </Picker>
+                    </View>
+                </View>
+                <View style={{marginTop: 10}}>
                     <Text style={{fontSize: 16}}>Tên sản phẩm</Text>
                     <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
                         placeholder="Nhập tên sản phẩm"

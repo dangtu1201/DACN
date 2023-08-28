@@ -12,6 +12,7 @@ import Colors from "../constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
 import { setStatus } from "../redux/status";
 import { useUploadImageMutation } from "../redux/api/imageApi";
+import {Picker} from '@react-native-picker/picker';
 
 export default function UpdateAndDeleteFood({visible, setVisible, product}:{visible: boolean, setVisible: React.Dispatch<React.SetStateAction<boolean>>, product: IProduct}) {
 
@@ -33,7 +34,8 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
         activeTime: {
             from: product.activeTime?.from,
             to: product.activeTime?.to,
-        }
+        },
+        category: product?.category,
     });
 
     useEffect(() => {
@@ -55,7 +57,8 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
             activeTime: {
                 from: product.activeTime?.from,
                 to: product.activeTime?.to,
-            }
+            },
+            category: product?.category,
         });
         setProductId(product._id);
     }, [product]);
@@ -64,6 +67,7 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
     const [uploadImage, { data: dataUploadImage, error: errorUploadImage, isLoading: isLoadingUploadImage }] = useUploadImageMutation();
+    const listCategory = ['Cơm', 'Phở', 'Bún', 'Mì', 'Bánh mì', 'Bánh', 'Trà sữa', 'Nước ngọt', 'Nước ép', 'Cafe', 'Tráng miệng', 'Khác']
 
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -202,7 +206,23 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
                             style={{marginLeft: 20, transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }]}}
                         />
                     </View>
-                    <View>
+                    <View style={{marginTop: 20}}>
+                        <Text style={{fontSize: 16}}>Loại sản phẩm</Text>
+                        <View style={{ borderBottomWidth: 1 }}>
+                            <Picker
+                                selectedValue={product.category}
+                                style={{height: 46, width: "100%", marginLeft: -15}}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setProductCRUD({...productCRUD, category: itemValue})
+                                }
+                            >
+                                {listCategory.map((item, index) => {
+                                    return <Picker.Item label={item} value={item} key={index} />
+                                })}
+                            </Picker>
+                        </View>
+                    </View>
+                    <View style={{marginTop: 10}}>
                         <Text style={{fontSize: 16}}>Tên sản phẩm</Text>
                         <TextInput style={{width: "100%", fontSize: 16, borderBottomWidth: 1, marginTop: 10}}
                             placeholder="Nhập tên sản phẩm"
