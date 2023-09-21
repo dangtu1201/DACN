@@ -11,10 +11,14 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        document: `mutation Mutation($input: loginInput) {
+        document: `mutation Login($input: loginInput) {
           Login(input: $input) {
-            refreshToken
-            userID
+            data {
+              userID
+              refreshToken
+            }
+            success
+            msg
           }
         }`,
         variables: credentials,
