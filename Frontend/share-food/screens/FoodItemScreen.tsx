@@ -66,7 +66,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             <Text style={{fontWeight: "bold", fontSize: 20, marginBottom: 4}}>{product?.name}</Text>
                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
+                                { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating.toFixed(2)} ({product?.rating_list.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
                             </View>
                             <Text>Hôm nay: {product?.activeTime.from} - {product?.activeTime.to}</Text>
                         </View>
@@ -105,7 +105,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             { product?.shop?.rating != 0 &&
                             <>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            <Text style={{marginLeft: 5}}>{product?.shop?.rating}</Text>
+                            <Text style={{marginLeft: 5}}>{product?.shop?.rating.toFixed(2)}</Text>
                             <Text style={{marginHorizontal: 5}}>|</Text>
                             </>
                             }
@@ -129,7 +129,7 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         <Text style={{fontWeight: "bold", fontSize: 16, marginBottom: 10}}>Đánh giá sản phẩm</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
                             <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                            { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating} ({product?.rating_list?.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
+                            { product?.rating != 0 ? <Text style={{marginLeft: 5}}>{product?.rating.toFixed(2)} ({product?.rating_list?.length})</Text> : <Text style={{marginLeft: 5}}>Chưa có đánh giá</Text>}
                         </View>
                     </View>
                     <Pressable style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}

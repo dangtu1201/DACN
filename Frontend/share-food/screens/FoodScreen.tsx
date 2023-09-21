@@ -83,7 +83,7 @@ export default function FoodScreen({ navigation }: RootTabScreenProps<"Food">) {
                                 {item.rating != 0 &&
                                     <>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                        <Text>{item.rating} ({item.rating_list.length})  |  </Text>
+                                        <Text>{item.rating.toFixed(2)} ({item.rating_list.length})  |  </Text>
                                     </>
                                 }
                                 <Text>{calculateDistance(userAddr.lat, userAddr.lng, item?.shop?.coordinates.lat, item?.shop?.coordinates.long)} km</Text>

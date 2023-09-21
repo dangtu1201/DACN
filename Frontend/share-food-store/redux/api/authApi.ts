@@ -119,13 +119,12 @@ export const authApi = createApi({
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
-    getUserPassword: builder.query({
-      query: () => ({
-        document: `query GetUser {
-          getUser {
-            password
-          }
+    checkPassword: builder.query({
+      query: (password) => ({
+        document: `query Query($password: String) {
+          checkOldPassword(password: $password)
         }`,
+        variables: password,
       }),
     }),
     updateShop: builder.mutation({
@@ -164,6 +163,6 @@ export const {
   useCreateShopMutation,
   useUpdateUserInfoMutation,
   useUpdateShopMutation,
-  useGetUserPasswordQuery,
+  useCheckPasswordQuery,
   useGetUserByPhoneQuery,
 } = authApi;

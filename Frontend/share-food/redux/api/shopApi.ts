@@ -23,7 +23,27 @@ export const shopApi = createApi({
                 variables: credentials,
             }),
         }),
+        filterShop: builder.query({
+            query: (credentials) => ({
+                document: `query GetNearbyShop($coordinates: _Coordinates, $rating: Int) {
+                    getNearbyShop(Coordinates: $coordinates, rating: $rating) {
+                      status
+                      shopName
+                      rating
+                      coordinates {
+                        lat
+                        long
+                      }
+                      shopOwner {
+                        image
+                      }
+                      _id
+                    }
+                  }`,
+                variables: credentials,
+            }),
+        }),
     }),
 })
 
-export const { useGetShopByIdQuery } = shopApi
+export const { useGetShopByIdQuery, useFilterShopQuery } = shopApi

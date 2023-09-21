@@ -4,9 +4,8 @@ import { Text, View } from "../../components/Themed";
 import { RootStackScreenProps } from "../../types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import Toast from 'react-native-toast-message';
 import { toast } from "../../services/toast";
-import { useUpdateUserInfoMutation, useGetUserPasswordQuery } from "../../redux/api/authApi";
+import { useUpdateUserInfoMutation, useCheckPasswordQuery } from "../../redux/api/authApi";
 import { formatMessage } from "../../services/format";
 
 export default function ChangePasswordScreen({ navigation }: RootStackScreenProps<"ChangePassword">) {
@@ -20,8 +19,9 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
+    const {currentData} = useCheckPasswordQuery(JSON.stringify({password: oldPassword}));
+
     const [updateUserInfo, { isLoading }] = useUpdateUserInfoMutation();
-    const { currentData: userPassword, error, isLoading: isLoadingPassword, refetch } = useGetUserPasswordQuery('');
 
     // onChange old password
     const onChangeOldPassword = (text: string) => {
@@ -69,22 +69,22 @@ export default function ChangePasswordScreen({ navigation }: RootStackScreenProp
 
     const onClickUpdate = () => {
         if (validateUpdatePassword(oldPassword, updatePassword, confirmPassword)) {
-            if(userPassword?.getUser?.password !== oldPassword) {
-                toast("error","Mật khẩu cũ không đúng","");
-                return;
-            }
-            let updateInput = {
-                input: {
-                    password: updatePassword,
+            if (currentData.checkOldPassword) {
+                let updateInput = {
+                    input: {
+                        password: updatePassword,
+                    }
                 }
-            }
-            updateUserInfo(JSON.stringify(updateInput)).unwrap().then((res) => {
-                refetch();
+                updateUserInfo(JSON.stringify(updateInput)).unwrap().then((res) => {
+                    toast("success","Cập nhật thành công","");
+                    navigation.navigate("Root")
+                }).catch((err) => {
+                    toast("error",formatMessage(err.message),"");
+                });
                 toast("success","Cập nhật thành công","");
-                navigation.navigate("Root")
-            }).catch((err) => {
-                toast("error",formatMessage(err.message),"");
-            });
+            } else {
+                toast("error","Mật khẩu cũ không đúng","");
+            }
         }
     }
 

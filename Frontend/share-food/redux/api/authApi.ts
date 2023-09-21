@@ -78,13 +78,12 @@ export const authApi = createApi({
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
-    getUserPassword: builder.query({
-      query: () => ({
-        document: `query GetUser {
-          getUser {
-            password
-          }
+    checkPassword: builder.query({
+      query: (password) => ({
+        document: `query Query($password: String) {
+          checkOldPassword(password: $password)
         }`,
+        variables: password,
       }),
     }),
     getUserByPhone: builder.query({
@@ -107,6 +106,6 @@ export const {
   useLogoutMutation,
   useMeQuery,
   useUpdateUserInfoMutation,
-  useGetUserPasswordQuery,
+  useCheckPasswordQuery,
   useGetUserByPhoneQuery,
 } = authApi;

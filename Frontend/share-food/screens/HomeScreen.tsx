@@ -6,11 +6,42 @@ import { RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
+import { formatMoney } from "../services/formatMoney";
+import { calculateDistance } from "../services/distance";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
+import { useFilterProductQuery } from "../redux/api/productApi";
+import { useFilterShopQuery } from "../redux/api/shopApi";
+import { IProduct } from "../type/product";
+import { IShop } from "../type/shop";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+
+    const userAddr = useSelector((state: RootState) => state.userAddr);
+    const { currentData: recommendFood, error, isLoading } = useFilterProductQuery(JSON.stringify({
+        input: { 
+            status: "Active", 
+            userCoordinates: { lat: `${userAddr.lat}`, long: `${userAddr.lng}` }
+        }
+    }));
+    const { currentData: popularFood, error: errorFood, isLoading: isLoadingFood } = useFilterProductQuery(JSON.stringify({
+        input: { 
+            status: "Active", 
+            userCoordinates: { lat: `${userAddr.lat}`, long: `${userAddr.lng}` },
+            rating: {
+                from: 4,
+                to: 5
+            }
+        },
+    }));
+    const { currentData: currentShop, error: errorShop, isLoading: isLoadingShop } = useFilterShopQuery(JSON.stringify({
+        Coordinates: {
+            lat: `${userAddr.lat}`,
+            long: `${userAddr.lng}`
+        },
+        rating: 4
+    }));
 
     return (
         <View style={styles.container}>
@@ -33,24 +64,24 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                         style={styles.foodList}
                         horizontal={true}
                     >
-                            {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                            {recommendFood?.filterProduct?.map((item: IProduct, index: any) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
+                                    onPress={() => navigation.navigate("FoodItem", {foodId: item._id})}
                                 >
                                     <View style={styles.foodItem}>
-                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                        <Image style={styles.foodImage} source={{uri: item.image}}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
-                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Bánh mì thịt nướng</Text>
-                                            <Text>Hôm nay: 8:00 - 20:00</Text>
+                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>{item.name}</Text>
+                                            <Text>Hôm nay: {item.activeTime.from} - {item.activeTime.to}</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                                <Text>4.5  |  </Text>
-                                                <Text>1.5 km</Text>
+                                                <Text>{item.rating.toFixed(2)}  |  </Text>
+                                                <Text>{calculateDistance(userAddr.lat, userAddr.lng, item.shop.coordinates.lat, item.shop.coordinates.long)} km</Text>
                                             </View>
                                             <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", marginTop: 4, 
                                             backgroundColor: Colors.light.backgroundIiem, width: 150}}>
-                                                <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>50.000đ</Text>
-                                                <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>30.000đ</Text>
+                                                <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item.price_old)}đ</Text>
+                                                <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{formatMoney(item.price)}đ</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -73,24 +104,24 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                         style={styles.foodList}
                         horizontal={true}
                     >
-                            {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                            {popularFood?.filterProduct?.map((item: IProduct, index: any) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("FoodItem", {foodId: "1"})}
+                                    onPress={() => navigation.navigate("FoodItem", {foodId: item._id})}
                                 >
                                     <View style={styles.foodItem}>
-                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                        <Image style={styles.foodImage} source={{uri: item.image}}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10}}>
-                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Bánh mì thịt nướng</Text>
-                                            <Text>Hôm nay: 8:00 - 20:00</Text>
+                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>{item.name}</Text>
+                                            <Text>Hôm nay: {item.activeTime.from} - {item.activeTime.to}</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                                <Text>4.5  |  </Text>
-                                                <Text>1.5 km</Text>
+                                                <Text>{item.rating.toFixed(2)}  |  </Text>
+                                                <Text>{calculateDistance(userAddr.lat, userAddr.lng,item.shop.coordinates.lat,item.shop.coordinates.long)} km</Text>
                                             </View>
                                             <View style={{display:"flex", flexDirection: "row", justifyContent: "space-between", marginTop: 4, 
                                             backgroundColor: Colors.light.backgroundIiem, width: 150}}>
-                                                <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>50.000đ</Text>
-                                                <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>30.000đ</Text>
+                                                <Text style={{color: Colors.light.blurText, textDecorationLine: "line-through"}}>{formatMoney(item.price_old)}đ</Text>
+                                                <Text style={{color: Colors.light.textHighlight, fontWeight: "bold"}}>{formatMoney(item.price)}đ</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -113,18 +144,18 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                         style={styles.foodList}
                         horizontal={true}
                     >
-                            {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                            {currentShop?.getNearbyShop?.map((item:IShop, index: any) => 
                                 (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                                    onPress={() => navigation.navigate("Store", {storeId: "1"})}
+                                    onPress={() => navigation.navigate("Store", {storeId: item._id})}
                                 >
                                     <View style={styles.foodItem}>
-                                        <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                        <Image style={styles.foodImage} source={{uri: item.shopOwner.image}}/>
                                         <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, borderRadius: 10, justifyContent: "space-between"}}>
-                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>Tiệm bánh hạnh phúc</Text>
+                                            <Text style={{fontWeight: "bold", display: "flex", width: 150}}>{item.shopName}</Text>
                                             <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                                 <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                                <Text>4.5  |  </Text>
-                                                <Text>1.5 km</Text>
+                                                <Text>{item.rating.toFixed(2)}  |  </Text>
+                                                <Text>{calculateDistance(userAddr.lat, userAddr.lng, item.coordinates.lat,item.coordinates.long)} km</Text>
                                             </View>
                                         </View>
                                     </View>

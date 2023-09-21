@@ -1,13 +1,27 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootStackScreenProps, RootTabScreenProps } from "../types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../constants/Colors";
+import { useFilterShopQuery } from "../redux/api/shopApi";
+import { calculateDistance } from "../services/distance";
+import { RootState } from '../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { IShop } from "../type/shop";
 
 export default function PopularStoreScreen({ navigation }: RootStackScreenProps<"PopularStore">) {
+
+    const userAddr = useSelector((state: RootState) => state.userAddr);
+    const { currentData, error, isLoading, refetch } = useFilterShopQuery(JSON.stringify({
+        Coordinates: {
+            lat: `${userAddr.lat}`,
+            long: `${userAddr.lng}`
+        },
+        rating: 4
+    }));
 
     return (
         <View style={styles.container}>
@@ -16,18 +30,19 @@ export default function PopularStoreScreen({ navigation }: RootStackScreenProps<
                 showsVerticalScrollIndicator={false}
                 style={styles.foodList}
             >
-                    {[1,2,3,4,5,6,7,8,9].map((item, index) => 
+                {isLoading && <ActivityIndicator size="large" color={Colors.light.textHighlight} style={{ marginTop: 30 }} />}
+                    {currentData?.getNearbyShop?.map((item: IShop, index: any) => 
                         (<TouchableOpacity key={index} style={{display: "flex", alignItems: "center", marginTop: 1}}
-                            onPress={() => navigation.navigate("Store", {storeId: "1"})}
+                            onPress={() => navigation.navigate("Store", {storeId: item._id})}
                         >
                             <View style={styles.foodItem}>
-                                <Image style={styles.foodImage} source={require("../assets/images/icon.png")}/>
+                                <Image style={styles.foodImage} source={{uri: item.shopOwner.image}}/>
                                 <View style={{padding: 10, backgroundColor: Colors.light.backgroundIiem, justifyContent: "space-between"}}>
-                                    <Text style={{fontWeight: "bold", display: "flex", width: 200}}>Tiệm bánh hạnh phúc</Text>
+                                    <Text style={{fontWeight: "bold", display: "flex", width: 200}}>{item.shopName}</Text>
                                     <View style={{display:"flex", flexDirection: "row", backgroundColor: Colors.light.backgroundIiem}}>
                                         <Ionicons name="star" size={20} color={Colors.light.textHighlight} />
-                                        <Text>4.5  |  </Text>
-                                        <Text>1.5 km</Text>
+                                        <Text>{item.rating.toFixed(2)}  |  </Text>
+                                        <Text>{calculateDistance(userAddr.lat, userAddr.lng, item.coordinates.lat, item.coordinates.long)} km</Text>
                                     </View>
                                 </View>
                             </View>
