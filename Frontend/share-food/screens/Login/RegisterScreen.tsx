@@ -34,7 +34,7 @@ export default function RegisterScreen({ navigation }: LoginStackScreenProps<"Re
     // handle click continue button
     const onClickContinue = () => {
         if (validatePhoneNumber(phoneNumber)) {
-            if (currentData.users) {
+            if (currentData?.users) {
                 toast("error","Số điện thoại đã đăng ký","");
             } else {
                 navigation.navigate("RegisterS2", {phoneNumber: phoneNumber});

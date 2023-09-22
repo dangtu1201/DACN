@@ -59,8 +59,8 @@ export default function LoginScreen({ navigation }: LoginStackScreenProps<"Login
             login(`{"input": {"phone": "${phoneNumber}", "password": "${password}", "as": "User"}}`).unwrap().then(
                 res => {
                     toast("success", "Đăng nhập thành công", "");
-                    console.log(res?.Login?.userID, res?.Login?.refreshToken);
-                    dispatch(loginApp({userId: res?.Login?.userID, usertoKen: res?.Login?.refreshToken}));
+                    console.log(res?.Login?.data.userID, res?.Login?.data.refreshToken);
+                    dispatch(loginApp({userId: res?.Login?.data.userID, usertoKen: res?.Login?.data.refreshToken}));
                 }
             ).catch(
                 err => {
