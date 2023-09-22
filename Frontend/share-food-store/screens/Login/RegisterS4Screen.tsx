@@ -98,11 +98,11 @@ export default function RegisterS4Screen({ navigation, route }: LoginStackScreen
                     },
                     shopOwner: id,
                     CID: registerInfo.cardId,
-                    status: "Approved",
+                    status: "Unapproved",
                 }
             }
             createShop(JSON.stringify(createShopInput)).unwrap().then((res) => {
-                toast("success","Đăng ký thành công","");
+                toast("success","Đăng ký thành công","Vui lòng đợi admin phê duyệt cửa hàng của bạn");
                 navigation.navigate("Login");
             }
             ).catch((err) => {
