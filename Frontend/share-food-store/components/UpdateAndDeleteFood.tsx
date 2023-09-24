@@ -67,8 +67,15 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
     const [uploadImage, { data: dataUploadImage, error: errorUploadImage, isLoading: isLoadingUploadImage }] = useUploadImageMutation();
-    const listCategory = ['Cơm', 'Phở', 'Bún', 'Mì', 'Bánh mì', 'Bánh', 'Trà sữa', 'Nước ngọt', 'Nước ép', 'Cafe', 'Tráng miệng', 'Khác']
-
+    const listCategory = [
+        "Rau củ quả",
+        "Bánh mì",
+        "Thịt",
+        "Cá",
+        "Trái cây",
+        "Thức ăn nấu sẵn",
+        "Khác"
+      ]
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           allowsEditing: true,
@@ -98,6 +105,7 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
     };
 
     const handleUpdateProduct = async () => {
+        console.log(productCRUD);
         if (selectedImage == product.image) {
             let dataUpdate = JSON.stringify(
             { input:
@@ -112,7 +120,8 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
                 activeTime: {
                     from: productCRUD.activeTime.from,
                     to: productCRUD.activeTime.to,
-                }
+                },
+                category: productCRUD.category
             }
             });
             await updateProduct(dataUpdate).unwrap().then((res) => {
@@ -143,6 +152,7 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
                             to: productCRUD.activeTime.to,
                         },
                         image: image,
+                        category: productCRUD.category
                     }
                 });
                 console.log(data);
@@ -210,10 +220,11 @@ export default function UpdateAndDeleteFood({visible, setVisible, product}:{visi
                         <Text style={{fontSize: 16}}>Loại sản phẩm</Text>
                         <View style={{ borderBottomWidth: 1 }}>
                             <Picker
-                                selectedValue={product.category}
-                                style={{height: 46, width: "100%", marginLeft: -15}}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setProductCRUD({...productCRUD, category: itemValue})
+                                selectedValue={productCRUD.category ? productCRUD.category[0] : "Rau củ quả"}
+                                style={{height: 46, width: "100%", marginLeft: -5}}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setProductCRUD({...productCRUD, category: [itemValue]});
+                                }
                                 }
                             >
                                 {listCategory.map((item, index) => {

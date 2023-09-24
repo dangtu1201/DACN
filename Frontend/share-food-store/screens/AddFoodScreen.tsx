@@ -8,7 +8,7 @@ import Colors from "../constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { useAddProductMutation } from "../redux/api/productApi";
+import { useAddProductMutation, useGetCatagoryQuery} from "../redux/api/productApi";
 import { setStatus } from "../redux/status";
 import { useUploadImageMutation } from "../redux/api/imageApi";
 import {Picker} from '@react-native-picker/picker';
@@ -20,7 +20,7 @@ export type IProductCRUD = {
     description: string;
     quantity: string;
     status: string;
-    category?: string;
+    category?: [string];
     activeTime: {
         from: string;
         to: string;
@@ -44,14 +44,22 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
         price: "",
         description: "",
         quantity: "",
-        category: "Cơm",
+        category: ["Rau củ quả"],
         status: "Inactive",
         activeTime: {
             from: '00:00',
             to: '00:00',
         },
     });
-    const listCategory = ['Cơm', 'Phở', 'Bún', 'Mì', 'Bánh mì', 'Bánh', 'Trà sữa', 'Nước ngọt', 'Nước ép', 'Cafe', 'Tráng miệng', 'Khác']
+    const listCategory = [
+        "Rau củ quả",
+        "Bánh mì",
+        "Thịt",
+        "Cá",
+        "Trái cây",
+        "Thức ăn nấu sẵn",
+        "Khác"
+      ];
     const [addProduct, { data, error, isLoading }] = useAddProductMutation();
 
     const pickImageAsync = async () => {
@@ -89,6 +97,7 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                         to: product.activeTime.to,
                     },
                     image: image,
+                    category: product.category
                 }
             });
             console.log(data);
@@ -150,13 +159,13 @@ export default function AddFoodScreen({ navigation }: RootStackScreenProps<"AddF
                     <Text style={{fontSize: 16}}>Loại sản phẩm</Text>
                     <View style={{ borderBottomWidth: 1 }}>
                         <Picker
-                            selectedValue={product.category}
-                            style={{height: 46, width: "100%", marginLeft: -15}}
+                            selectedValue={product.category ? product.category[0] :"Rau củ quả"}
+                            style={{height: 46, width: "100%", marginLeft: -5}}
                             onValueChange={(itemValue, itemIndex) =>
-                                setProduct({...product, category: itemValue})
+                                setProduct({...product, category: [itemValue]})
                             }
                         >
-                            {listCategory.map((item, index) => {
+                            {listCategory.map((item: string, index: any) => {
                                 return <Picker.Item label={item} value={item} key={index} />
                             })}
                         </Picker>

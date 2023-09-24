@@ -13,5 +13,5 @@ export interface IProduct {
     description: string;
     discount_id: [string];
     shop: string;
-    category: string;
+    category: [string];
 }

@@ -61,8 +61,15 @@ export const productApi = createApi({
             variables: credentials,
             }),
         }),
-        
+        getCatagory: builder.query({
+          query: (credentials) => ({
+              document: `query Query {
+                getCategories
+              }`,
+            variables: credentials,
+          }),
+        })
     }),
 });
 
-export const { useGetProductsQuery, useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation } = productApi;
+export const { useGetProductsQuery, useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation, useGetCatagoryQuery } = productApi;
