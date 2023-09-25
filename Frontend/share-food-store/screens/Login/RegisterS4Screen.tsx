@@ -48,16 +48,6 @@ export default function RegisterS4Screen({ navigation, route }: LoginStackScreen
 
     // validate register info
     const validateRegisterInfo = (registerInfo: RegisterInfo) => {
-        // name is not empty
-        if (registerInfo.name.length === 0) {
-            toast("error","Họ và tên không hợp lệ","");
-            return false;
-        }
-        // email is not empty
-        if (registerInfo.email.length === 0 || !validateEmail(registerInfo.email)) {
-            toast("error","Email không hợp lệ","");
-            return false;
-        }
         // cardId is not empty
         if (registerInfo.cardId.length === 0) {
             toast("error","Số CMND không hợp lệ","");
@@ -71,16 +61,6 @@ export default function RegisterS4Screen({ navigation, route }: LoginStackScreen
         // storeAddress is not empty
         if (registerInfo.storeAddress.length === 0) {
             toast("error","Địa chỉ cửa hàng không hợp lệ","");
-            return false;
-        }
-        // password is 6 digits
-        if (registerInfo.password.length < 6) {
-            toast("error","Mật khẩu phải có 6 ký tự","");
-            return false;
-        }
-        // password and confirm password are the same
-        if (registerInfo.password !== confirmPassword) {
-            toast("error","Mật khẩu không khớp","");
             return false;
         }
         return true;

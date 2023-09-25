@@ -76,7 +76,6 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                             <Text>Còn lại: {product?.quantity}</Text>
                         </View>
                     </View>
-                    <Text style={{color: Colors.light.blurText, marginBottom: 10}}>Đã bán: 200</Text>
                     <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 30}}>
                         <TouchableOpacity style={{display:"flex", justifyContent: "center", alignItems: "center" ,width: 34, height: 34, borderWidth: 1, borderColor: Colors.light.textHighlight}}
                             onPress={() => { count <= 1 ? setCount(1) :setCount(count - 1)}}
@@ -144,31 +143,6 @@ export default function FoodScreen({ navigation, route }: RootStackScreenProps<"
                         borderBottomWidth: StyleSheet.hairlineWidth,
                     }}
                 />
-                { product?.rating != 0 &&
-                <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, paddingVertical: 10}}
-                >
-                    <Image style={{ width:40, height: 40, borderRadius: 100}} source={require("../assets/images/icon.png")}/>
-                    <View style={{display: "flex", marginLeft: 10, width: "90%"}}>
-                        <Text>Nguyễn Văn A</Text>
-                        
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
-                            {
-                            [1,2,3,4,5].map((item, index) => {
-                                return (
-                                        <Ionicons name="star" size={20} color={Colors.light.textHighlight} key={index}/>
-                                        )
-                                    }
-                                )
-                            }
-                        </View>
-                        <Text style={{marginBottom: 10}}>Bánh mì dài là món ăn ngon nhất thế giới</Text>
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 4}}>
-                            <Image style={{ width:80, height: 80, marginRight: 20}} source={require("../assets/images/icon.png")}/>
-                            <Image style={{ width:80, height: 80}} source={require("../assets/images/icon.png")}/>
-                        </View>
-                    </View>
-                </View>
-                }
             </ScrollView>
             }
             { isLoading ? null :
